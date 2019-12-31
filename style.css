@@ -1,0 +1,626 @@
+body {margin: 0px; padding: 0px; background-color: silver;}
+
+
+
+
+#all {  height: 450px;
+		width: 920px;
+		background-color: ;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 50px;
+		padding: 30px;
+		padding-bottom: 0px;
+		/* border: 4px solid white; */
+		}
+
+		
+#llogo {
+		background-color: #e3e3e3;
+		height: 140px;
+		width: 850px;
+		border: 1px solid silver;
+}	
+#mmiddle {
+		background-color: #e3e3e3;
+		height: 50px;
+		width: 850px;
+}	
+#mmiddle2 {
+		background-color: #e3e3e3;
+		height: 50px;
+		width: 850px;
+}	
+#mmiddle3 {
+		background-color: #e3e3e3;
+		height: 50px;
+		width: 850px;
+}	
+
+#logo { background-color: ;
+		height: 140px;
+		width: 1100px;
+		padding: 4px;
+		}
+		
+#middle { background-color: ;
+		height: 60px;
+		width: 1100px;
+		margin-top: 35px;
+		padding: 2px;
+		}
+		
+#lewemiddle {
+		height: 60px;
+		width: 850px;
+		background-color: DimGray;
+		float: left;
+}
+#fb, #kfb, #rfb {margin-top: 10px;}
+#fb {float: left; background-color: ; width: 325px; height: 40px; }
+#kfb {float: left; width: 5px; height: 38px; background-color: black; box-shadow: 1px 1px 5px white; }
+#rfb {float: left; background-color:  ; width: 220px; height: 40px;}
+#fbfb {		text-shadow: 2px 2px 3px white;
+			font-family: 'Poppins', sans-serif;
+			font-size: 26px;
+			letter-spacing: 5px;
+			MARGIN-left: 133px;
+			margin-top: -4px;
+			}
+#yt, #kyt, #ryt {margin-top: 10px;}
+#yt {float: left; background-color: ; width: 325px; height: 40px; }
+#kyt {float: left; width: 5px; height: 38px; background-color: black; box-shadow: 1px 1px 5px white; }
+#ryt {float: left; background-color:  ; width: 220px; height: 40px;}
+#ytyt {		text-shadow: 2px 2px 3px white;
+			font-family: 'Poppins', sans-serif;
+			font-size: 26px;
+			letter-spacing: 5px;
+			MARGIN-left: 158px;
+			margin-top: -4px;
+			}
+#tw, #ktw, #rtw {margin-top: 10px;}
+#tw {float: left; background-color: ; width: 325px; height: 40px; }
+#ktw {float: left; width: 5px; height: 38px; background-color: black; box-shadow: 1px 1px 5px white; }
+#rtw {float: left; background-color: ; width: 220px; height: 40px;}
+#twtw {		text-shadow: 2px 2px 3px white;
+			font-family: 'Poppins', sans-serif;
+			font-size: 26px;
+			letter-spacing: 5px;
+			MARGIN-left: 167px;
+			margin-top: -4px;
+			}
+#hh4 {font-size: 15px; text-shadow: 1px 1px 5px white; margin-left: 21px;}
+#hh5 {font-size: 15px; text-shadow: 1px 1px 5px white; margin-left: 21px; margin-top: -35px;}
+			
+#prawemiddle {
+		height: 60px;
+		width: 80px;
+		background-color: DimGray;	
+		float: left;
+		margin-left: 10px;
+		border: 1px solid white;
+		margin-top: -1px;
+		opacity: 0.9;
+	}
+	
+#prawemiddle:hover, 
+#prawemiddle2:hover, 
+#prawemiddle3:hover {opacity: 1;}
+		
+#lewelogo { 
+			height: 140px;
+			width: 843px;
+			background-color: #494949;
+			float: left;
+			border: 2px solid #414141;
+}
+#hh {font-size: 20px; text-shadow: 1px 1px 16px white; margin-left: 10px;}
+#hh2 {font-size: 20px; text-shadow: 1px 1px 16px white; margin-left: 10px; margin-top: -42px;}
+#hh3 {font-size: 22px; text-shadow: 1px 1px 5px white; margin-top: 8px; margin-left: 10px;}
+#gif {background-color: ; width: 300px; float: left; margin-left: 20px;}
+#krecha {box-shadow: 1px 1px 5px white; background-color: black; margin-top: 27px; 
+		width: 5px; height: 95px; float: left; margin-right: 10px;}
+#o {background-color: ; width: 450px; float: left; margin-top: 20px;}
+#kres {background-color: black; height: 5px; margin-left: 10px; width: 235px; 
+		margin-top: -90px; box-shadow: 1px 1px 5px white;}
+#kres2 {background-color: black; height: 3px; margin-left: 10px; width: 405px; 
+		margin-top: 0px; box-shadow: 1px 1px 5px white;}
+#gora {background-color: ;}
+#dol {background-color: ;}
+
+
+h1{
+			margin-top: 0px;
+			margin-left: 66px;
+			text-shadow: 2px 2px 3px white;
+			font-family: 'Poppins', sans-serif;
+			font-weight: 700;
+			font-size: 51px;
+			letter-spacing: 2px;
+			
+}
+h2{
+			margin-top: -90px;
+			margin-left: 120px;
+			text-shadow: 2px 2px 3px white;
+			font-family: 'Poppins', sans-serif;
+			font-weight: 500;
+			font-size: 41px;
+			letter-spacing: 5px;
+			
+}
+h3{
+			margin-top: -76px;
+			margin-left: 70px;
+			text-shadow: 2px 2px 3px white;
+			font-family: 'Poppins', sans-serif;
+			font-weight: 500;
+			font-size: 26px;
+			letter-spacing: 5px;
+			
+}
+
+#prawelogo {
+		
+		height: 145px;
+		width: 80px;
+		background-color: ;	
+		float: left;
+		margin-left: 10px;
+	
+}
+
+#middle2 { background-color: ;
+		height: 60px;
+		width: 1100px;
+		margin-top: 25px;
+		padding: 2px;
+		}
+		
+#lewemiddle2 {
+		height: 60px;
+		width: 850px;
+		background-color: DimGray;
+		float: left;
+}
+
+#prawemiddle2 {
+		height: 60px;
+		opacity: 0.9;
+		width: 80px;
+		background-color: DimGray;	
+		float: left;
+		border: 1px solid white;
+		margin-top: -1px;
+		margin-left: 10px;
+	}
+	
+	
+#middle3 { background-color: ;
+		height: 60px;
+		width: 1100px;
+		margin-top: 25px;
+		padding: 2px;
+		}
+		
+#lewemiddle3 {
+		height: 60px;
+		width: 850px;
+		background-color: DimGray;
+		float: left;
+}
+
+#prawemiddle3 {
+		height: 60px;
+		opacity: 0.9;
+		width: 80px;
+		background-color: DimGray;	
+		float: left;
+		border: 1px solid white;
+		margin-top: -1px;
+		margin-left: 10px;
+	}
+	
+#stopka {margin-top: 25px;
+		margin-left: 2px;
+		letter-spacing: 3px;
+		width: 1100px;
+		font-family: 'Poppins', sans-serif;
+		color: black;
+		text-shadow: 2px 2px 3px white;
+		background-color: ;
+
+		}
+		
+#w {margin-left: 7px; float: left; margin-right: 10px; font-weight: 500; font-size: 14px;}
+#c {float: left; margin-right: 10px; font-size: 14px; }
+#j {float: left; margin-right: 10px; font-weight: 700; font-size: 14px; letter-spacing: 7px;}
+#www {float: left; margin-right: 10px; font-size: 14px;}
+#ccc {float: left; margin-right: 10px; font-size: 14px;}
+#hh15 {font-size: 0px;}
+#hh16 {font-size: 0px;}
+#hh17 {font-size: 0px;}
+
+@media screen and (min-width: 1025px) {
+#hh9 {font-size: 0px;} 
+#hh99 {font-size: 0px;} 
+#hh999 {font-size: 0px;}
+#hh10 {font-size: 0px;} 
+#hh11 {font-size: 0px;}
+#hh12 {font-size: 0px;} 
+#hh15 {font-size: 0px;} 
+#hh16 {font-size: 0px;}
+#hh17 {font-size: 0px;}
+#all {  height: 450px;
+		width: 920px;
+		background-color: ;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 50px;
+		padding: 30px;
+		padding-bottom: 0px;
+		/* border: 4px solid white; */
+		}
+}
+
+@media screen and (max-width: 1024px) {
+		
+		#all {  height: 450px;
+				width: 830px;
+				background-color:  ;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 50px;
+				padding: 30px;
+				padding-bottom: 0px;
+				/* border: 4px solid white; */
+		}
+		#logo { background-color:  ;
+				height: 140px;
+				width: 850px;
+				padding: 4px;
+		}
+		
+		#middle { background-color: ;
+					height: 60px;
+					width: 850px;
+					margin-top: 35px;
+					padding: 2px;
+		}
+	
+		#lewemiddle {
+				height: 60px;
+				width: 758px;
+				background-color: DimGray;
+				float: left;
+				MARGIN-LEFT: -93PX;
+		}
+		#mmiddle {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 758px;
+		}
+		#lewemiddle2 {
+				height: 60px;
+				width: 758px;
+				background-color: DimGray;
+				float: left;
+				MARGIN-LEFT: -93PX;
+		}
+		#mmiddle2 {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 758px;
+		}
+		#lewemiddle3 {
+				height: 60px;
+				width: 758px;
+				background-color: DimGray;
+				float: left;
+		}
+		#mmiddle3 {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 758px;
+		}	
+		#hh9 {font-size: 0px;}
+		#hh99 {font-size: 0px;} 
+		#hh999 {font-size: 0px;}
+		#hh10 {font-size: 0px;} 
+		#hh11 {font-size: 0px;}
+		#hh12 {font-size: 0px;} 
+		#hh15 {font-size: 0px;}
+		#hh16 {font-size: 0px;}
+		#hh17 {font-size: 0px;}
+}
+	
+@media screen and (max-width: 900px) {
+	
+		#lewemiddle {
+				height: 60px;
+				width: 700px;
+				background-color: DimGray;
+				float: left;
+		}
+		#mmiddle {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 700px;
+		}
+		#lewemiddle2 {
+				height: 60px;
+				width: 700px;
+				background-color: DimGray;
+				float: left;
+		}
+		#mmiddle2 {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 700px;
+		}
+		#lewemiddle3 {
+				height: 60px;
+				width: 700px;
+				background-color: DimGray;
+				float: left;
+		}
+		#mmiddle3 {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 700px;
+		}	
+		#lewelogo { 
+				height: 140px;
+				width: 785px;
+		}
+		#llogo {
+				height: 140px;
+				width: 785px;
+		}	
+		#w {font-size: 13px;}
+		#www {font-size: 13px;}
+		#ccc {font-size: 13px;}
+		#c {font-size: 13px; }
+		#j {font-size: 14px; letter-spacing: 5px;}
+		#hh9 {font-size: 0px;}
+		#hh99 {font-size: 0px;} 
+		#hh999 {font-size: 0px;}
+		#hh10 {font-size: 0px;} 
+		#hh11 {font-size: 0px;}
+		#hh12 {font-size: 0px;} 
+		#hh15 {font-size: 0px;}
+		#hh16 {font-size: 0px;}
+		#hh17 {font-size: 0px;}
+}
+
+@media screen and (max-width: 840px) {
+	
+		#lewemiddle {
+				height: 60px;
+				width: 600px;
+				background-color: DimGray;
+				float: left;
+		}
+		#mmiddle {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 600px;
+		}
+		#lewemiddle2 {
+				height: 60px;
+				width: 600px;
+				background-color: DimGray;
+				float: left;
+		}
+		#mmiddle2 {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 600px;
+		}
+		#lewemiddle3 {
+				height: 60px;
+				width: 600px;
+				background-color: DimGray;
+				float: left;
+		}
+		#mmiddle3 {
+				background-color: #e3e3e3;
+				height: 50px;
+				width: 600px;
+		}	
+		#lewelogo { 
+				height: 140px;
+				width: 685px;
+		}
+		#llogo {
+				height: 140px;
+				width: 685px;
+		}	
+		#w {font-size: 11px;}
+		#c {font-size: 11px; }
+		#www {font-size: 11px;}
+		#ccc {font-size: 11px;}
+		#j {font-size: 11px; letter-spacing: 3px;}
+		#hh {font-size: 15px; margin-top: 5px; background-color: ;}
+		#hh2 {font-size: 15px; background-color: ;}
+		#hh3 {font-size: 16px; margin-top: 15px; background-color: ;}
+		#kres {height: 5px; margin-left: 10px; width: 235px; margin-top: -77px}
+		#kres2 {height: 0px; width: 0px;}
+		#gora {width: 340px;}
+		#dol {width: 340px;}
+		#o {width: 340px;}
+		#hh9 {font-size: 0px;}
+		#hh99 {font-size: 0px;} 
+		#hh999 {font-size: 0px;}
+		#hh10 {font-size: 0px;} 
+		#hh11 {font-size: 0px;}
+		#hh12 {font-size: 0px;} 
+		#hh15 {font-size: 0px;}
+		#hh16 {font-size: 0px;}
+		#hh17 {font-size: 0px;}
+}
+
+@media screen and (max-width: 740px) {
+	
+		#lewemiddle {height: 60px; width: 400px; background-color: DimGray; float: left;}
+		#mmiddle {background-color: #e3e3e3; height: 50px; width: 400px;}
+		#lewemiddle2 {height: 60px; width: 400px; background-color: DimGray; float: left;}
+		#mmiddle2 {background-color: #e3e3e3; height: 50px; width: 400px;}
+		#lewemiddle3 {height: 60px; width: 400px; background-color: DimGray; float: left;}
+		#mmiddle3 {background-color: #e3e3e3; height: 50px; width: 400px;}	
+		#lewelogo {height: 140px; width: 485px;}
+		#llogo {height: 140px; width: 485px;}	
+		#w {font-size: 14px;}
+		#www {font-size: 0px;}
+		#ccc {font-size: 0px;}
+		#c {font-size: 13px; }
+		#j {font-size: 13px; letter-spacing: 6px;}
+		#hh {font-size: 0px; margin-top: 5px; background-color: ;}
+		#hh2 {font-size: 0px;}
+		#hh3 {font-size: 0px;}
+		#hh4 {font-size: 4px; margin-top: 15px; background-color: ;}
+		#kres {height: 3px; margin-left: 10px; width: 100px; margin-top: -16px}
+		#kres2 {height: 0px; width: 0px;}
+		#gora {width: 340px;}
+		#dol {width: 340px;}
+		#o {width: 147px; background-color: ;}
+		#hh4 {font-size: 0px;}
+		#hh5 {font-size: 0px;}
+		#hh9 {font-size: 10px; text-shadow: 1px 1px 5px white; margin-top: -5px; margin-left: 10px;}
+		#hh99 {font-size: 10px; text-shadow: 1px 1px 5px white; margin-top: -28px; margin-left: 10px;}
+		#hh999 {font-size: 10px; text-shadow: 1px 1px 5px white; margin-top: -30px; margin-left: 10px;}
+		#hh10 {font-size: 10px; text-shadow: 1px 1px 16px white; margin-left: 10px; margin-top: 0px;} 
+		#hh11 {font-size: 10px; text-shadow: 1px 1px 16px white; margin-left: 10px; margin-top: -30px;}
+		#hh12 {font-size: 10px; text-shadow: 1px 1px 16px white; margin-left: 10px; margin-top: -30px;} 
+		#hh15 {font-size: 0px;}
+		#hh16 {font-size: 0px;}
+		#hh17 {font-size: 0px;}
+		
+}
+
+@media screen and (max-width: 550px) {
+		body {background-color: red; width: 300px; height: 450px;}
+		#lewemiddle {height: 60px; width: 170px; background-color: DimGray; float: left; margin-left: -93px;}
+		#mmiddle {background-color: #e3e3e3; height: 50px; width: 170px;}
+		#lewemiddle2 {height: 60px; width: 170px; background-color: DimGray; float: left; margin-left: -93px;}
+		#mmiddle2 {background-color: #e3e3e3; height: 50px; width: 170px;}
+		#lewemiddle3 {height: 60px; width: 170px; background-color: DimGray; float: left;}
+		#mmiddle3 {background-color: #e3e3e3; height: 50px; width: 170px;}	
+		#lewelogo {height: 140px; width: 485px;}
+		#llogo {height: 140px; width: 485px;}	
+		#w {font-size: 7px;}
+		#www {font-size: 0px;}
+		#ccc {font-size: 0px;}
+		#c {font-size: 7px; }
+		#j {font-size: 7px; letter-spacing: 0px;}
+		#hh {font-size: 0px; margin-top: 5px; background-color: ;}
+		#hh2 {font-size: 0px;}
+		#hh3 {font-size: 0px;}
+		#hh4 {font-size: 4px; margin-top: 15px; background-color: ;}
+		#kres {height: 0px; margin-left: 10px; width: 100px; margin-top: -16px}
+		#kres2 {height: 0px; width: 0px;}
+		#gora {width: 340px;}
+		#dol {width: 340px;}
+		#o {width: 147px; background-color: ;}
+		#hh4 {font-size: 0px;}
+		#hh5 {font-size: 0px;}
+		#hh9 {font-size: 10px; text-shadow: 1px 1px 5px white; margin-top: -5px; margin-left: 93px;}
+		#hh99 {font-size: 10px; text-shadow: 1px 1px 5px white; margin-top: -28px; margin-left: 105px;}
+		#hh999 {font-size: 10px; text-shadow: 1px 1px 5px white; margin-top: -30px; margin-left: 73px;}
+		#hh10 {font-size: 0px; text-shadow: 1px 1px 16px white; margin-left: 10px; margin-top: 0px;} 
+		#hh11 {font-size: 0px; text-shadow: 1px 1px 16px white; margin-left: 10px; margin-top: -30px;}
+		#hh12 {font-size: 0px; text-shadow: 1px 1px 16px white; margin-left: 10px; margin-top: -30px;} 
+		#hh15 {font-size: 0px; margin-top: -10px; margin-left: 73px;}
+		#hh16 {font-size: 0px; margin-top: -8px; margin-left: 85px;}
+		#hh17 {font-size: 0px; margin-top: -10px; margin-left: 54px;}
+		#prawemiddle, 
+		#prawemiddle2, 
+		#prawemiddle3 {width: 80px;}
+		h1{
+			margin-top: 0px;
+			margin-left: -6px;
+			text-shadow: 2px 2px 3px white;
+			font-family: 'Poppins', sans-serif;
+			font-weight: 700;
+			font-size: 31px;
+			letter-spacing: 2px;
+			
+			}
+		h2{
+			margin-top: -60px;
+			margin-left: 34px;
+			text-shadow: 2px 2px 3px white;
+			font-family: 'Poppins', sans-serif;
+			font-weight: 500;
+			font-size: 21px;
+			letter-spacing: 5px;
+			
+		}
+		h3{margin-top: -50px; margin-left: -8px; text-shadow: 2px 2px 3px white;font-family: 'Poppins', sans-serif;
+			font-weight: 500;
+			font-size: 14px;
+			letter-spacing: 5px;}
+			
+		#krecha {box-shadow: 1px 1px 5px white; background-color: black; margin-top: 17px; 
+		width: 5px; height: 105px; float: left; margin-right: 10px; margin-left: -155px;}
+			
+		#stopka {margin-top: 15px;
+		margin-left: -4px;
+		width: 290px;
+		background-color: ;
+
+		}
+			
+		#fb, #kfb, #rfb {margin-top: 10px;}
+		#fb {float: left; background-color: ; width: 325px; height: 40px; }
+		#kfb {float: left; width: 0px; height: 0px; background-color: black; box-shadow: 1px 1px 5px white; }
+		#rfb {float: left; background-color:  ; width: 220px; height: 40px;}
+		#fbfb {		text-shadow: 2px 2px 3px white;
+					font-family: 'Poppins', sans-serif;
+					font-size: 20px;
+					letter-spacing: 5px;
+					MARGIN-left: 15px;
+					margin-top: 4px;
+					}
+		#yt, #kyt, #ryt {margin-top: 10px;}
+		#yt {float: left; background-color: ; width: 325px; height: 40px; }
+		#kyt {float: left; width: 0px; height: 0px; background-color: black; box-shadow: 1px 1px 5px white; }
+		#ryt {float: left; background-color:  ; width: 220px; height: 40px;}
+		#ytyt {		text-shadow: 2px 2px 3px white;
+					font-family: 'Poppins', sans-serif;
+					font-size: 26px;
+					letter-spacing: 5px;
+					MARGIN-left: 13px;
+					margin-top: -4px;
+					}
+		#tw, #ktw, #rtw {margin-top: 10px;}
+		#tw {float: left; background-color: ; width: 325px; height: 40px; }
+		#ktw {float: left; width: 0px; height: 0px; background-color: black; box-shadow: 1px 1px 5px white; }
+		#rtw {float: left; background-color: ; width: 220px; height: 40px;}
+		#twtw {		text-shadow: 2px 2px 3px white;
+					font-family: 'Poppins', sans-serif;
+					font-size: 26px;
+					letter-spacing: 5px;
+					MARGIN-left: 15px;
+					margin-top: -4px;
+					}
+		#lewelogo { 
+			height: 140px;
+			width: 255px;
+			background-color: #494949;
+			float: left;
+			border: 2px solid #414141;
+				}
+		#llogo {
+			background-color: #e3e3e3;
+			height: 140px;
+			width: 255px;
+			border: 1px solid silver;
+				}	
+		#logo { background-color: ;
+		height: 140px;
+		width: 80px;
+		padding: 4px;
+		}
+}
+	
