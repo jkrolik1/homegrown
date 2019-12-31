@@ -1,0 +1,52 @@
+{
+  "name": "",
+  "css_prefix_text": "icon-",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "1ba44825e5f10920b4e3f1d0c73f79a2",
+      "css": "emo-wink",
+      "code": 59395,
+      "src": "fontelico"
+    },
+    {
+      "uid": "9fecfcfe680a469caedeeb40641a479f",
+      "css": "handshake-o",
+      "code": 62133,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "03cmb4p7niofd11yos3fpjjuvvpy7mji",
+      "css": "facebook-rect",
+      "code": 62209,
+      "src": "modernpics"
+    },
+    {
+      "uid": "bf882b30900da12fca090d9796bc3030",
+      "css": "mail",
+      "code": 59392,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ccc2329632396dc096bb638d4b46fb98",
+      "css": "mail-alt",
+      "code": 61664,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "18e30ad120ce4b15d7e5c797e4bf0ee8",
+      "css": "hand-pointer-o",
+      "code": 62042,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "794d73c3a5fcf710265679700e470578",
+      "css": "pin",
+      "code": 59393,
+      "src": "iconic"
+    }
+  ]
+}
