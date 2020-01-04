@@ -1,3 +1,7 @@
+import WordStats.NullStatsWords;
+import WordStats.StatsWords;
+import WordStats.WinStatsWords;
+
 import java.util.Random;
 
 public class Word {
@@ -5,6 +9,7 @@ public class Word {
             "Wodnej dla północnych powiatów województw pomorskiego i zachodniopomorskiego. " +
             "Ostrzeżenia przed marznącymi opadami zostały natomiast wydane dla południa Polski. Te pojawią się także " +
             "na Podlasiu i we wschodnich powiatach województwa warmińsko-mazurskiego";
+
 
     public void setWords(String words) {
         this.words = words;
@@ -24,7 +29,7 @@ public class Word {
             if(sign==randomWord.charAt(i)) funScore=true;
         return funScore;
     }
-    public static String choseWord(String words){
+    public String choseWord(String words){
         Random rand = new Random();
 
         int indexOfNonDefault=0;
