@@ -7,14 +7,95 @@
 
 void calculator();  // using vectors
 void oddEvenNumbersOfVector();  // using vectors, iota
+void doubleArray(int* ptr, int size);   // *2 on array elements, but using []
+void range(int first, int last, int step);    // range between 'first' and 'last' by 'step'
+std::vector<int> rangeRet(int first, int last, int step);   // the same as above, but with return this vector
+void investing();   // something wrong
+void investing2();
 
 int main(){
-    oddEvenNumbersOfVector();
+
     return 0;
 }
 
-void oddEvenNumbersOfVector(){
+void investing2(){
+    double invest=0,percent=0;
 
+    std::cout << "How much would You like to invest: ";
+    std::cin >> invest;
+    std::cout << "What is the interest rate: ";
+    std::cin >> percent;
+
+    percent /= .01;
+
+    for (auto x : rangeRet(1,10,1))
+        invest += (invest*percent);
+
+    std::cout << "Value after 10 years: " << invest;
+}
+
+void investing(){
+    std::string invest="", percent="";
+    double investD=0, percentD=0;
+    std::vector<double> vect;
+    double current=0, now=0, real=0;
+
+    std::cout << "How much would You like to invest: ";
+    getline(std::cin, invest);
+
+    std::cout << "What is the interest rate: ";
+    getline(std::cin, percent);
+
+    investD = std::stod(invest);
+    percentD = std::stod(percent);
+
+    now = real = investD;
+
+    for(int i=0;i<10;++i){
+        current = now*(percentD/100);
+        vect.push_back(current);
+        now = investD+current;
+        //std::cout << vect[i] << "\n";
+        real += vect[i];
+    }
+
+    std::cout << "Value after 10 years: " << real;
+
+
+}
+
+std::vector<int> rangeRet(int first, int last, int step){
+    int i = first;
+    std::vector<int> myVector;
+    while (i <= last){
+        myVector.push_back(i);
+        i += step;
+    }
+    return myVector;
+}
+
+void range(int first, int last, int step){
+    int i = first;
+    std::vector<int> myVector;
+    while (i <= last){
+        myVector.push_back(i);
+        i += step;
+    }
+    for(auto x : myVector) std::cout << x << "\n";
+}
+
+void doubleArray(int* ptr, int size){
+    for(int i=0; i<size; ++i){
+        ptr[i]=ptr[i]*2;
+        std::cout << ptr[i] << "\n";
+    }
+
+    /*MAIN
+    int arr[] = {1,2,3,4,5,6,7,8,9};
+    doubleArray(arr,9);*/
+}
+
+void oddEvenNumbersOfVector(){
     std::vector<int> myVect(18);
     std::iota(std::begin(myVect),std::end(myVect),5);
     for(auto x : myVect){
@@ -23,7 +104,6 @@ void oddEvenNumbersOfVector(){
         else
             std::cout << "The number " << x << " is odd\n";
     }
-
 }
 
 void calculator(){
@@ -59,6 +139,5 @@ void calculator(){
                number1,number2,(number1/number2));
     else
         std::cout << "Error\n";
-
 }
 
