@@ -3,14 +3,28 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <numeric>
 
 void calculator();  // using vectors
+void oddEvenNumbersOfVector();  // using vectors, iota
 
 int main(){
-    calculator();
+    oddEvenNumbersOfVector();
     return 0;
 }
 
+void oddEvenNumbersOfVector(){
+
+    std::vector<int> myVect(18);
+    std::iota(std::begin(myVect),std::end(myVect),5);
+    for(auto x : myVect){
+        if((x % 2) == 0)
+            std::cout << "The number " << x << " is even\n";
+        else
+            std::cout << "The number " << x << " is odd\n";
+    }
+
+}
 
 void calculator(){
     double number1=0, number2=0;
