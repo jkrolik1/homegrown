@@ -15,10 +15,20 @@ void investing();   // something wrong
 void investing2();
 void tree();
 void guess();
+void stringToAscii();
 
 int main(){
-    guess();
+
     return 0;
+}
+
+void stringToAscii(){
+    std::string yourStr,task("Give me a uppercase string: ");
+    std::cout << task;
+    getline(std::cin, yourStr);
+
+    for(int i=0; i<yourStr.length(); ++i)
+        std::cout << (int)(yourStr.at(i)) << " ";
 }
 
 void guess(){
