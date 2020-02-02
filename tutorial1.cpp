@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <numeric>
+#include <ctime>
 
 void calculator();  // using vectors
 void oddEvenNumbersOfVector();  // using vectors, iota
@@ -12,10 +13,74 @@ void range(int first, int last, int step);    // range between 'first' and 'last
 std::vector<int> rangeRet(int first, int last, int step);   // the same as above, but with return this vector
 void investing();   // something wrong
 void investing2();
+void tree();
+void guess();
 
 int main(){
-
+    guess();
     return 0;
+}
+
+void guess(){
+    srand(time(NULL));
+    int guess = std::rand() % 101;
+    int myNumber = 0;
+
+    for(;myNumber!=guess;){
+        std::cout << "Podaj liczbe: ";
+        std::cin >> myNumber;
+        if(myNumber > guess) std::cout << "Zbyt duza\n";
+        if(myNumber < guess) std::cout << "Zbyt mala\n";
+        std::cout << "\n";
+    }
+    std::cout << "Dobrze!\n";
+}
+
+void tree(){
+    int tall=0, trunk=0, space=0, leader=1, counter=1, trunkSpace=0, trunkQuantity=0;
+    int leaderA[100000]={0};
+    char spaceC = ' ', leaderC = '#';
+
+    std::cout << "How tall is the tree: ";
+    std::cin >> tall;
+    std::cout << "\n";
+
+    trunk = tall;
+    trunk /= 5;
+    trunk += 1;
+    trunkQuantity = (tall / 10) + 1;
+
+    while(tall>0){
+        space = tall;
+        leaderA[counter] = leader;
+
+        if(leader == leaderA[trunk]) trunkSpace = space;
+
+        for(int i=0; i<space; ++i)
+            std::cout << spaceC;
+
+        for(int y=0; y<leader; ++y)
+            std::cout << leaderC;
+
+        std::cout << "\n";
+        leader += 2;
+        tall -= 1;
+        counter += 1;
+    }
+
+    while(trunkQuantity > 0){
+        leader = trunk;
+        space = trunkSpace;
+
+        for(int i=0; i<space; ++i)
+            std::cout << spaceC;
+        for(int y=0; y<leaderA[leader]; ++y)
+            std::cout << leaderC;
+
+        std::cout << "\n";
+
+        trunkQuantity -= 1;
+    }
 }
 
 void investing2(){
