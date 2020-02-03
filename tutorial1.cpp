@@ -5,6 +5,7 @@
 #include <sstream>
 #include <numeric>
 #include <ctime>
+#include <cmath>
 
 void calculator();  // using vectors
 void oddEvenNumbersOfVector();  // using vectors, iota
@@ -16,10 +17,83 @@ void investing2();
 void tree();
 void guess();
 void stringToAscii();
+std::string VectorToString(std::vector<std::string> vect, char separator);
+std::string deleteSpaces(std::string enter);
+std::string deleteTrims(std::string enter); // "    ala ma kota     "
+std::vector<int> FindSubstringMatches(std::string phrase, std::string match);   // FindSubstringMatches("Tbo be or not to be","be") and return indexes of b, when contains 'be'
 
 int main(){
 
     return 0;
+}
+
+std::vector<int> FindSubstringMatches(std::string phrase, std::string match){
+    std::vector<int> index;
+    std::vector<int> indexWrong;
+    std::vector<int> indexCorrect;
+    for(int i=0; i<phrase.length(); ++i)
+        if(phrase.at(i)==match.at(0))
+            index.push_back(i);
+    for(auto x : index)
+        for(int i=0, j=x; i<match.length(); ++i, ++j)
+            if(phrase.at(j)!=match.at(i))
+                indexWrong.push_back(x);
+    for(int i=0; i<indexWrong.size(); ++i)
+        for(int j=0; j<index.size(); ++j)
+            if(indexWrong[i]==index[j])
+                index[j] = 0;
+    for(auto x : index)
+        if(x!=0)
+            indexCorrect.push_back(x);
+    return indexCorrect;
+}
+
+std::string deleteTrims(std::string enter){
+    std::string ret,ret2,ret3;
+    bool yet = true;
+    for(int i=0; i<enter.length(); ++i){
+        if((enter.at(i)==' ')&&(yet)){          // whitespace
+            ret += "";
+        }
+        else if((enter.at(i)==' ')&&(!(yet))){  // spaces in the middle
+            ret += enter.at(i);
+        }
+        else if(enter.at(i)!=' '){
+            ret += enter.at(i);
+            yet = false;
+        }
+    }
+    yet = true;
+    for(int i=ret.length()-1; i>=0; --i){
+        if(ret.at(i)!=' '){
+            ret2 += ret.at(i);
+            yet = false;
+        }
+        else if((ret.at(i)==' ')&&(yet)){
+            ret2 += "";
+        }
+        else if((ret.at(i)==' ')&&(!(yet))){
+            ret2 += ret.at(i);
+        }
+    }
+    for(int i=ret2.length()-1; i>=0; --i){
+        ret3 += ret2.at(i);
+    }
+    return ret3;
+}
+
+std::string deleteSpaces(std::string enter){
+    std::string ret;
+    for(int i=0; i<enter.length(); ++i)
+        if(enter.at(i)!=' ')
+            ret += enter.at(i);
+    return ret;
+}
+
+std::string VectorToString(std::vector<std::string> vect, char separator){
+    std::string ret;
+    for(auto x : vect) ret += x + separator;
+    return ret;
 }
 
 void stringToAscii(){
