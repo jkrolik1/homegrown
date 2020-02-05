@@ -1,11 +1,13 @@
 #include <cstdlib>
-#include <iostream>
+#include <iostream>      // std::cout
 #include <string>
 #include <vector>
 #include <sstream>
 #include <numeric>
 #include <ctime>
 #include <cmath>
+#include <algorithm>    // for std::copy_if and etc..
+// #include <iterator>  // std::back_inserter
 
 void calculator();  // using vectors
 void oddEvenNumbersOfVector();  // using vectors, iota
@@ -21,16 +23,82 @@ std::string VectorToString(std::vector<std::string> vect, char separator);
 std::string deleteSpaces(std::string enter);
 std::string deleteTrims(std::string enter); // "    ala ma kota     "
 std::vector<int> FindSubstringMatches(std::string phrase, std::string match);   // FindSubstringMatches("Tbo be or not to be","be") and return indexes of b, when contains 'be'
+int strongRecursion(int data);  // factorial
+void niceLookVector(std::vector<int> vec);
+std::vector<int> divisor(int div, std::vector<int> vec);    // lambda
+std::vector<int> generateRandomVec(int how_many, int from, int to);
+std::vector<int> addVect(std::vector<int> vec1,std::vector<int> vec2);
 
 int main(){
 
     return 0;
 }
 
+std::vector<int> addVect(std::vector<int> vec1,std::vector<int> vec2){
+    std::vector<int> vecReturn;
+    int y = 0;
+
+    std::for_each(vec1.begin(),vec1.end(),
+                  [&y,&vecReturn,&vec2](int x){vecReturn.push_back(x+vec2[y++]);});
+
+    return vecReturn;
+}
+
+std::vector<int> generateRandomVec(int how_many, int from, int to){
+    std::vector<int> newVect;
+    int x=0;
+
+    srand(time(NULL));
+
+    for(int i=0; i<how_many; ++i){
+        x = rand() % (to - from + 1) + from;
+        newVect.push_back(x);
+    }
+
+    return newVect;
+}
+
+std::vector<int> divisor(int div, std::vector<int> vec){
+    std::vector<int> retur;
+    std::copy_if(vec.begin(),vec.end(),std::back_inserter(retur),
+                 [div](int x){return (x % div) == 0;});
+    return retur;
+}
+
+void niceLookVector(std::vector<int> vec){
+    std::cout << " ";
+
+    for(int i=0; i<vec.size(); ++i)
+        std::cout << "- - ";
+
+    std::cout << "-";
+    std::cout << "\n" << " | ";
+
+    for(int i=0; i<vec.size(); ++i)
+        std::cout << i << " | ";
+
+    std::cout << "\n" << " | ";
+
+    for(auto x : vec)
+        std::cout << x << " | ";
+
+    std::cout << "\n";
+    std::cout << " ";
+
+    for(int i=0; i<vec.size(); ++i)
+        std::cout << "- - ";
+
+    std::cout << "-";
+}
+
+int strongRecursion(int data){
+    if(data == 1) return 1;
+    else if(data == 0) return 1;
+    else return strongRecursion(data - 1)*data;
+}
+
 std::vector<int> FindSubstringMatches(std::string phrase, std::string match){
-    std::vector<int> index;
-    std::vector<int> indexWrong;
-    std::vector<int> indexCorrect;
+    std::vector<int> index,indexWrong,indexCorrect;
     for(int i=0; i<phrase.length(); ++i)
         if(phrase.at(i)==match.at(0))
             index.push_back(i);
