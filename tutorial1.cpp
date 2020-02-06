@@ -6,8 +6,12 @@
 #include <numeric>
 #include <ctime>
 #include <cmath>
+#include <math.h>
 #include <algorithm>    // for std::copy_if and etc..
 // #include <iterator>  // std::back_inserter
+#include <functional>   // std::function
+
+#include "classes.h"
 
 void calculator();  // using vectors
 void oddEvenNumbersOfVector();  // using vectors, iota
@@ -28,10 +32,84 @@ void niceLookVector(std::vector<int> vec);
 std::vector<int> divisor(int div, std::vector<int> vec);    // lambda
 std::vector<int> generateRandomVec(int how_many, int from, int to);
 std::vector<int> addVect(std::vector<int> vec1,std::vector<int> vec2);
+std::function<int(int)> factor = [&factor](int n){return n<2 ? 1 : factor(n-1)*n;};
 
 int main(){
-
+    Warrior thor("Thor",100,30,15);
+    Warrior hulk("Hulk",135,25,10);
+    Battle battle;
+    battle.StartFight(thor,hulk);
     return 0;
+}
+
+void Battle::GetAttackResult(Warrior warrior1, Warrior warrior2){
+    std::cout << "\n" << warrior1.getName() << " has "
+        << warrior1.getHealth() << " health points\n";
+    std::cout << warrior2.getName() << " has "
+        << warrior2.getHealth() << " health points\n";
+}
+
+void Battle::StartFight(Warrior &warrior1, Warrior &warrior2){
+    bool warrior1End=false,warrior2End=false;
+    int start = chose();
+
+    if(start==0){
+        std::cout << warrior1.getName() << " start attacking!\n";
+        GetAttackResult(warrior1,warrior2);
+        do{
+            warrior2.attackWarrior(warrior1.getAttack());
+            warrior1.attackWarrior(warrior2.getAttack());
+            if(warrior2.getHealth()<=0){
+                std::cout << "\nGame Over! " << warrior1.getName() << " won!!!\n";
+                warrior2End = true;
+                break;
+            }
+            if(warrior1.getHealth()<=0){
+                std::cout << "\nGame Over! " << warrior2.getName() << " won!!!\n";
+                warrior1End = true;
+                break;
+            }
+            GetAttackResult(warrior1,warrior2);
+        }while(!warrior1End && !warrior2End);
+    }
+    else if(start==1){
+        std::cout << warrior2.getName() << " start attacking!\n";
+        GetAttackResult(warrior1,warrior2);
+        do{
+            warrior1.attackWarrior(warrior2.getAttack());
+            warrior2.attackWarrior(warrior1.getAttack());
+            if(warrior1.getHealth()<=0){
+                std::cout << "\nGame Over! " << warrior2.getName() << " won!!!\n";
+                warrior1End = true;
+                break;
+            }
+            if(warrior2.getHealth()<=0){
+                std::cout << "\nGame Over! " << warrior1.getName() << " won!!!\n";
+                warrior2End = true;
+                break;
+            }
+            GetAttackResult(warrior1,warrior2);
+        }while(!warrior1End && !warrior2End);
+    }
+}
+
+int Battle::chose(){
+    srand(time(NULL));
+    return (rand() % 2);
+}
+
+Warrior::Warrior(){
+    setName("");
+    setHealth(0);
+    setAttack(0);
+    setBlock(0);
+}
+
+Warrior::Warrior(std::string name,int health,int attack,int block){
+    setName(name);
+    setHealth(health);
+    setAttack(attack);
+    setBlock(block);
 }
 
 std::vector<int> addVect(std::vector<int> vec1,std::vector<int> vec2){
