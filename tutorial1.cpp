@@ -33,13 +33,40 @@ std::vector<int> divisor(int div, std::vector<int> vec);    // lambda
 std::vector<int> generateRandomVec(int how_many, int from, int to);
 std::vector<int> addVect(std::vector<int> vec1,std::vector<int> vec2);
 std::function<int(int)> factor = [&factor](int n){return n<2 ? 1 : factor(n-1)*n;};
+void space();
 
 int main(){
-    Warrior thor("Thor",100,30,15);
-    Warrior hulk("Hulk",135,25,10);
-    Battle battle;
-    battle.StartFight(thor,hulk);
+    space();
     return 0;
+}
+
+void space(){
+    int y=0;
+    std::string enter,partOfVec,newString;
+    getline(std::cin, enter);
+
+    std::vector<std::string> division;
+    std::vector<char> big;
+
+    std::stringstream ss(enter);
+
+    while(getline(ss,partOfVec,' '))
+        division.push_back(partOfVec);
+
+    for(auto x : division){
+        y=(int)(x.at(0))-32;
+        if((y>=65)&&(y<=90))
+            big.push_back((char)y);
+        else
+            big.push_back(x.at(0));
+        for(int i=1; i<x.size(); ++i)
+            big.push_back(x[i]);
+    }
+
+    for(int i=0; i<big.size(); ++i)
+        newString += big[i];
+
+    std::cout << newString;
 }
 
 void Battle::GetAttackResult(Warrior warrior1, Warrior warrior2){
