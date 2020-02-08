@@ -13,6 +13,8 @@
 
 #include "classes.h"
 
+#define TESTspace2
+
 void calculator();  // using vectors
 void oddEvenNumbersOfVector();  // using vectors, iota
 void doubleArray(int* ptr, int size);   // *2 on array elements, but using []
@@ -34,10 +36,66 @@ std::vector<int> generateRandomVec(int how_many, int from, int to);
 std::vector<int> addVect(std::vector<int> vec1,std::vector<int> vec2);
 std::function<int(int)> factor = [&factor](int n){return n<2 ? 1 : factor(n-1)*n;};
 void space();
+void space2();
 
 int main(){
-    space();
+    space2();
     return 0;
+}
+
+void space2(){
+    std::string enter[100], newString1[100];
+    bool big=false,endTest=false;
+    int y,x=0;
+    char c;
+
+    enter[x]=" ";
+    // getline(std::cin, enter[x]);     // enter your test
+
+    #ifdef TESTspace2
+        enter[x+=1]="ala ma kota";
+        enter[x+=1]="Ala ma kota";
+        enter[x+=1]="xxx ma kota";
+        enter[x+=1]="a A";
+        enter[x+=1]="A A A A    polska";
+        enter[x+=1]="  a A";
+        enter[x+=1]="  a A  a    pp XaXaa";
+    #endif // TESTspace2
+        enter[x+=1]="End of tests";
+
+    for(int j=0; enter[j]!="End of tests"; ++j){
+        std::cout << "Test " << j+1 << ":"<< enter[j] << "\n";
+
+        if(((int)(enter[j].at(0))>=97)&&((int)(enter[j].at(0))<=122))
+            newString1[j] += (char)((int)(enter[j].at(0)))-32;
+        else if((int)(enter[j].at(0))==32){}
+        else
+            newString1[j] += enter[j].at(0);
+
+        for(int i=1; i<enter[j].size(); ++i){
+            if((int)(enter[j].at(i))==32){
+                big = true;
+                continue;
+            }
+
+            if(big){
+                if(((int)(enter[j].at(i))>=97)&&((int)(enter[j].at(i))<=122)){
+                    y = ((int)(enter[j].at(i)))-32;
+                    c = y;
+                    newString1[j] += c;
+                    big = false;
+                    continue;
+                }
+                else
+                    big = false;
+            }
+
+            newString1[j] += enter[j].at(i);
+
+        }
+
+        std::cout << "Verdict " << j+1 << ":"<< newString1[j] << "\n\n";
+    }
 }
 
 void space(){
