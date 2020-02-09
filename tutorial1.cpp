@@ -10,6 +10,7 @@
 #include <algorithm>    // for std::copy_if and etc..
 // #include <iterator>  // std::back_inserter
 #include <functional>   // std::function
+#include <fstream>
 
 #include "classes.h"
 
@@ -38,10 +39,156 @@ std::function<int(int)> factor = [&factor](int n){return n<2 ? 1 : factor(n-1)*n
 void space();
 void space2();
 void testOperators();
+void readFromFile(std::string path);
+void writeToFile(std::string path);
+void descriptionOfTxt(std::string path, std::string path2);
 
 int main(){
-    testOperators();
+    descriptionOfTxt("invocation.txt","invocationDescription.txt");
     return 0;
+}
+
+void descriptionOfTxt(std::string path, std::string path2){
+    std::vector<std::string> stringVec;
+    std::vector<char> letters;
+    std::vector<int> letterAmount;
+    std::string partOfVec, fileLine, word;
+    char c;
+    bool contain=false;
+    int xContain,maximum=-1,ind,sizeVec,sizeVec2=0;
+
+    std::ifstream readStream(path,std::ios_base::in);
+    std::ofstream writeStream(path2,std::ios_base::out | std::ios_base::trunc);
+
+    try{
+        if(readStream.is_open()){
+            while(readStream.good()){
+                getline(readStream,fileLine);
+                std::stringstream ss(fileLine);
+                while(getline(ss,partOfVec,' ')){
+                    stringVec.push_back(partOfVec);
+                }
+                for(int counter=0; counter<stringVec.size(); ++counter){
+                    word = stringVec[counter];
+                    for(int throughWord=0; throughWord<word.size(); ++throughWord){
+                        if((word.at(throughWord)>=97)&&(word.at(throughWord)<=122)){
+                            c = word.at(throughWord);
+                        }else if(((word.at(throughWord)>=65)&&
+                                  (word.at(throughWord)<=90))){
+                            c = (char)(((int)(word.at(throughWord)))+32);
+                        }else continue;
+
+                        for(int x=0; x<letters.size(); ++x){
+                            if(c == letters[x]){
+                                contain = true;
+                                xContain = x;
+                            }
+                        }
+                        if(contain) letterAmount[xContain] += 1;
+                        else{
+                            letters.push_back(c);
+                            letterAmount.push_back(1);
+                        }
+                       contain = false;
+                    }
+                    word="";
+                }
+                if(writeStream.is_open()){
+                    sizeVec = letterAmount.size()+2;
+                        letterAmount.push_back(-1);
+                        letters.push_back('^');
+
+
+                    for(int i=0; sizeVec>i; ++i){
+                        for(int i=0; letterAmount[i]!=-1; ++i){
+                            if(maximum < letterAmount[i]){
+                                maximum = letterAmount[i];
+                                ind = i;
+                            }
+                        }
+
+                        c = letters[ind];
+                        letterAmount.push_back(maximum);
+                        letters.push_back(c);
+
+                        letterAmount[ind]=0;
+                        letters[ind]='^';
+
+                        sizeVec2 += 1;
+                        maximum = -1;
+                    }
+
+                    writeStream << fileLine;
+                    writeStream << "\nQuantity of words: ";
+                    writeStream << stringVec.size();
+                    writeStream << "\n";
+                    writeStream << "Sign stats: ";
+                    writeStream << "\n";
+
+                    for(int x=0; x<letters.size(); ++x)
+                        if(letters[x]!='^')
+                            writeStream << letters[x] << " " << letterAmount[x] << "\n";
+
+                    writeStream << "\n";
+                }
+                letters.clear();
+                letterAmount.clear();
+                stringVec.clear();
+                fileLine="";
+                partOfVec="";
+            }
+            readStream.close();
+            writeStream.close();
+        }else
+            throw "No file in directory";
+    }
+    catch(const char *exp) {std::cout << exp;}
+
+
+    std::ifstream readStream2(path2,std::ios_base::in);
+
+    try{
+        if(readStream2.is_open()){
+            while(readStream2.good()){
+                getline(readStream2,fileLine);
+                std::cout << fileLine << "\n";
+            }
+            readStream2.close();
+        }else
+            throw "No file in directory";
+    }catch(const char *exp) {std::cout << exp;}
+}
+
+void writeToFile(std::string path){
+    std::ofstream write;
+    std::string fileLine="";
+
+    write.open(path, std::ios_base::out | std::ios_base::app);
+
+    if(write.is_open()){
+        write << "New file text";
+        write.close();
+    }
+}
+
+void readFromFile(std::string path){
+    std::ifstream read;
+    std::string fileLine="";
+
+    read.open(path, std::ios_base::in);
+
+    try{
+        if(read.is_open()){
+            while(read.good()){
+                getline(read,fileLine);
+                std::cout << fileLine << "\n";
+            }
+            read.close();
+        }
+        else
+            throw "There is no such file!";
+        }
+    catch(const char *ex) {std::cout << ex;}
 }
 
 void testOperators(){
