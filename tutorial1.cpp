@@ -37,11 +37,152 @@ std::vector<int> addVect(std::vector<int> vec1,std::vector<int> vec2);
 std::function<int(int)> factor = [&factor](int n){return n<2 ? 1 : factor(n-1)*n;};
 void space();
 void space2();
+void testOperators();
 
 int main(){
-    space2();
+    testOperators();
     return 0;
 }
+
+void testOperators(){
+    #undef TESToperator1   // +
+    #undef TESToperator2   // write description
+    #undef TESToperator3   // [ ]
+    #undef TESToperator4   // ++
+    #undef TESToperator5   // ==
+    #undef TESToperator6   // > <
+    #undef TESToperator7   // /
+
+    Box box1(12,11,10);
+
+    #ifdef TESToperator1
+        Box box2(5,5,5);
+        Box box3;
+        box3 = box1 + box2;
+    #endif // TESToperator1
+
+    #ifdef TESToperator2
+        std::cout << box1;
+    #endif // TESToperator2
+
+    #ifdef TESToperator3
+        std::cout << box1[0];
+    #endif // TESToperator3
+
+    #ifdef TESToperator4
+        std::cout << box1 << "\n";
+        ++box1;
+        std::cout << box1;
+    #endif // TESToperator4
+
+    #ifdef TESToperator5
+        std::cout << std::boolalpha;
+        Box box2(12,11,10);
+        std:: cout << "Is boxes equal: " << (box1 == box2);
+    #endif // TESToperator5
+
+    #ifdef TESToperator6
+        std::cout << std::boolalpha;
+        Box box2(13,12,11);
+
+        std::cout << "Box 1\n" << box1 << "\n";
+        std::cout << "Box 2\n" << box2;
+        std::cout << "\n";
+        std::cout << "Is boxes equal: " << (box1 == box2) << "\n";
+        std::cout << "Is box1 greater than box2: " << (box1 > box2) << "\n";
+        std::cout << "Is box2 greater than box1: " << (box1 < box2) << "\n";
+    #endif // TESToperator6
+
+    #ifdef TESToperator7
+        Box box2(13,12,11);
+        Box box3;
+
+        if(box1 >= box2) box3 = box1/box2;
+        if(box1 < box2) box3 = box2/box1;
+
+        std::cout << "Box 3\n" << box3;
+    #endif // TESToperator7
+}
+
+Box Box::operator / (Box box1){
+    Box boxx;
+    double l = length / box1.getLength();
+    double w = width / box1.getWidth();
+    double h = height / box1.getHeight();
+
+    boxx.setHeight(h);
+    boxx.setWidth(w);
+    boxx.setLength(l);
+
+    return boxx;
+}
+
+bool Box::operator > (Box box1){
+    if((length > box1.getLength())&&
+        (width > box1.getWidth())&&
+        (height > box1.getHeight()))
+        return true;
+    else
+        return false;
+}
+bool Box::operator < (Box box1){
+    if((length < box1.getLength())&&
+        (width < box1.getWidth())&&
+        (height < box1.getHeight()))
+        return true;
+    else
+        return false;
+}
+
+bool Box::operator == (Box box1){
+    if((length == box1.getLength())&&
+        (width == box1.getWidth())&&
+        (height == box1.getHeight()))
+        return true;
+    else
+        return false;
+}
+
+void Box::operator ++ (){
+    length++;
+    height++;
+    width++;
+}
+
+double Box::operator [] (int x){
+    if(x == 0) return height;
+    if(x == 1) return width;
+    if(x == 2) return length;
+    if(x >= 3) return 0;
+}
+
+Box::operator const char*(){
+    std::ostringstream boxStream;
+    boxStream << "Description of object:\n";
+    boxStream << "Height: " << height << "\n";
+    boxStream << "Width: " << width << "\n";
+    boxStream << "Length: " << length << "\n";
+
+    boxString = boxStream.str();
+    return boxString.c_str();
+}
+
+Box Box::operator + (Box &box1){
+    Box newBox;
+    double len, wid, hei;
+
+    len = length + box1.getLength();
+    wid = width + box1.getWidth();
+    hei = height + box1.getHeight();
+
+    newBox.setHeight(hei);
+    newBox.setWidth(wid);
+    newBox.setLength(len);
+
+    return newBox;
+}
+
+Box::Box(double h, double w, double l){setHeight(h),setWidth(w),setLength(l);}
 
 void space2(){
     std::string enter[100], newString1[100];
