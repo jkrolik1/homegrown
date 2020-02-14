@@ -11,6 +11,8 @@
 // #include <iterator>  // std::back_inserter
 #include <functional>   // std::function
 #include <fstream>
+#include <map>
+#include <list>
 
 #include "classes.h"
 
@@ -42,10 +44,34 @@ void testOperators();
 void readFromFile(std::string path);
 void writeToFile(std::string path);
 void descriptionOfTxt(std::string path, std::string path2);
+void insertValueToList();
+void myMap();
 
 int main(){
-    descriptionOfTxt("invocation.txt","invocationDescription.txt");
+    myMap();
     return 0;
+}
+
+void myMap(){
+    std::map<int,char> myMap;
+    std::map<int,char>::iterator myMapIt = myMap.begin();
+    char c='a';
+
+    for(int i=0; i<10; ++i,++c,++myMapIt)
+        myMap.insert(myMapIt,std::pair<int,char>(i,c));
+
+    for(auto x : myMap)
+        std::cout << x.first << " " << x.second << "\n";
+}
+
+void insertValueToList(){
+    std::list<int> list1 = {5,2,4,6,2};
+    std::list<int>::iterator it = list1.begin();
+    advance(it,2);
+    list1.insert(it,455555);
+
+    for(auto x : list1)
+        std::cout << x << " ";
 }
 
 void descriptionOfTxt(std::string path, std::string path2){
