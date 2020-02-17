@@ -14,9 +14,11 @@
 #include <map>
 #include <list>
 
+#include <boost/lexical_cast.hpp>
 #include "classes.h"
 
 #define TESTspace2
+#define WRT(x) std::cout << x << "\n"
 
 void calculator();  // using vectors
 void oddEvenNumbersOfVector();  // using vectors, iota
@@ -46,10 +48,17 @@ void writeToFile(std::string path);
 void descriptionOfTxt(std::string path, std::string path2);
 void insertValueToList();
 void myMap();
+void conv();
 
 int main(){
-    myMap();
+    conv();
     return 0;
+}
+
+void conv(){
+    int a = 5;
+    std::string str = boost::lexical_cast<std::string>(a);
+    WRT(str);
 }
 
 void myMap(){
