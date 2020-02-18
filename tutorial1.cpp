@@ -15,8 +15,9 @@
 #include <list>
 
 #include <boost/lexical_cast.hpp>
-#include "classes.h"
+#include <boost/variant.hpp>
 
+#include "classes.h"
 #define TESTspace2
 #define WRT(x) std::cout << x << "\n"
 
@@ -48,11 +49,37 @@ void writeToFile(std::string path);
 void descriptionOfTxt(std::string path, std::string path2);
 void insertValueToList();
 void myMap();
-void conv();
+void conv();                            // boost/lexical_cast.hpp
+std::string gg(std::string input);      // https://pl.spoj.com/problems/JGGHACK/
+bool testGG();
 
 int main(){
-    conv();
+
     return 0;
+}
+
+bool testGG(){
+    if(gg("BGCGDGEGFGGGHGIGJGKG")!="abcdefghij") return false;
+    if(gg("LGBGEHBGDHEHCHPGGGBG")!="katastrofa") return false;
+    if(gg("PGCGPGKHPGHHJGDHLGPG")!="obozowisko") return false;
+    return true;
+}
+
+std::string gg(std::string input){
+    std::vector<char> first,second;
+    std::string output;
+
+    for(int i=0; i<input.size(); ++i){
+        if(i % 2 == 0) first.push_back(input.at(i));
+        if(i % 2 != 0) second.push_back(input.at(i));
+    }
+
+    for(int j=0; j<second.size(); ++j){
+        if(second[j]=='G') output += first[j]+32-1;
+        if(second[j]=='H') output += first[j]+32+15;
+    }
+
+    return output;
 }
 
 void conv(){
