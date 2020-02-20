@@ -16,6 +16,9 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/variant.hpp>
+#include <boost/algorithm/cxx11/iota.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/array.hpp>
 
 #include "classes.h"
 #define TESTspace2
@@ -52,10 +55,21 @@ void myMap();
 void conv();                            // boost/lexical_cast.hpp
 std::string gg(std::string input);      // https://pl.spoj.com/problems/JGGHACK/
 bool testGG();
+void ex29();                            // boost/algorithm/cxx11/iota.hpp
 
 int main(){
-
     return 0;
+}
+
+void ex29(){
+    std::vector<int> range;
+    std::vector<int>::iterator r;
+    std::ostream_iterator<char> out{std::cout,""};
+
+    boost::algorithm::iota_n(std::back_inserter(range),51,6);
+
+    for(r = range.begin(); r != range.end(); ++r)
+        std::cout << (char)(*r) << " ";
 }
 
 bool testGG(){
