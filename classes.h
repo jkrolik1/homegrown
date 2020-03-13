@@ -1,6 +1,14 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <boost/variant.hpp>
+
+struct A{std::string name; int value;};
+
+struct DoubleX : public boost::static_visitor<>{
+    void operator()(int x) const {std::cout << x*2;}
+    void operator()(char y) const {std::cout << y << y;}
+};
 
 struct D{
         D(int numb, char cha) : x(numb),z(cha){};

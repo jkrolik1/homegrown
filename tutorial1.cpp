@@ -15,9 +15,12 @@
 #include <list>
 #include <memory>
 #include <deque>
+#include <stack>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/variant.hpp>
+#include <boost/any.hpp>
+#include <boost/optional.hpp>
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/array.hpp>
@@ -62,10 +65,145 @@ int armstrongNumbers(int number);
 bool IsTheNumberPalindrom(int number);
 void tryCatchTest();
 void upTest();
+void boostVariant();
+void boostAny();
+void boostAnyStack();
+void boostOptional();
+void zmienKazdaLitereNaPozycjiN(char s[], int n);
+bool poprawnaNazwaPlikuDOS(char s[]);
+bool poprawnaNazwaPlikuDOStest();
 
 int main(){
-    upTest();
+    std::cout << std::boolalpha << poprawnaNazwaPlikuDOStest();
     return 0;
+}
+
+bool poprawnaNazwaPlikuDOStest(){
+    if(poprawnaNazwaPlikuDOS("config.sys") != true) return false;
+    if(poprawnaNazwaPlikuDOS("autorun") != true) return false;
+    if(poprawnaNazwaPlikuDOS("autoexekuniek") != false) return false;
+    if(poprawnaNazwaPlikuDOS("config.") != false) return false;
+    if(poprawnaNazwaPlikuDOS("alama.kota") != false) return false;
+    return true;
+}
+
+bool poprawnaNazwaPlikuDOS(char s[]){
+    bool afterDot = false;
+    bool afterDot2 = false;
+    int counter1 = 0;
+    int counter2 = 0;
+    int dotCounter = 0;
+
+    for(;*s;++s){
+        if(*s == '.'){
+            afterDot = true;
+            dotCounter += 1;
+        }
+        if(afterDot2){
+            counter2 += 1;
+        }
+        if(afterDot){
+            if(counter1>8)
+                return false;
+            afterDot2 = true;
+            afterDot = false;
+            if(dotCounter > 1)
+                return false;
+        }
+        if(afterDot2==false){
+            counter1 += 1;
+        }
+        if(counter2 > 3){
+            return false;
+        }
+        if(counter1 > 8)
+            return false;
+    }
+    if((counter2 == 0)&&(afterDot2))
+        return false;
+    return true;
+}
+
+void zmienKazdaLitereNaPozycjiN(char s[], int n){
+    int signCounter = 0;
+    char letter;
+    std::string x;
+
+    for( ; *s; ++s){
+        if(*s == ' ')
+            signCounter = 0;
+        else
+            signCounter += 1;
+
+        if(signCounter == n){
+            letter = *s;
+            letter -= 32;
+            x += letter;
+            continue;
+        }
+        x += *s;
+    }
+
+    std::cout << x;
+}
+
+void boostOptional(){
+    A a;
+
+    boost::optional<A> opA0;
+    boost::optional<A> opA(a);
+
+    std::cout << opA->name << " " << opA->value;
+}
+
+void boostAnyStack(){
+    std::stack<boost::any> test;
+
+    std::string str1 = "Jakub";
+    test.push(str1);
+    test.push(10);
+    test.push('A');
+    test.push(true);
+
+    try
+    {
+        if((test.top()).type()==typeid(std::string))
+            std::cout << boost::any_cast<std::string>(test.top());
+        else if((test.top()).type()==typeid(int))
+            std::cout << boost::any_cast<int>(test.top());
+        else if((test.top()).type()==typeid(char))
+            std::cout << boost::any_cast<char>(test.top());
+        else
+            throw "I don't know a type!";
+    }
+    catch(boost::bad_any_cast &exp)
+    {
+        std::cerr << exp.what();
+    }
+    catch(const char* exp2)
+    {
+        std::cout << exp2;
+    }
+}
+
+void boostAny(){
+    boost::any x,y,z;
+    x = std::string("String");
+    y = 3.14;
+
+    try{
+        std::cout << boost::any_cast<std::string>(x) << std::endl <<
+                    boost::any_cast<int>(y) << std::endl;
+    }catch(boost::bad_any_cast &e){std::cerr << "EXCEPTION! " << e.what();}
+}
+
+void boostVariant(){
+    boost::variant<int,char> u1,u2;
+    u1=1;
+    u2='A';
+
+    boost::apply_visitor(DoubleX(),u1);
+    boost::apply_visitor(DoubleX(),u2);
 }
 
 void upTest(){
