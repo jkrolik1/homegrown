@@ -2,6 +2,17 @@
 #include <iostream>
 #include <string>
 
+struct D{
+        D(int numb, char cha) : x(numb),z(cha){};
+        ~D(){std::cout << "Destroy\n";}
+        void meth();
+        int getX() const{return x;}
+        char getZ() const{return z;}
+    private:
+        int x=0;
+        char z='^';
+};
+
 class Box{
     private:
         double height, width, length;

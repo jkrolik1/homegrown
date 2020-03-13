@@ -13,6 +13,8 @@
 #include <fstream>
 #include <map>
 #include <list>
+#include <memory>
+#include <deque>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/variant.hpp>
@@ -56,9 +58,75 @@ void conv();                            // boost/lexical_cast.hpp
 std::string gg(std::string input);      // https://pl.spoj.com/problems/JGGHACK/
 bool testGG();
 void ex29();                            // boost/algorithm/cxx11/iota.hpp
+int armstrongNumbers(int number);
+bool IsTheNumberPalindrom(int number);
+void tryCatchTest();
+void upTest();
 
 int main(){
+    upTest();
     return 0;
+}
+
+void upTest(){
+    typedef std::deque<std::unique_ptr<D>> structDeques;
+    structDeques firstDeq;
+    structDeques::iterator it = firstDeq.begin();
+
+    firstDeq.insert(it,std::make_unique<D>(1,'A'));
+    std::advance(it,1);
+    firstDeq.insert(it,std::make_unique<D>(2,'B'));
+
+    for(auto &p : firstDeq){
+        p->meth();
+        std::cout << std::endl;
+    }
+}
+
+void D::meth(){
+    std::cout << "Method meth!\n";
+}
+
+void tryCatchTest(){
+    int x = 2, y = 5;
+    try{
+        if(x > 5) throw "xxx";
+        if(y > 4) throw "yyy";
+    }
+    catch(const char* ex)  {std::cout << ex;}
+    catch(const char* ex2) {std::cout << ex2;}
+    catch(...)  {std::cout << "exp";}
+
+}
+bool IsTheNumberPalindrom(int number){
+    std::string stringNumber = boost::lexical_cast<std::string>(number);
+    int i,j;
+    for(i=0,j=stringNumber.size()-1; i<j; ++i,--j){
+        if(stringNumber.at(i)!=stringNumber.at(j))
+            return false;
+    }
+    return true;
+}
+
+int armstrongNumbers(int number){
+    std::string stringNumb = boost::lexical_cast<std::string>(number);
+    int stringSize = stringNumb.size();
+    int partOfNumb,retNumb=0,newNumb=1;
+
+    for(int i=0; i<stringSize; ++i){
+        try{
+            partOfNumb = boost::lexical_cast<int>(stringNumb.at(i));
+        }
+        catch(...){
+            std::cout << "";
+        }
+        for(int j=0; j<stringSize; ++j)
+            newNumb *= partOfNumb;
+
+        retNumb += newNumb;
+        newNumb = 1;
+    }
+    return retNumb;
 }
 
 void ex29(){
