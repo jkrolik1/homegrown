@@ -16,6 +16,7 @@
 #include <memory>
 #include <deque>
 #include <stack>
+#include <set>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/variant.hpp>
@@ -72,10 +73,145 @@ void boostOptional();
 void zmienKazdaLitereNaPozycjiN(char s[], int n);
 bool poprawnaNazwaPlikuDOS(char s[]);
 bool poprawnaNazwaPlikuDOStest();
+std::vector<std::vector<int>> ptsumy(int n);                    //  https://pl.spoj.com/problems/PTSUMY/
+std::vector<std::vector<int>> mergeV                            //
+    (std::vector<std::vector<int>> myV1,                        //  N
+     std::vector<std::vector<int>> myV2);                       //  I   U
+void testMergeV();                                              //  E   M
+void showDvect(std::vector<std::vector<int>> myVector);         //      I   !
+int sumvect(std::vector<int> myVector);                         //      E   !
+int searchOnes(std::vector<std::vector<int>> myVector,int n);   //      M   !
 
 int main(){
-    std::cout << std::boolalpha << poprawnaNazwaPlikuDOStest();
+
     return 0;
+}
+
+int searchOnes(std::vector<std::vector<int>> myVector, int n){
+    int odl=0,index=-1;
+    for(int i=0; i<myVector.size(); ++i){
+        for(int j=0; j<myVector[i].size(); ++j){
+            if(myVector[i][j]==1)
+                odl += 1;
+            if((j+1)==(myVector[i].size()))
+                if(odl==n)
+                    index = i;
+        }
+        odl = 0;
+    }
+    return index;
+}
+
+int sumvect(std::vector<int> myVector){
+    int sum = 0;
+    for(int j=0; j<myVector.size(); ++j){
+        sum += myVector[j];
+    }
+    return sum;
+}
+
+void showDvect(std::vector<std::vector<int>> myVector){
+    for(int i=0; i<myVector.size(); ++i){
+        for(int j=0; j<myVector[i].size(); ++j){
+            std::cout << myVector[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+void testMergeV(){
+    std::vector<std::vector<int>> v1{{2,1,1},{3,5}};
+    std::vector<std::vector<int>> v2{{8,8,6},{1,1,1,1}};
+    std::vector<std::vector<int>> vRet = mergeV(v1,v2);
+    for(int i=0; i<vRet.size(); ++i){
+        for(int j=0; j<vRet[i].size(); ++j){
+            std::cout << vRet[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+std::vector<std::vector<int>> mergeV
+(std::vector<std::vector<int>> myV1,std::vector<std::vector<int>> myV2){
+    int sizeMyV1 = myV1.size();
+    int sizeMyV2 = myV2.size();
+    int totalSize = sizeMyV1+sizeMyV2;
+    std::vector<std::vector<int>> myVret(totalSize);
+    int p=0;
+
+    for(int i=0; i<myV1.size(); ++i,p++){
+        for(int j=0; j<myV1[i].size(); ++j){
+            myVret[p].push_back(myV1[i][j]);
+        }
+    }
+    for(int i=0; i<myV2.size(); ++i,p++){
+        for(int j=0; j<myV2[i].size(); ++j){
+            myVret[p].push_back(myV2[i][j]);
+        }
+    }
+    return myVret;
+}
+
+std::vector<std::vector<int>> ptsumy(int n){
+    std::vector<std::vector<int>> ready(n*2);
+    int r2c=0,coun=0;
+    std::vector<std::vector<int>> newV(n*2);
+    int x,i,j,dif,qOfSc=0,crash=0,go=0;
+
+    for(x=(n-1),i=1; x>0; x-=1,i*=2,qOfSc+=1){
+        j = i;
+        while(j>0){
+            dif = n-x;
+            if(j==1){
+                ready[qOfSc].push_back(dif);
+                ready[qOfSc].push_back(n-dif);
+            }else{
+                newV = ptsumy(dif);
+                newV[n-dif-x].push_back(n-dif);
+                ready = mergeV(ready,newV);
+            }
+            j-=1;
+        }
+    }
+
+    if(n==1)
+        ready[0].push_back(1);
+    else
+        ready[qOfSc].push_back(n);
+
+    std::cout << ready[0][1];
+//    for(int i=0; i<ready.size(); ++i)
+//        if((ready[i][0]>=48)&&(ready[i][0]<=57))
+//            coun += 1;
+
+//    std::vector<std::vector<int>> ready2(coun+1);
+
+//    for(int i=0; i<ready.size(); ++i){
+//        if(sumvect(ready[i])!=n){
+//            ready[i].erase(ready[i].begin(),ready[i].end());
+//        }
+//        if((ready[i][0]>=48)&&(ready[i][0]>=57)){
+//            ready2[r2c].swap(ready[i]);
+//            r2c += 1;
+//        }
+//
+//    }
+
+//    crash = ready.size();
+//    while(((sumvect(ready[go]))!=n)&&(go<crash)){
+//        dif = n-(sumvect(ready[go]));
+//        if(searchOnes(ready,n)!=(-1))
+//            ready[go].push_back(dif);
+//        else{
+//            for(int z=0; z<n; ++z)
+//                ready[n*2-1].push_back(1);
+//        }
+//
+//
+//        go += 1;
+//    }
+
+    return ready;
 }
 
 bool poprawnaNazwaPlikuDOStest(){
