@@ -81,10 +81,78 @@ void testMergeV();                                              //  E   M
 void showDvect(std::vector<std::vector<int>> myVector);         //      I   !
 int sumvect(std::vector<int> myVector);                         //      E   !
 int searchOnes(std::vector<std::vector<int>> myVector,int n);   //      M   !
+bool significantNumber(int usrNumber);              // https://pl.spoj.com/problems/PZPI3/
+std::set<int> dividers(int n);                      //
+float properDividersAverage(std::set<int> x);       //
+std::vector<int> mainSigNums                        //
+    (std::vector<std::vector<int>> data);           //
+bool testMainSigNums();                             //
 
 int main(){
 
     return 0;
+}
+
+bool testMainSigNums(){
+    std::vector<int> endV;
+    std::vector<std::vector<int>> myVec{{4,6},{1,3}};
+
+    endV = mainSigNums(myVec);
+
+    std::cout << std::boolalpha;
+
+    if((endV[0]==1) && (endV[1]==0))
+        return true;
+    return false;
+}
+
+std::vector<int> mainSigNums(std::vector<std::vector<int>> data){
+    std::vector<int> score;
+    int quan=0;
+
+    for(int i=0; i<data.size(); ++i){
+        for(int j=data[i][0]; j<=data[i][1]; ++j){
+            if(significantNumber(j)){
+                quan += 1;
+            }
+        }
+        score.push_back(quan);
+        quan = 0;
+    }
+    return score;
+}
+
+bool significantNumber(int usrNumber){
+    float average = properDividersAverage(dividers(usrNumber));
+    float sqrtNum = sqrt(usrNumber);
+    if((average <= sqrtNum)&&(average!=0))
+        return true;
+    return false;
+}
+
+float properDividersAverage(std::set<int> x){
+    float sum=0,quantity=0;
+    float ret = 0;
+    std::set<int>::iterator it;
+    for(it=x.begin(); it!=x.end(); ++it){
+        sum += *it;
+        quantity += 1;
+    }
+    ret = sum/quantity;
+    return ret;
+}
+
+std::set<int> dividers(int n){
+    std::set<int> retSet;
+    std::set<int>::iterator itRetSet = retSet.begin();
+
+    for(int i=(n-1); i>1; --i)
+        if(n%i == 0)
+            retSet.insert(itRetSet,i);
+
+    if(retSet.empty())
+        retSet.insert(retSet.begin(),0);
+    return retSet;
 }
 
 int searchOnes(std::vector<std::vector<int>> myVector, int n){
