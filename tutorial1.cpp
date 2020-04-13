@@ -87,10 +87,25 @@ float properDividersAverage(std::set<int> x);       //
 std::vector<int> mainSigNums                        //
     (std::vector<std::vector<int>> data);           //
 bool testMainSigNums();                             //
+std::vector<int> shift(int x,std::vector<int> input);   //  https://pl.spoj.com/problems/PP0602D/
 
 int main(){
 
     return 0;
+}
+
+std::vector<int> shift(int x,std::vector<int> input){
+    std::vector<int> output;
+    int i,j;
+
+    for(i=0; i<x; ++i){
+        input.push_back(input.at(i));
+    }
+    for(i=x; i<input.size(); ++i){
+        output.push_back(input.at(i));
+    }
+
+    return output;
 }
 
 bool testMainSigNums(){
