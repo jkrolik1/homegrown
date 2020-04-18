@@ -88,10 +88,131 @@ std::vector<int> mainSigNums                        //
     (std::vector<std::vector<int>> data);           //
 bool testMainSigNums();                             //
 std::vector<int> shift(int x,std::vector<int> input);   //  https://pl.spoj.com/problems/PP0602D/
+void totolotek();
+void fibDictionary();
+int fibonacci(int n);
+int searchMap(std::map<int,int> in,int userX);
+void lustro();
+std::vector<std::string> readUntilWordStopToVector();
+std::string revStr(std::string x);
+std::vector<std::string> rightAlignment(std::vector<std::string> x);
+std::string addSpaces(int n,std::string s);
 
 int main(){
-
+    lustro();
     return 0;
+}
+
+void lustro(){
+    std::vector<std::string> input = readUntilWordStopToVector();
+    std::vector<std::string> output;
+    std::vector<std::string>::iterator it;
+    std::string s = "";
+
+    for(it = input.end(); it >= input.begin(); --it){
+        s = revStr(*it);
+        output.push_back(s);
+    }
+
+    output = rightAlignment(output);
+
+    for(auto x : output)
+        std::cout << x << "\n";
+}
+
+std::vector<std::string> rightAlignment(std::vector<std::string> x){
+    std::vector<std::string> out;
+    int maxLen = x.at(0).length(), cur = 0;
+    std::string s = "";
+
+    for(auto n : x)
+        if(n.length() > maxLen)
+            maxLen = n.length();
+
+    for(auto n : x){
+        if(n.length() < maxLen){
+            cur = maxLen - n.length();
+            s = addSpaces(cur,n);
+            out.push_back(s);
+        }
+        else
+            out.push_back(n);
+    }
+
+    return out;
+}
+
+std::string addSpaces(int n,std::string s){
+    std::string newS = "";
+    for(int i=0; i<n; ++i){
+        newS += " ";
+    }
+    newS += s;
+    return newS;
+}
+
+std::string revStr(std::string x){
+    std::string out = "";
+    int i;
+    for(i=(x.length()-1); i>=0; --i)
+        out += x.at(i);
+    return out;
+}
+
+std::vector<std::string> readUntilWordStopToVector(){
+    std::vector<std::string> lines;
+    std::string s;
+
+    while(getline(std::cin,s)){
+        if(s == "stop")
+            break;
+        lines.push_back(s);
+    }
+    return lines;
+}
+
+int searchMap(std::map<int,int> in, int userX){
+    std::map<int,int>::iterator it = in.begin();
+    for(; it!=in.end(); ++it)
+        if((it->first) == userX)
+            return it->second;
+    return -1;
+}
+
+void fibDictionary(){
+    int userN, score;
+    std::map<int,int> fibNumbers;
+
+    do{
+        std::cout << "Jaka liczba wyrazow ciagu fibonacciego: ";
+        std::cin >> userN;
+
+        score = searchMap(fibNumbers,userN);
+
+        if(score == -1){
+            score = fibonacci(userN);
+            fibNumbers.insert(std::pair<int,int>(userN,score));
+        }
+
+        std::cout << score << std::endl << std::endl;
+
+    }while(userN != -1);
+}
+
+int fibonacci(int n){
+    return n>1 ? fibonacci(n-1)+fibonacci(n-2) : 1;
+}
+
+void totolotek(){
+    srand(time(NULL));
+    int randNumber;
+    std::set<int> numbers;
+
+    for(; numbers.size()!=6; )
+        numbers.insert(std::rand()%(49-1+1)+1);
+
+    for(auto x : numbers)
+        std::cout << x << " ";
 }
 
 std::vector<int> shift(int x,std::vector<int> input){
