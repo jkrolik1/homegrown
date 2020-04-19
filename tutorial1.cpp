@@ -97,10 +97,222 @@ std::vector<std::string> readUntilWordStopToVector();
 std::string revStr(std::string x);
 std::vector<std::string> rightAlignment(std::vector<std::string> x);
 std::string addSpaces(int n,std::string s);
+void withoutDivBy4noDivBy16(int minN, int maxN);
+std::map<int,int> takeFromUser();                       // finalConvert
+std::vector<int> verifyBase(std::map<int,int> x);       // finalConvert
+std::vector<int> calculateBase2(int n);                 // finalConvert
+std::vector<int> calculateBase4(int n);                 // finalConvert
+std::vector<int> calculateBase8(int n);                 // finalConvert
+std::vector<int> fillZero8(std::vector<int> x);         // finalConvert
+std::vector<int> fillZero4(std::vector<int> x);         // finalConvert
+void finalConvert();
 
 int main(){
-    lustro();
+
     return 0;
+}
+
+void finalConvert(){
+    std::vector<int> nums = verifyBase(takeFromUser());
+
+    std::cout << std::endl;
+    for(auto p : nums)
+        std::cout << p;
+    std::cout << std::endl;
+}
+
+std::vector<int> calculateBase4(int n){
+    std::vector<int> x = calculateBase2(n);
+    std::vector<int> out,ret;
+    std::vector<int>::iterator z;
+    int d = 0;
+
+    x = fillZero4(x);
+
+    for(int i=(x.size()-1); i>0;){
+        if((x.at(i)) == 1)
+            d += 1;
+        i -= 1;
+
+        if((x.at(i)) == 1)
+            d += 2;
+        i -= 1;
+
+        out.push_back(d);
+
+        d = 0;
+    }
+
+    for(int i=(out.size()-1); i>-1; --i)
+        ret.push_back(out.at(i));
+
+    return ret;
+}
+
+std::vector<int> calculateBase8(int n){
+    std::vector<int> x = calculateBase2(n);
+    std::vector<int> z,ret;
+    int sum = 0;
+
+    x = fillZero8(x);
+
+    for(int i=(x.size()-1); i>0;){
+        if(x.at(i) == 1)
+            sum += 1;
+        i--;
+
+        if(x.at(i) == 1)
+            sum += 2;
+        i--;
+
+        if(x.at(i) == 1)
+            sum += 4;
+        i--;
+
+        z.push_back(sum);
+
+        sum = 0;
+    }
+
+    for(int i=(z.size()-1); i>-1; --i)
+        ret.push_back(z.at(i));
+
+    return ret;
+}
+
+std::vector<int> calculateBase2(int n){
+    int x = n;
+    int q, w, i;
+    std::vector<int> bin, binN;
+
+    for(; x > 0;){
+        for(i=1; ; i=i*2)
+            if(i > x)
+                break;
+        bin.push_back(i/2);
+        x = x - i/2;
+    }
+
+    for(w=0,q=bin.at(w); w != bin.size(); q=(q/2)){
+        if((bin.at(w) == q) || (w == 0)){
+            w += 1;
+            binN.push_back(1);
+        }
+        else
+            binN.push_back(0);
+    }
+
+    if((bin.at(bin.size()-1)) != 1 )
+        for(int v = (bin.at(bin.size()-1)); v>1; v=v/2)
+            binN.push_back(0);
+
+    return binN;
+}
+
+std::vector<int> fillZero4(std::vector<int> x){
+    std::vector<int> y,retV;
+    std::string s = "";
+    int xSize = x.size();
+
+    if((xSize % 2) != 0){
+        int mod = 2 - (xSize % 2);
+
+        for(int i=0; i<mod; ++i)
+            s += "0";
+    }
+
+    for(auto p : x)
+        s += p;
+
+    for(int i=0; i<s.length(); ++i)
+        retV.push_back(s.at(i));
+
+    return retV;
+}
+
+std::vector<int> fillZero8(std::vector<int> x){
+    std::vector<int> y,retV;
+    std::string s = "";
+    int xSize = x.size();
+
+    if((xSize % 3) != 0){
+        int mod = 3 - (xSize % 3);
+
+        for(int i=0; i<mod; ++i)
+            s += "0";
+    }
+
+    for(auto p : x)
+        s += p;
+
+    for(int i=0; i<s.length(); ++i)
+        retV.push_back(s.at(i));
+
+    return retV;
+}
+
+std::vector<int> verifyBase(std::map<int,int> x){
+    std::map<int,int>::iterator it = x.begin();
+    std::vector<int> retX;
+    int base = it->second;
+    int num = it->first;
+
+    if(base == 2)
+        retX = calculateBase2(num);
+    else if(base == 4)
+        retX = calculateBase4(num);
+    else if(base == 8)
+        retX = calculateBase8(num);
+    else
+        exit(0);
+
+    return retX;
+}
+
+std::map<int,int> takeFromUser(){
+    std::string numberS = "", baseS = "";
+    int number = 0, base = 0;
+    std::map<int,int> retMap;
+
+    try{
+        std::cout << "Enter a number: ";
+        std::cin >> numberS;
+        number = boost::lexical_cast<int>(numberS);
+    }catch( ... ){
+        std::cout << "Wrong number! Try again.\n";
+        exit(0);
+    }
+
+    try{
+        std::cout << "Enter base (2, 4 or 8): ";
+        std::cin >> baseS;
+        base = boost::lexical_cast<int>(baseS);
+        if((base != 2) && (base != 4) && (base != 8))
+            throw "Wrong base! Enter 2, 4 or 8.\n";
+    }catch(const char *x){
+        std::cout << x;
+        exit(0);
+    }catch( ... ){
+        std::cout << "Wrong base! Try again.\n";
+        exit(0);
+    }
+
+    retMap.insert(std::pair<int,int>(number,base));
+
+    return retMap;
+}
+
+void withoutDivBy4noDivBy16(int minN, int maxN){
+    std::vector<int> x;
+    for(int i = minN; i <= maxN; ++i){
+        if(((i % 4) == 0) && ((i % 16) != 0))
+            continue;
+        else
+            x.push_back(i);
+    }
+
+    for(auto n : x)
+        std::cout << n << "\n";
 }
 
 void lustro(){
