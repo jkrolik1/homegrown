@@ -106,10 +106,36 @@ std::vector<int> calculateBase8(int n);                 // finalConvert
 std::vector<int> fillZero8(std::vector<int> x);         // finalConvert
 std::vector<int> fillZero4(std::vector<int> x);         // finalConvert
 void finalConvert();
+void deadline(std::string file);
 
 int main(){
+    deadline("test.txt");
 
     return 0;
+}
+
+void deadline(std::string file){
+    std::ifstream myfile(file);
+    std::string line = "";
+    std::map<char,int> letters;
+    std::map<int,char> sorted;
+    std::map<char,int>::iterator p;
+    char c;
+
+    while(getline(myfile,line)){
+        for(int i=0; i<line.size(); ++i){
+            c = line.at(i);
+            if((c >= 'A') && (c <= 'Z'))
+                c += 32;
+            if((c >= 'a') && (c <= 'z'))
+                letters[c]++;
+        }
+    }
+
+    for(p = letters.begin(); p != letters.end(); ++p){
+        std::cout << p->first << " " << p->second << "\n";
+    }
+
 }
 
 void finalConvert(){
