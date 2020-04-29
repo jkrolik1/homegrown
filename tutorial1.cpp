@@ -107,11 +107,48 @@ std::vector<int> fillZero8(std::vector<int> x);         // finalConvert
 std::vector<int> fillZero4(std::vector<int> x);         // finalConvert
 void finalConvert();
 void deadline(std::string file);
+std::stack<int> fillStack(int sSize, int from, int to);
+void revStack(std::stack<int> x);
 
 int main(){
-    deadline("test.txt");
-
+    revStack(fillStack(5,10,20));
     return 0;
+}
+
+std::stack<int> fillStack(int sSize, int from, int to){
+    std::stack<int> sRet;
+    srand(time(NULL));
+    int num = 0;
+
+    for(int i=0; i<sSize; ++i){
+        num = std::rand()%(to-from+1)+from;
+        sRet.push(num);
+    }
+
+    return sRet;
+}
+
+void revStack(std::stack<int> x){
+    std::stack<int> y;
+    std::stack<int> z;
+    int i = 1;
+
+    while(!(x.empty())){
+        std::cout << i << ". " << x.top() << std::endl;
+        y.push(x.top());
+        x.pop();
+        ++i;
+    }
+
+    std::cout << std::endl;
+    i = 1;
+
+    while(!(y.empty())){
+        std::cout << i << ". " << y.top() << std::endl;
+        x.push(y.top());
+        y.pop();
+        ++i;
+    }
 }
 
 void deadline(std::string file){
