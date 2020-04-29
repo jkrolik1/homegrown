@@ -118,7 +118,8 @@ void deadline(std::string file){
     std::ifstream myfile(file);
     std::string line = "";
     std::map<char,int> letters;
-    std::map<int,char> sorted;
+    std::multimap<int,char,std::greater<int>> sorted;
+    std::map<int,char>::iterator q;
     std::map<char,int>::iterator p;
     char c;
 
@@ -127,14 +128,17 @@ void deadline(std::string file){
             c = line.at(i);
             if((c >= 'A') && (c <= 'Z'))
                 c += 32;
-            if((c >= 'a') && (c <= 'z'))
+            if((c >= 'a') && (c <= 'z')){
                 letters[c]++;
+            }
         }
     }
 
-    for(p = letters.begin(); p != letters.end(); ++p){
-        std::cout << p->first << " " << p->second << "\n";
-    }
+    for(p = letters.begin(); p != letters.end(); ++p)
+        sorted.insert(std::pair<int,char>(p->second,p->first));
+
+    for(q = sorted.begin(); q != sorted.end(); ++q)
+        std::cout << q->first << " " << q->second << std::endl;
 
 }
 
