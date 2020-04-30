@@ -25,6 +25,8 @@
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/array.hpp>
+#include <boost/random.hpp>
+// Study it: random,
 
 #include "classes.h"
 #define TESTspace2
@@ -109,10 +111,26 @@ void finalConvert();
 void deadline(std::string file);
 std::stack<int> fillStack(int sSize, int from, int to);
 void revStack(std::stack<int> x);
+void randomNumbersBoost(int howMany, int from, int to);
+void ExpertSystemsConclusion(std::string path);
 
 int main(){
-    revStack(fillStack(5,10,20));
+
     return 0;
+}
+
+void ExpertSystemsConclusion(std::string path){
+
+}
+
+void randomNumbersBoost(int howMany, int from, int to){
+    boost::random::mt19937 x;
+    boost::random::uniform_int_distribution<> rand(from,to);
+
+    for(int i=0,num=0; i<howMany; ++i){
+        num = rand(x);
+        std::cout << num << " ";
+    }
 }
 
 std::stack<int> fillStack(int sSize, int from, int to){
