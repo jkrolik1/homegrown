@@ -25,8 +25,11 @@
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/array.hpp>
-#include <boost/random.hpp>
-// Study it: random,
+#include <boost/random.hpp>                 // !
+#include <boost/logic/tribool.hpp>          // !
+#include <boost/unordered_set.hpp>          // !
+#include <boost/bimap.hpp>                  // !
+#include <boost/foreach.hpp>                // !
 
 #include "classes.h"
 #define TESTspace2
@@ -112,15 +115,10 @@ void deadline(std::string file);
 std::stack<int> fillStack(int sSize, int from, int to);
 void revStack(std::stack<int> x);
 void randomNumbersBoost(int howMany, int from, int to);
-void ExpertSystemsConclusion(std::string path);
 
 int main(){
 
     return 0;
-}
-
-void ExpertSystemsConclusion(std::string path){
-
 }
 
 void randomNumbersBoost(int howMany, int from, int to){
