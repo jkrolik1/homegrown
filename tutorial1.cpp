@@ -17,6 +17,7 @@
 #include <deque>
 #include <stack>
 #include <set>
+#include <unordered_map>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/variant.hpp>
@@ -28,8 +29,8 @@
 #include <boost/random.hpp>                 // !
 #include <boost/logic/tribool.hpp>          // !
 #include <boost/unordered_set.hpp>          // !
-#include <boost/bimap.hpp>                  // !
 #include <boost/foreach.hpp>                // !
+#include <boost/tuple/tuple.hpp>            // !
 
 #include "classes.h"
 #define TESTspace2
@@ -115,10 +116,264 @@ void deadline(std::string file);
 std::stack<int> fillStack(int sSize, int from, int to);
 void revStack(std::stack<int> x);
 void randomNumbersBoost(int howMany, int from, int to);
+boost::tuple<std::map<int,boost::unordered_set<char>>,      // forward conclusion
+    std::vector<char>>                                      // forward conclusion
+    loadData(std::string path);                             // forward conclusion
+int regNumAnalize(std::string x);                           // forward conclusion
+void analizeData(boost::tuple<std::map<int,                 // forward conclusion
+    boost::unordered_set<char>>, std::vector<char>> x);     // forward conclusion
+boost::logic::tribool inFacts(char b,                       // forward conclusion
+    std::vector<char> facts);                               // forward conclusion
+void showFacts(std::vector<char> x);                        // forward conclusion
+void launchForwardConclusion();                             // RUN forward conclusion
 
 int main(){
-
+    launchForwardConclusion();
     return 0;
+}
+
+void launchForwardConclusion(){
+    std::cout << "Wnioskowanie calej wiedzy z bazy: \n\n";
+
+    analizeData(loadData("forward.txt"));
+
+    //  TXT FILE EXAMPLE
+    //
+    //  R1: Jezeli a i b i c to d
+    //  R2: Jezeli a i b to g
+    //  R3: Jezeli b i c to e
+    //  R4: Jezeli a i c to f
+    //  R5: Jezeli e i b i c to f
+    //  Fakty: a b c
+}
+
+void showFacts(std::vector<char> x){
+    std::cout << "Fakty: ";
+    for(char& p : x)
+        std::cout << p << " ";
+    std::cout << std::endl;
+}
+
+boost::logic::tribool inFacts(char b, std::vector<char> facts){
+    for(auto v : facts){
+        if(v == b)
+            return true;
+    }
+
+    return false;
+}
+
+void analizeData(boost::tuple<std::map<int, boost::unordered_set<char>>,
+    std::vector<char>> x){
+
+    std::map<int,boost::unordered_set<char>> rules = boost::get<0>(x);
+    std::map<int,boost::unordered_set<char>>::iterator it1;
+    std::vector<char> facts = boost::get<1>(x);
+    typedef boost::unordered_set<char> letters;
+    letters letter;
+    int meter = 0;
+    char conclusion;
+    boost::logic::tribool activRule = true;
+    std::list<int> unactiveRules;
+
+    for(it1=rules.begin(); it1!=rules.end(); ++it1){
+        std::cout << "\nAnalizowanie reguly " << it1->first << "\n";
+        showFacts(facts);
+        letter = it1->second;
+        BOOST_FOREACH(letters::value_type o, letter){   // rules elements
+            meter += 1;
+            if(meter == 1)
+                conclusion = o;
+            else if(meter != 1){
+                if(inFacts(o,facts))
+                    continue;
+                else{
+                    std::cout << "\'" << o << "\'"
+                    << " nie ma w faktach." <<
+                    " Nie mozna uaktywnic reguly " <<
+                        it1->first << ".\n";
+                    activRule = false;
+                    unactiveRules.push_back(it1->first);
+                }
+            }
+        }
+        if(activRule){
+            facts.push_back(conclusion);
+            std::cout << "Regula " << it1->first << " uaktywniona.\n";
+            std::cout << "Dopisano do faktow '" << conclusion << "'.\n";
+        }
+        activRule = true;
+        meter = 0;
+    }
+
+    std::cout << "\nPozostale reguly: ";
+    unactiveRules.unique();
+
+    for(auto& bl : unactiveRules)
+        std::cout << bl << " ";
+    std::cout << "\n-------------------------------\n";
+
+    for(auto& bl : unactiveRules){
+        std::cout << "\nAnalizowanie reguly " << bl << "\n";
+        showFacts(facts);
+        letter = rules[bl];
+        BOOST_FOREACH(letters::value_type o, letter){
+            meter += 1;
+            if(meter == 1)
+                conclusion = o;
+            else if(meter != 1){
+                if(inFacts(o,facts))
+                    continue;
+                else{
+                    std::cout << "\'" << o << "\'"
+                    << " nie ma w faktach." <<
+                    " Nie mozna uaktywnic reguly " <<
+                        bl << ".\n";
+                    activRule = false;
+                }
+            }
+        }
+        if(activRule){
+            facts.push_back(conclusion);
+            std::cout << "Regula " << bl << " uaktywniona.\n";
+            std::cout << "Dopisano do faktow '" << conclusion << "'.\n";
+        }
+        activRule = true;
+        meter = 0;
+    }
+
+// WRITE ELEMENTS TO OUTPUT
+//
+//    for(it1=rules.begin(); it1!=rules.end(); ++it1){
+//        std::cout << it1->first << "\n";
+//        letter = it1->second;
+//        BOOST_FOREACH(letters::value_type o, letter)
+//            std::cout << o << " ";
+//        std::cout << "\n\n";
+//    }
+//
+//    for(char s : facts)
+//        std::cout << s << " ";
+
+}
+
+int regNumAnalize(std::string x){
+    int ret = 0,i;
+    std::string glue = "";
+
+    if((x.at(0) != 'R') && (x.at(0) != 'r'))
+        return -1;
+
+    if((x.at(1) >= '1') && (x.at(1) <= '9'))
+        for(i=1; ((x.at(i)>='0') && (x.at(i)<='9')); ++i){
+            glue += x.at(i); }
+    else
+        return -1;
+
+    if((x.at(i)) != ':')
+        return -1;
+
+    return boost::lexical_cast<int>(glue);
+}
+
+boost::tuple<std::map<int,boost::unordered_set<char>>,
+std::vector<char>> loadData(std::string path){
+    std::ifstream myFile(path);
+    std::string part, line;
+    int regNum = 0, counter = 0, linesC = 0;
+    char c;
+    std::map<int,boost::unordered_set<char>> rules;
+    std::map<int,boost::unordered_set<char>>::iterator it1;
+    boost::unordered_set<char> letter;
+    boost::unordered_set<char>::iterator it2;
+    std::vector<char> facts;
+    boost::logic::tribool endB = false;
+    typedef boost::tuple<std::map<int,boost::unordered_set<char>>,
+        std::vector<char>> ret;
+
+    while(getline(myFile,line)){
+        linesC += 1;
+        std::stringstream ss(line);
+        while(getline(ss,part,' ')){
+            counter += 1;
+            if((part == "Fakty:") || (part == "fakty:") ||
+                (part == "FAKTY:")){
+                    endB = true;
+                    continue;
+                }
+            if(endB){
+                try{
+                    c = boost::lexical_cast<char>(part);
+                    facts.push_back(c);
+                }
+                catch( ... ){
+                    std::cout << "Nieprawidlowe fakty " <<
+                        "w linii " << linesC << "\n";
+                    continue;
+                }
+                continue;
+            }
+            if(counter == 1){
+                try{
+                    regNum = regNumAnalize(part);
+                    if(regNum == -1)
+                        throw "Nieprawidlowy numer reguly";
+                }
+                catch(const char* exp){
+                    std::cout << "Blad w linii " << linesC <<
+                    ": " << exp;
+                    break;
+                }
+            }
+            if(counter == 2){
+                if((part != "jezeli") && (part != "Jezeli")
+                && (part != "JEZELI") &&
+                (part != "if") && (part != "If")
+                && (part != "IF")){
+                    std::cout << "Nieprawidlowe rozpoczecie " <<
+                        "instrukcji warunkowej w linii " <<
+                        linesC << "\n";
+                    break;
+                }
+            }
+            if(((counter % 2) != 0) && (counter > 1)){
+                try{
+                    c = boost::lexical_cast<char>(part);
+                    if((c >= 'a') && (c <= 'z'))
+                        letter.insert(c);
+                    else
+                        throw "Przeslanka musi byc litera!";
+                }
+                catch(const char* exp){
+                    std::cout << "Blad w linii " << linesC <<
+                    ": " << exp;
+                    break;
+                }
+                catch( ... ){
+                    std::cout << "Nieprawidlowa przeslanka " <<
+                        "lub konkluzja w linii " << linesC << "\n";
+                    break;
+                }
+            }
+            if(((counter % 2) == 0) && (counter > 3)){
+                if((part != "and") && (part != "AND")
+                && (part != "i") &&
+                (part != "to") && (part != "then")
+                && (part != "Then")){
+                    std::cout << "Nieprawidlowy " <<
+                        "lacznik w linii " <<
+                        linesC << "\n";
+                    break;
+                }
+            }
+        }
+        rules.insert(std::make_pair(regNum,letter));
+        letter.clear();
+        counter = 0;
+    }
+
+    ret retT(rules,facts);
+    return retT;
 }
 
 void randomNumbersBoost(int howMany, int from, int to){
