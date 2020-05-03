@@ -31,6 +31,7 @@
 #include <boost/unordered_set.hpp>          // !
 #include <boost/foreach.hpp>                // !
 #include <boost/tuple/tuple.hpp>            // !
+#include <regex>                            // !
 
 #include "classes.h"
 #define TESTspace2
@@ -126,10 +127,71 @@ boost::logic::tribool inFacts(char b,                       // forward conclusio
     std::vector<char> facts);                               // forward conclusion
 void showFacts(std::vector<char> x);                        // forward conclusion
 void launchForwardConclusion();                             // RUN forward conclusion
+void regexMatchString();
+void regexMatchStringIterator();
+void cmatch();
+void smatch();
+void regexSearch();
 
 int main(){
-    launchForwardConclusion();
+    regexSearch();
     return 0;
+}
+
+void regexSearch(){
+    std::string s ("this subject has a submarine as a subsequence");
+    std::smatch m;
+    std::regex e("\\b(sub)([^ ]*)");
+
+    while (std::regex_search(s,m,e)){
+        for (auto x : m)
+            std::cout << x << " ";
+    std::cout << std::endl;
+    s = m.suffix().str();
+  }
+}
+
+void cmatch(){
+    const char* cstr = "6";
+    std::cmatch cm;
+    std::regex ex("[0-9]{1}");
+    std::regex_match(cstr,cm,ex);
+    std::cout << cm.size() << " matches";
+}
+
+void smatch(){
+    std::string s = "p0@";
+    std::string s2 = "2121@";
+
+    std::regex eq("(([a-zA-z]{2,}.)|([a-zA-z]+[0-9]*.))@");
+    std::smatch p,p2,p3;
+
+    std::regex_match(s,p,eq);
+    std::regex_match(s2,p2,eq);
+    std::regex_match(s,p3,eq,
+                     std::regex_constants::match_default);
+
+
+    std::cout << p.size() << " matches\n";
+    std::cout << p2.size() << " matches";
+    std::cout << "\n\nthe matches where: ";
+    for(unsigned i=0; i<p3.size(); ++i)
+        std::cout << "[" << p3[i] << "] ";
+    std::cout << std::endl;
+}
+
+void regexMatchStringIterator(){
+    std::string s = "09";
+    std::regex x("[0-9]{1}");
+    if(std::regex_match(s.begin(),s.end(),x))
+        std::cout << "x";
+}
+
+void regexMatchString(){
+    std::string s = "1";
+    std::regex x("[0-9]{1}");
+    if(std::regex_match(s,x))
+        std::cout << "x";
 }
 
 void launchForwardConclusion(){
