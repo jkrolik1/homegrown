@@ -26,12 +26,18 @@
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/array.hpp>
-#include <boost/random.hpp>                 // !
-#include <boost/logic/tribool.hpp>          // !
-#include <boost/unordered_set.hpp>          // !
-#include <boost/foreach.hpp>                // !
-#include <boost/tuple/tuple.hpp>            // !
-#include <regex>                            // !
+#include <boost/random.hpp>                     // !
+#include <boost/logic/tribool.hpp>              // !
+#include <boost/unordered_set.hpp>              // !!
+#include <boost/foreach.hpp>                    // !!
+#include <boost/tuple/tuple.hpp>                // !!
+#include <regex>                                // !
+#include <boost/scoped_ptr.hpp>                 // !
+#include <boost/scoped_array.hpp>               // !
+#include <boost/shared_ptr.hpp>                 // !
+#include <boost/ptr_container/ptr_vector.hpp>   // !
+#include <boost/algorithm/minmax.hpp>           // !
+#include <boost/algorithm/minmax_element.hpp>   // !
 
 #include "classes.h"
 #define TESTspace2
@@ -116,7 +122,6 @@ void finalConvert();
 void deadline(std::string file);
 std::stack<int> fillStack(int sSize, int from, int to);
 void revStack(std::stack<int> x);
-void randomNumbersBoost(int howMany, int from, int to);
 boost::tuple<std::map<int,boost::unordered_set<char>>,      // forward conclusion
     std::vector<char>>                                      // forward conclusion
     loadData(std::string path);                             // forward conclusion
@@ -127,15 +132,128 @@ boost::logic::tribool inFacts(char b,                       // forward conclusio
     std::vector<char> facts);                               // forward conclusion
 void showFacts(std::vector<char> x);                        // forward conclusion
 void launchForwardConclusion();                             // RUN forward conclusion
-void regexMatchString();
-void regexMatchStringIterator();
-void cmatch();
-void smatch();
-void regexSearch();
+void regexMatchString();                // regex
+void regexMatchStringIterator();        // regex
+void cmatch();                          // regex
+void smatch();                          // regex
+void regexSearch();                     // regex
+void scopedPtr();                       // boost smart pointers
+void scopedArray();                     // boost smart pointers
+void sharedPtr();                       // boost smart pointers
+void ptrVector();                       // ptr container
+void lexicalCastTryCatch();
+void randomNumbersBoostTime();          // random time
+void randomNumbersBoost                 // random no time
+    (int howMany, int from, int to);
+void minmaxBoost();                     // minmax
+void minmaxBoost2();                    // minmax element
 
 int main(){
-    regexSearch();
+    minmaxBoost2();
     return 0;
+}
+
+void minmaxBoost2(){
+    typedef boost::unordered_set<int> p;
+    p p1;
+    std::time_t now = std::time(0);
+    boost::random::mt19937 x(static_cast<uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(1,100);
+
+    for(int i=0; i<20; ++i)
+        p1.insert(f(x));
+
+    std::pair<boost::unordered_set<int>::iterator,
+        boost::unordered_set<int>::iterator> mm =
+        boost::minmax_element(p1.begin(),p1.end());
+
+    BOOST_FOREACH(p::value_type x, p1)
+        std::cout << x << " ";
+
+    std::cout << "\nMin: " << *mm.first << "\n";
+    std::cout << "Max: " << *mm.second;
+}
+
+void minmaxBoost(){
+    std::time_t now = std::time(0);
+    boost::random::mt19937 g(static_cast<std::uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(1,100);
+    boost::scoped_ptr<int> x(new int(f(g)));
+    boost::scoped_ptr<int> y(new int(f(g)));
+
+    boost::tuple<const int&, const int&> t =
+        boost::minmax(*x.get(),*y.get());
+
+    std::cout << t.get<0>() << "\n" << t.get<1>();
+}
+
+void randomNumbersBoostTime(){
+    std::time_t now = std::time(0);
+    boost::random::mt19937 x
+        (static_cast<std::uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(1,100);
+    std::cout << f(x);
+}
+
+void lexicalCastTryCatch(){
+    std::string a = "abc";
+    int x;
+
+    try{
+        boost::lexical_cast<int>(a);
+    }
+    catch(const boost::bad_lexical_cast &ex){
+        //std::cerr << ex.what();
+        std::cout << "x";
+    }
+}
+
+void ptrVector(){
+    boost::ptr_vector<int> v;
+    v.push_back(new int(1));
+    v.push_back(new int(2));
+    v.push_back(new int(3));
+    v.push_back(new int(4));
+
+    std::cout << v[2];
+    // std::cout << v.back();
+}
+
+void sharedPtr(){
+    boost::scoped_ptr<int> a1(new int(2));
+    // boost::scoped_ptr<int> a2(a1);       ERROR
+
+    boost::shared_ptr<int> p1(new int(5));
+    boost::shared_ptr<int> p2(p1);
+
+    p1.reset(new int(3));
+    p1.reset();
+    std::cout << static_cast<bool>(p2);
+}
+
+void scopedArray(){
+    boost::scoped_array<char> p(new char[26]);
+    char i='a';
+    int j=0;
+
+    for(i='a',j=0; i<='z'; ++i,++j){
+        p[j] = i;
+        std::cout << p[j];
+    }
+
+}
+
+void scopedPtr(){
+    boost::scoped_ptr<int> p(new int(5));
+    std::cout << *p << "\n";
+
+    p.reset(new int(2));
+    std::cout << *p << " " << p.get();
+
+    p.reset();
+    std::cout << std::endl << static_cast<bool>(p);
+    std::cout << std::endl <<
+        std::boolalpha << static_cast<bool>(p);
 }
 
 void regexSearch(){
