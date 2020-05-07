@@ -147,10 +147,28 @@ void randomNumbersBoost                 // random no time
     (int howMany, int from, int to);
 void minmaxBoost();                     // minmax
 void minmaxBoost2();                    // minmax element
+void foreach();                         // foreach, reverse foreach
 
 int main(){
-    minmaxBoost2();
+    foreach();
     return 0;
+}
+
+void foreach(){
+    std::vector<int> v;
+    v.push_back(1);
+    v.push_back(2);
+    v.push_back(3);
+
+    BOOST_FOREACH(auto x, v){
+        std::cout << x << " ";
+    }
+
+    std::cout << std::endl;
+
+    BOOST_REVERSE_FOREACH(auto y, v){
+        std::cout << y << " ";
+    }
 }
 
 void minmaxBoost2(){
