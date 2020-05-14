@@ -26,7 +26,7 @@
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/array.hpp>
-#include <boost/random.hpp>                     // !
+#include <boost/random.hpp>                     // !!
 #include <boost/logic/tribool.hpp>              // !
 #include <boost/unordered_set.hpp>              // !!
 #include <boost/foreach.hpp>                    // !!
@@ -38,6 +38,12 @@
 #include <boost/ptr_container/ptr_vector.hpp>   // !
 #include <boost/algorithm/minmax.hpp>           // !
 #include <boost/algorithm/minmax_element.hpp>   // !
+#include <boost/bimap.hpp>                      // !
+#include <boost/heap/priority_queue.hpp>        // !
+#include <boost/heap/binomial_heap.hpp>         // !
+#include <boost/heap/fibonacci_heap.hpp>        // !
+#include <boost/array.hpp>                      // !
+#include <boost/swap.hpp>                       // !
 
 #include "classes.h"
 #define TESTspace2
@@ -148,10 +154,84 @@ void randomNumbersBoost                 // random no time
 void minmaxBoost();                     // minmax
 void minmaxBoost2();                    // minmax element
 void foreach();                         // foreach, reverse foreach
+void bimap();                           // bimap
+void heap();                            // heap / priority queue / binomial heap
+void bArray();
 
 int main(){
-    foreach();
+    bArray();
     return 0;
+}
+
+void bArray(){
+    typedef boost::array<std::string,5> tab;
+    tab a;
+
+    *a.begin() = "Poland";
+    a.at(1) = "Germany";
+    *a.rbegin() = "Turkey";
+
+    std::sort(a.begin(),a.end());
+
+    for(const std::string &s : a)
+        std::cout << s << " ";
+}
+
+void heap(){
+    std::time_t time = std::time(0);
+    boost::random::mt19937 rand(static_cast<std::uint32_t>(time));
+    boost::random::uniform_int_distribution<> f(1,10);
+    boost::random::uniform_int_distribution<> g(10,20);
+
+    boost::heap::priority_queue<int> x;
+    boost::heap::binomial_heap<int> y1;
+    boost::heap::binomial_heap<int> y2;
+    boost::heap::fibonacci_heap<int> z;
+
+    x.push(f(rand));
+    x.push(f(rand));
+    x.push(f(rand));
+
+    y1.push(g(rand));
+    y1.push(g(rand));
+    y1.push(g(rand));
+    y2.push(f(rand));
+
+    std::cout << x.top() << std::endl;
+    std::cout << y1.top() << std::endl << std::endl;
+
+    y1.merge(y2);
+
+    for(auto it = y1.ordered_begin(); it != y1.ordered_end(); ++it)
+        std::cout << *it << " ";
+
+    std::cout << std::endl << std::endl << y2.empty();
+
+    z.push(g(rand));
+    z.push(g(rand));
+    auto handle = z.push(12);
+    z.update(handle,11);
+    std::cout << std::endl << std::endl << z.top() << std::endl << std::endl;
+
+    for(auto it2 = z.ordered_begin(); it2 != z.ordered_end(); ++it2)
+        std::cout << *it2 << " ";
+
+}
+
+void bimap(){
+    typedef boost::bimap<int,std::string> firstMap;
+    firstMap cars;
+
+    cars.insert(firstMap::value_type(1,"BMW"));
+    cars.insert(firstMap::value_type(2,"Audi"));
+    cars.insert(firstMap::value_type(3,"Suzuki"));
+
+    // check if is value in bimap
+    std::cout << cars.left.count(1) << std::endl;
+    std::cout << cars.right.count("x") << std::endl;
+
+    for(auto it = cars.begin(); it != cars.end(); ++it)
+        std::cout << it->left << " " << it->right << std::endl;
 }
 
 void foreach(){
