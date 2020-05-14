@@ -25,13 +25,12 @@
 #include <boost/optional.hpp>
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/array.hpp>
 #include <boost/random.hpp>                     // !!
-#include <boost/logic/tribool.hpp>              // !
+#include <boost/logic/tribool.hpp>              // !!
 #include <boost/unordered_set.hpp>              // !!
 #include <boost/foreach.hpp>                    // !!
 #include <boost/tuple/tuple.hpp>                // !!
-#include <regex>                                // !
+#include <regex>                                // !!
 #include <boost/scoped_ptr.hpp>                 // !
 #include <boost/scoped_array.hpp>               // !
 #include <boost/shared_ptr.hpp>                 // !
@@ -156,11 +155,22 @@ void minmaxBoost2();                    // minmax element
 void foreach();                         // foreach, reverse foreach
 void bimap();                           // bimap
 void heap();                            // heap / priority queue / binomial heap
-void bArray();
+void bArray();                          // array
+void bSwap();                           // swap
 
 int main(){
-    bArray();
+
     return 0;
+}
+
+void bSwap(){
+    std::string x("abc123");
+    std::string y("defghi");
+
+    if(std::regex_match(x,std::regex("[^0-9]*[0-9]{3}[^0-9]*")))
+        boost::swap(x,y);
+
+    std::cout << x;
 }
 
 void bArray(){
