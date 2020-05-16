@@ -163,10 +163,142 @@ void timer1min();               // learning method
 void soundLearn();              // learning method
 void soundBreak();              // learning method
 void learningMethod();          // learning method
+std::string takeExpresion(std::string path);                            // tautology
+boost::unordered_set<char> vars(std::string expresion);                 // tautology
+std::map<int,std::vector<int>> binary(boost::unordered_set<char> vars); // tautology
+int myPow(int n, int x);                                                // tautology
+std::vector<int> numberToBin(int num);                                  // tautology
+std::map<char,std::vector<int>> makeFirstCols                           // tautology
+    (std::map<int,std::vector<int>> binary,                             // tautology
+     boost::unordered_set<char> vars);                                  // tautology
+void tautologyBegin();                                                  // tautology
 
 int main(){
 
     return 0;
+}
+
+void tautologyBegin(){
+    boost::unordered_set<char> var =
+        vars(takeExpresion("tautology.txt"));
+
+    std::map<int,std::vector<int>> x = binary(var);
+    std::vector<int> y;
+
+    std::map<char,std::vector<int>> newM =
+        makeFirstCols(x,var);
+
+    for(auto p=newM.begin(); p!=newM.end(); ++p){
+        std::cout << p->first << " ";
+    }
+
+    int i=0;
+    do{
+        std::cout << std::endl;
+        for(auto q=newM.begin(); q!=newM.end(); ++q){
+            y = q->second;
+            std::cout << y.at(i) << " ";
+            y.clear();
+        }
+        i++;
+    }while(i < myPow(2,var.size()));
+}
+
+std::map<char,std::vector<int>> makeFirstCols
+    (std::map<int,std::vector<int>> binary,
+     boost::unordered_set<char> vars){
+
+        typedef boost::unordered_set<char> y;
+        std::map<char,std::vector<int>> newM;
+        std::vector<int> bin,bin2;
+        int i = 0;
+
+        BOOST_FOREACH(y::value_type o, vars){
+            for(auto it=binary.begin(); it!=binary.end(); ++it){
+                bin = it->second;
+                bin2.push_back(bin.at(i));
+                bin.clear();
+            }
+            newM[o] = bin2;
+            bin2.clear();
+            i++;
+        }
+
+    return newM;
+}
+
+int myPow(int n, int x){
+    int ret = n;
+    if(x == 0)
+        return 1;
+    for(int i=(x-1); i>0; --i)
+        ret*=n;
+    return ret;
+}
+
+std::map<int,std::vector<int>>
+    binary(boost::unordered_set<char> vars){
+
+    typedef std::map<int,std::vector<int>> bin;
+    bin binVars;
+    std::vector<int> vect;
+
+    int highest = myPow(2,vars.size())-1;
+
+    for(int i=highest; i>=0; --i){
+        vect = numberToBin(highest);
+        binVars[highest] = vect;
+        vect.clear();
+    }
+
+    return binVars;
+}
+
+std::vector<int> numberToBin(int num){
+    std::vector<int> binary;
+    int currentNum = num,currentPow,pow = 0,power = 1;
+
+    while((myPow(2,power)) <= currentNum)
+        power += 1;
+
+    pow = power;
+
+    binary.push_back(1);
+    currentNum -= myPow(2,(pow-1));
+    currentPow = (pow-2);
+
+    while(binary.size() <= (pow-1)){
+        if((currentNum - (myPow(2,currentPow))) >= 0){
+            binary.push_back(1);
+            currentNum -= (myPow(2,currentPow));
+        }
+        else
+            binary.push_back(0);
+
+        currentPow--;
+    }
+
+    return binary;
+}
+
+boost::unordered_set<char> vars(std::string expresion){
+    boost::unordered_set<char> varsCh;
+
+    for(int i=0; i<expresion.size(); ++i)
+        if((expresion.at(i) >= 'a')&&(expresion.at(i) <= 'z'))
+            varsCh.insert(expresion.at(i));
+
+    return varsCh;
+}
+
+std::string takeExpresion(std::string path){
+    std::ifstream myfile(path);
+    std::string line;
+
+    while(getline(myfile,line))
+        return line;
+
+    return "";
 }
 
 void learningMethod(){
