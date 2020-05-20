@@ -28,7 +28,7 @@
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/random.hpp>                     // !!
-#include <boost/logic/tribool.hpp>              // !!
+#include <boost/logic/tribool.hpp>              // !!!
 #include <boost/unordered_set.hpp>              // !!
 #include <boost/foreach.hpp>                    // !!
 #include <boost/tuple/tuple.hpp>                // !!
@@ -171,26 +171,102 @@ std::vector<int> numberToBin(int num);                                  // tauto
 std::map<char,std::vector<int>> makeFirstCols                           // tautology
     (std::map<int,std::vector<int>> binary,                             // tautology
      boost::unordered_set<char> vars);                                  // tautology
+std::map<int,std::vector<int>> add0(std::map<int,std::vector<int>> x);  // tautology
 void tautologyBegin();                                                  // tautology
+std::string cutBrackets(std::string expresion);                         // tautology
+boost::tuple<char,char,std::string>                                     // tautology
+    takePart(std::string expresionWithoutBrackets);                     // tautology
 
 int main(){
+    boost::tuple<char,char,std::string> t =
+        takePart(cutBrackets(takeExpresion("tautology.txt")));
+
+    std::cout << boost::get<0>(t) << ' ' << boost::get<1>(t) << ' ' << boost::get<2>(t);
 
     return 0;
+}
+
+boost::tuple<char,char,std::string> takePart(std::string expresionWithoutBrackets){
+    boost::logic::tribool first= false,second= false;
+    typedef boost::tuple<char,char,std::string> retT;
+    int index1, index2, nast;
+    std::string x;
+    char a,b;
+
+    for(int i=0; i<expresionWithoutBrackets.size(); ++i){
+        if((expresionWithoutBrackets.at(i) >= 'a')&&
+            (expresionWithoutBrackets.at(i) <= 'z')){
+                a = expresionWithoutBrackets.at(i);
+                if(i != 0)
+                    if((expresionWithoutBrackets.at(i-1)) == '~'){
+                        index1 = (i-1);
+                        second = true;
+                    }
+                    else{
+                        index1 = i;
+                        first = true;
+                    }
+                else{
+                    index1 = i;
+                    first = true;
+                }
+        }
+        if(first || second)
+            break;
+    }
+
+    if(first){
+        x += expresionWithoutBrackets.at(index1);
+        nast = index1 + 1;
+    }
+    if(second){
+        x += expresionWithoutBrackets.at(index1);
+        x += expresionWithoutBrackets.at(index1+1);
+        nast = index1 + 2;
+    }
+
+    for(int j=nast;
+        j<expresionWithoutBrackets.size();
+        ++j){
+            x += expresionWithoutBrackets.at(j);
+            if((expresionWithoutBrackets.at(j) >= 'a')&&
+                (expresionWithoutBrackets.at(j) <= 'z')){
+                    b = expresionWithoutBrackets.at(j);
+                    index2 = j;
+                    break;
+            }
+    }
+
+    retT tup(a,b,x);
+    return tup;
+}
+
+std::string cutBrackets(std::string expresion){
+    std::string s1 = "";
+
+    for(int i=0; i<expresion.size(); ++i){
+        if((expresion.at(i) == '[')||(expresion.at(i) == ']'))
+            continue;
+        if((expresion.at(i) == '(')||(expresion.at(i) == ')'))
+            continue;
+        s1 += expresion.at(i);
+    }
+
+    return s1;
 }
 
 void tautologyBegin(){
     boost::unordered_set<char> var =
         vars(takeExpresion("tautology.txt"));
 
-    std::map<int,std::vector<int>> x = binary(var);
+    std::map<int,std::vector<int>> x = add0(binary(var));
     std::vector<int> y;
 
     std::map<char,std::vector<int>> newM =
         makeFirstCols(x,var);
 
-    for(auto p=newM.begin(); p!=newM.end(); ++p){
+    for(auto p=newM.begin(); p!=newM.end(); ++p)
         std::cout << p->first << " ";
-    }
 
     int i=0;
     do{
@@ -236,6 +312,40 @@ int myPow(int n, int x){
     return ret;
 }
 
+std::map<int,std::vector<int>> add0(std::map<int,std::vector<int>> x){
+    std::map<int,std::vector<int>> ret;
+    std::vector<int> v,w;
+    int sizeH = 0,difference = 0;
+
+    auto it2 = x.end();
+    it2--;
+    v = it2->second;
+    sizeH = v.size();
+    v.clear();
+
+    for(auto it = x.begin(); it!=x.end(); ++it){
+        v = it->second;
+        difference = sizeH - v.size();
+        if(difference != 0){
+            for(int i=difference; i!=0; --i)
+                w.push_back(0);
+            for(int j=0; j<v.size(); ++j){
+                w.push_back(v.at(j));
+            }
+            ret[it->first] = w;
+            w.clear();
+            v.clear();
+            std::cout << '\n';
+            continue;
+        }
+        ret[it->first] = v;
+        v.clear();
+        std::cout << '\n';
+    }
+
+    return ret;
+}
+
 std::map<int,std::vector<int>>
     binary(boost::unordered_set<char> vars){
 
@@ -246,8 +356,8 @@ std::map<int,std::vector<int>>
     int highest = myPow(2,vars.size())-1;
 
     for(int i=highest; i>=0; --i){
-        vect = numberToBin(highest);
-        binVars[highest] = vect;
+        vect = numberToBin(i);
+        binVars[i] = vect;
         vect.clear();
     }
 
@@ -257,6 +367,11 @@ std::map<int,std::vector<int>>
 std::vector<int> numberToBin(int num){
     std::vector<int> binary;
     int currentNum = num,currentPow,pow = 0,power = 1;
+
+    if(num == 0){
+        binary.push_back(0);
+        return binary;
+    }
 
     while((myPow(2,power)) <= currentNum)
         power += 1;
