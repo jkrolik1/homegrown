@@ -26,7 +26,7 @@
 #include <boost/any.hpp>
 #include <boost/optional.hpp>
 #include <boost/algorithm/cxx11/iota.hpp>
-#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string.hpp>           // !
 #include <boost/random.hpp>                     // !!
 #include <boost/logic/tribool.hpp>              // !!!
 #include <boost/unordered_set.hpp>              // !!
@@ -176,14 +176,154 @@ void tautologyBegin();                                                  // tauto
 std::string cutBrackets(std::string expresion);                         // tautology
 boost::tuple<char,char,std::string>                                     // tautology
     takePart(std::string expresionWithoutBrackets);                     // tautology
+void convertSecondaryFileToSearchFile                   // SWI MLP
+    (std::string sourPath,std::string destPath);        // SWI MLP
+std::vector<std::string> takeAttributes                 // SWI MLP
+    (std::string line);                                 // SWI MLP
+void ask(std::string question);                         // SWI MLP
+std::list<std::string> separate(std::string q);         // SWI MLP
+std::set<int> takeAns                                   // SWI MLP
+    (std::string partOfQ, std::string searchFilePath)   // SWI MLP
+std::vector<std::string> ob(std::string line);          // SWI MLP
+std::vector<std::string> ob2(std::string line);         // SWI MLP
 
 int main(){
-    boost::tuple<char,char,std::string> t =
-        takePart(cutBrackets(takeExpresion("tautology.txt")));
-
-    std::cout << boost::get<0>(t) << ' ' << boost::get<1>(t) << ' ' << boost::get<2>(t);
-
+    ask("(c,c1)(a,a1)+(b,b1)");
     return 0;
+}
+
+std::vector<std::string> ob(std::string line){
+    std::string x,part;
+    int y = 0;
+    std::vector<std::string> ret;
+
+    for(int i=0; i<line.size(); ++i){
+        if(line.at(i) == '='){
+            if(line.at(i+1) == ' '){
+                y = i+1;
+                break;
+            }
+        }
+    }
+
+    for(int q=(y+1); q<line.size(); ++q)
+        if(line.at(q) != '(')
+            x.append(line.at(q));
+
+    x.erase((x.length()-2),(x.length()-1));
+
+    std::stringstream ss(x);
+
+    while(getline(ss,part,')'))
+        ret.push_back(part);
+
+    return ret;
+}
+
+std::vector<std::string> ob2(std::string line){
+    std::string x,part;
+    std::vector<std::string> ret;
+
+    for(int q=0; q<line.size(); ++q)
+        if(line.at(q) != '(')
+            x.append(line.at(q));
+
+    x.erase((x.length()-2),(x.length()-1));
+
+    std::stringstream ss(x);
+
+    while(getline(ss,part,')'))
+        ret.push_back(part);
+
+    return ret;
+}
+
+std::set<int> takeAns(std::string partOfQ, std::string searchFilePath){
+    std::ifstream myFile(searchFilePath);
+    std::string line;
+    std::vector<std::string> x,y;
+    std::vector<boost::logic::tribool> p;
+    int m=0;
+
+    y = ob2(partOfQ);               // question
+
+    while(geline(myFile,line)){
+        x = ob(line);               // object
+
+        x.clear();
+    }
+}
+
+std::list<std::string> separate(std::string q){
+    std::stringstream ss(q);
+    std::string x;
+    std::list<std::string> separated;
+
+    while(getline(ss,x,'+'))
+        separated.push_back(x);
+
+    return separated;
+}
+
+void ask(std::string question){
+    convertSecondaryFileToSearchFile("secondaryFile.txt","sourceFile.txt");
+
+    std::list<std::string> separated = separate(question);
+    std::list<std::string>::iterator it = separated.begin();
+    std::vector<set<int>> answer;
+
+    for(; it<separated.end(); ++it){
+        answer.push_back(takeAns(*it));
+
+    }
+}
+
+std::vector<std::string> takeAttributes(std::string line){
+    std::vector<std::string> atrybs;
+    std::string atryb,part;;
+    std::stringstream ss(line);
+
+    while(getline(ss,part,' '))
+        if(part != "")
+            atrybs.push_back(part);
+
+    return atrybs;
+}
+
+void convertSecondaryFileToSearchFile(std::string sourPath,std::string destPath){
+    std::ifstream myFile(sourPath);
+    std::ofstream myFile2;
+    std::string line,component;
+    std::vector<std::string> attributes, numANDvalues;
+    std::map<int,std::vector<std::string>> objects;
+    int numOfIter = 0,numOfIter2 = 1;
+
+    myFile2.open("searchFile.txt",std::ios::trunc);
+
+    while(getline(myFile,line)){
+        if(numOfIter == 0)
+            attributes = takeAttributes(line);
+        if(numOfIter > 0){
+            if((line.at(0) == 'x') || (line.at(0) == 'X')){
+                numANDvalues = takeAttributes(line);
+                myFile2 << 't'+numANDvalues.at(0)+" = ";
+
+                for(auto atr : attributes){
+                    boost::algorithm::to_lower(atr);
+                    myFile2 << '('+atr+','+numANDvalues.at(numOfIter2)+')';
+                    numOfIter2 += 1;
+                }
+
+                myFile2 << '\n';
+                numANDvalues.clear();
+                numOfIter2 = 1;
+            }
+        }
+        numOfIter += 1;
+    }
+
+    myFile.close();
+    myFile2.close();
 }
 
 boost::tuple<char,char,std::string> takePart(std::string expresionWithoutBrackets){
