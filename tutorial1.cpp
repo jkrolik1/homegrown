@@ -20,6 +20,7 @@
 #include <unordered_map>
 #include <windows.h>            // sound
 #include <mmsystem.h>           // sound
+#include <locale>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/variant.hpp>
@@ -45,6 +46,10 @@
 #include <boost/heap/fibonacci_heap.hpp>        // !
 #include <boost/array.hpp>                      // !
 #include <boost/swap.hpp>                       // !
+#include <boost/scope_exit.hpp>                 // *
+#include <boost/algorithm/string.hpp>           // *
+#include <boost/algorithm/string/regex.hpp>     // *
+#include <boost/format.hpp>                     // *
 
 #include "classes.h"
 #define TESTspace2
@@ -148,7 +153,7 @@ void scopedPtr();                       // boost smart pointers
 void scopedArray();                     // boost smart pointers
 void sharedPtr();                       // boost smart pointers
 void ptrVector();                       // ptr container
-void lexicalCastTryCatch();
+void lexicalCastTryCatch();             // lexical cast
 void randomNumbersBoostTime();          // random time
 void randomNumbersBoost                 // random no time
     (int howMany, int from, int to);
@@ -159,6 +164,16 @@ void bimap();                           // bimap
 void heap();                            // heap / priority queue / binomial heap
 void bArray();                          // array
 void bSwap();                           // swap
+int *scopeExit();                       // scope exit
+void stringBoostFunctions();            // string boost - to_upper_lower
+void stringBoostFunctions2();           // string boost - repleace
+void stringBoostFunctions3();           // string boost - trim
+void stringBoostFunctions4();           // string boost - bool functions
+void findingInString();                 // string boost - find
+void mergeVectBoost();                  // string boost - join
+void boostSTRINGSTREAM();               // string boost - stringstream
+void strRegex();                        // string boost - regex
+void formatTest();                      // format
 void timer1min();               // learning method
 void soundLearn();              // learning method
 void soundBreak();              // learning method
@@ -183,13 +198,156 @@ std::vector<std::string> takeAttributes                 // SWI MLP
 void ask(std::string question);                         // SWI MLP
 std::list<std::string> separate(std::string q);         // SWI MLP
 std::set<int> takeAns                                   // SWI MLP
-    (std::string partOfQ, std::string searchFilePath)   // SWI MLP
+    (std::string partOfQ, std::string searchFilePath);  // SWI MLP
 std::vector<std::string> ob(std::string line);          // SWI MLP
 std::vector<std::string> ob2(std::string line);         // SWI MLP
 
 int main(){
-    ask("(c,c1)(a,a1)+(b,b1)");
+
     return 0;
+}
+
+void formatTest(){
+    std::cout << boost::format{"%3%-%1%"} % 1 % 2 % 3 << '\n';  // 3-1
+
+    std::cout << boost::format{"%2%G%1%"} % 50 %
+        boost::io::group(std::showpos,100)<< '\n';              // +100G50
+
+    std::cout << boost::format{"%+s %s %s"} % 1 % 2 % 1 << '\n';// +1 2 1
+    // s - const char*
+    std::cout << boost::format{"%+d %d %d"} % 1 % 2 % 1 << '\n';// +1 2 1
+    // d - string
+
+    std::cout << boost::format{"%|+| %|| %||"} % 3 % 2 % 1 << '\n';
+
+    // exception
+    // catch (boost::io::format_error &ex)
+}
+
+void strRegex(){
+    std::string p = "Boost C++ Libraries";
+
+//    boost::iterator_range<std::string::iterator> r =
+//        boost::algorithm::find_regex(p,boost::regex{"\\w\\+\\+"});
+
+    // C++
+}
+
+void boostSTRINGSTREAM(){
+    std::string s = "Poland Germany USA";
+    std::vector<std::string> x;
+
+    boost::algorithm::split(x,s,
+        boost::algorithm::is_space());
+
+    for(const std::string &i : x)
+        std::cout << i << std::endl;
+}
+
+void mergeVectBoost(){
+    std::vector<std::string> v{"Niech","Zyje","Polska"};
+    std::cout << boost::algorithm::join(v," !! ");  // Niech !! Zyje !! Polska
+}
+
+void findingInString(){
+    std::string s = "Niech zyolje Polska";
+    boost::iterator_range<std::string::iterator> it =
+        boost::algorithm::find_first(s,"ol");
+
+    // boost::algorithm::find_last()
+    // boost::algorithm::find_nth()
+    // boost::algorithm::find_head()
+    // boost::algorithm::find_tail()
+
+    std::cout << it;        // " " - no contain
+                            // "ol" - contains
+}
+
+void stringBoostFunctions4(){
+    std::wstring x(L"xyzABCdef123!@#");
+
+    std::cout << std::boolalpha;
+
+    std::cout << boost::algorithm::starts_with(x,"x") << '\n';
+    std::cout << boost::algorithm::ends_with(x,"@") << '\n';
+    std::cout << boost::algorithm::contains(x,"-") << '\n';
+
+    // ???
+    std::cout << boost::algorithm::lexicographical_compare(x,"xyzABCdef") << '\n';
+}
+
+void stringBoostFunctions3(){
+    std::string s = "\t xyzABCdef \t";
+    std::cout << '_' << s << '_' << std::endl;
+
+    boost::algorithm::trim_left(s);
+    std::cout << '_' << s << '_' << std::endl;
+
+    boost::algorithm::trim_right(s);
+    std::cout << '_' << s << '_' << std::endl;
+
+    boost::algorithm::trim(s);
+    std::cout << '_' << s << '_' << std::endl;
+
+    // ------------------------------------
+
+    std::string t = "123*456*78999";
+    std::cout << '_' << boost::algorithm::trim_copy_if(t,
+        boost::algorithm::is_digit()) << '_';               // *456*
+
+    std::cout << std::endl;
+
+    std::cout << '_' << boost::algorithm::trim_copy_if(t,
+        boost::algorithm::is_any_of("9")) << '_';           // 123*456*78
+}
+
+void stringBoostFunctions2(){
+    std::string b("abcdefghijklmnoprstuwxyz");
+
+    std::cout << boost::algorithm::replace_first_copy(b,"d","D") << std::endl;
+    std::cout << boost::algorithm::replace_last_copy(b,"d","D") << std::endl;
+
+    std::cout << boost::algorithm::replace_nth_copy(b,"d",0,"D") << std::endl;
+
+    std::cout << boost::algorithm::replace_all_copy(b,"d","D") << std::endl;
+
+    std::cout << boost::algorithm::replace_head_copy(b,3,"ABC") << std::endl;
+    std::cout << boost::algorithm::replace_tail_copy(b,3,"XYZ") << std::endl;
+}
+
+void stringBoostFunctions(){
+    std::string x = "Polska";
+
+    boost::algorithm::to_upper(x);
+    std::cout << x << std::endl;
+    std::string y = boost::algorithm::to_lower_copy(x);
+    std::cout << y << std::endl;
+
+    // -----------------------------------
+
+    std::string s = "Boost C++ Libraries";
+    std::cout << boost::algorithm::erase_first_copy(s,"s") << std::endl;        // Boot C++ Libraries
+    std::cout << boost::algorithm::erase_nth_copy(s,"s",1) << std::endl;        // Boost C++ Librarie
+    std::cout << boost::algorithm::erase_last_copy(s,"s") << std::endl;         // Boost C++ Librarie
+    std::cout << boost::algorithm::erase_all_copy(s,"s") << std::endl;          // Boot C++ Librarie
+    std::cout << boost::algorithm::erase_head_copy(s,5) << std::endl;           //  C++ Librarie
+    std::cout << boost::algorithm::erase_tail_copy(s,9) << '_' << std::endl;    // Boost C++ _
+}
+
+int *scopeExit(){
+    int *i = new int{10};
+
+    BOOST_SCOPE_EXIT(&i){
+        delete i;
+        i = 0;
+    }BOOST_SCOPE_EXIT_END
+
+    std::cout << *i << std::endl;
+
+    return i;
+
+    // int *j = scopeExit();
+    // std::cout << j;
 }
 
 std::vector<std::string> ob(std::string line){
@@ -208,7 +366,7 @@ std::vector<std::string> ob(std::string line){
 
     for(int q=(y+1); q<line.size(); ++q)
         if(line.at(q) != '(')
-            x.append(line.at(q));
+            x.append(line.at(q)+"");
 
     x.erase((x.length()-2),(x.length()-1));
 
@@ -226,7 +384,7 @@ std::vector<std::string> ob2(std::string line){
 
     for(int q=0; q<line.size(); ++q)
         if(line.at(q) != '(')
-            x.append(line.at(q));
+            x.append(line.at(q)+"");
 
     x.erase((x.length()-2),(x.length()-1));
 
@@ -247,7 +405,7 @@ std::set<int> takeAns(std::string partOfQ, std::string searchFilePath){
 
     y = ob2(partOfQ);               // question
 
-    while(geline(myFile,line)){
+    while(getline(myFile,line)){
         x = ob(line);               // object
 
         x.clear();
@@ -270,12 +428,14 @@ void ask(std::string question){
 
     std::list<std::string> separated = separate(question);
     std::list<std::string>::iterator it = separated.begin();
-    std::vector<set<int>> answer;
+    std::vector<std::set<int>> answer;
 
-    for(; it<separated.end(); ++it){
-        answer.push_back(takeAns(*it));
+    for(; it!=separated.end(); ++it){
+        answer.push_back(takeAns(*it,"secondaryFile.txt"));
 
     }
+
+    // ask("(c,c1)(a,a1)+(b,b1)");
 }
 
 std::vector<std::string> takeAttributes(std::string line){
