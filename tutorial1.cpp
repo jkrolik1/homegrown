@@ -21,10 +21,10 @@
 #include <windows.h>            // sound
 #include <mmsystem.h>           // sound
 #include <locale>
+#include <typeinfo>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/variant.hpp>
-#include <boost/any.hpp>
 #include <boost/optional.hpp>
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>           // !
@@ -50,6 +50,10 @@
 #include <boost/algorithm/string.hpp>           // *
 #include <boost/algorithm/string/regex.hpp>     // *
 #include <boost/format.hpp>                     // *
+#include <boost/tuple/tuple_io.hpp>             // *
+#include <boost/ref.hpp>                        // *
+#include <boost/tuple/tuple_comparison.hpp>     // *
+#include <boost/any.hpp>                        // *
 
 #include "classes.h"
 #define TESTspace2
@@ -174,6 +178,8 @@ void mergeVectBoost();                  // string boost - join
 void boostSTRINGSTREAM();               // string boost - stringstream
 void strRegex();                        // string boost - regex
 void formatTest();                      // format
+void tupleRef();                        // tuple, ref ,tuple_io, tuple_comparision
+void anyB();                            // any, typeinfo
 void timer1min();               // learning method
 void soundLearn();              // learning method
 void soundBreak();              // learning method
@@ -201,10 +207,231 @@ std::set<int> takeAns                                   // SWI MLP
     (std::string partOfQ, std::string searchFilePath);  // SWI MLP
 std::vector<std::string> ob(std::string line);          // SWI MLP
 std::vector<std::string> ob2(std::string line);         // SWI MLP
+void printNumber(std::ostream &os, int i);
+void TicTacToeRUN();                                        // TTT
+std::string takeCircleField();                              // TTT
+std::string takeCrossField();                               // TTT
+int whoStartGame();                                         // TTT
+int startGame(int player,std::map<int,char> board);         // TTT
+void paintBoard(std::map<int,char> board,int player);       // TTT
+boost::logic::tribool throughBoard                          // TTT
+    (std::map<int,char> board, int usr);                    // TTT
+std::map<int,char> fillMapEmptyValues();                    // TTT
 
 int main(){
 
     return 0;
+}
+
+std::map<int,char> fillMapEmptyValues(){
+    std::map<int,char> x;
+
+    for(int i=1; i<10; ++i){
+        x[i] = ' ';
+    }
+
+    return x;
+}
+
+boost::logic::tribool throughBoard(std::map<int,char> board, int usr){
+    for(auto &i : board)
+        if(i.first == usr)
+            if(i.second != ' ')
+                return true;
+    return false;
+}
+
+void paintBoard(std::map<int,char> board,int player){
+    std::cout << '\t' << "---------";
+    int j=0;
+
+    for(auto &i : board){
+        if(j % 3 == 0){
+            if(j!=0)
+                std::cout << "|";
+            std::cout << std::endl << '\t' << "| ";
+        }
+
+        if(i.second != ' '){
+            std::cout << i.second << " ";
+        }else{
+            std::cout << i.first << " ";
+        }
+
+        ++j;
+    }
+
+    std::cout << "|" << std::endl <<'\t' << "---------" << std::endl;
+}
+
+int startGame(int player,std::map<int,char> board){
+    std::string user;
+    int user2=0,user3=0,ret = 0;
+
+    if(player == 0) user = takeCircleField();
+    if(player == 1) user = takeCrossField();
+
+    try{
+        user2 = boost::lexical_cast<int>(user);
+        if((user2<1 || user2>9) || (throughBoard(board,user2)))
+            throw 0;
+        else
+            return user2;
+    }catch(boost::bad_lexical_cast &e){
+        user3 = startGame(player,board);
+    }catch(int x){
+        user3 = startGame(player,board);
+    }
+
+    return user3;
+}
+
+int whoStartGame(){
+    std::time_t now = std::time(0);
+    boost::random::mt19937 x(static_cast<std::uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(0,1);
+    return f(x);
+}
+
+std::string takeCircleField(){
+    std::string field;
+
+    std::cout << "Podaj numer pola, w ktorym chcesz postawic kolko: ";
+    std::cin >> field;
+
+    return field;
+}
+
+std::string takeCrossField(){
+    std::string field;
+
+    std::cout << "Podaj numer pola, w ktorym chcesz postawic krzyzyk: ";
+    std::cin >> field;
+
+    return field;
+}
+
+void TicTacToeRUN(){
+    int player, user;
+    char c;
+    std::map<int,char> board = fillMapEmptyValues();
+    char arr[9];
+    arr[0] = 'p';
+
+    paintBoard(board,player);
+
+    player = whoStartGame();
+    if(player == 0) c = 'O';
+    if(player == 1) c = 'X';
+
+    while(true){
+        user = startGame(player,board);
+        board[user]=c;
+
+        paintBoard(board,player);
+
+        auto l = board.begin();
+        for(int u=1; l!=board.end(); l++,++u)
+            arr[u] = l->second;
+
+        if(arr[1]==arr[2]==arr[3])                  // ????????????????????
+            std::cout << "!!!!!!!!!!!";
+
+        if(player == 1){
+            player = 0;
+            c = 'O';
+            continue;
+        }
+
+        if(player == 0){
+            player = 1;
+            c = 'X';
+            continue;
+        }
+
+    }
+
+}
+
+void anyB(){
+    boost::any a;
+
+    a = 1;
+    std::cout << boost::any_cast<int>(a) << std::endl;
+    a = std::string("qwerty");
+    std::cout << boost::any_cast<std::string>(a) << std::endl;
+
+    // -------------------
+    WRT("");
+
+    boost::any g = "poll";
+    try{
+        std::cout << boost::any_cast<std::string>(g);
+    }catch(boost::bad_any_cast &e){
+        std::cerr << e.what();
+    }
+
+    // -------------------
+    WRT("");
+
+    boost::any lo = 8;
+
+    if(!lo.empty()){
+        const std::type_info &ti = lo.type();
+        std::cout << ti.name();
+    }
+}
+
+void printNumber(std::ostream &os, int i){
+    os << i << std::endl;
+}
+
+void tupleRef(){
+    typedef boost::tuple<char,std::string,double,int> x;
+    x first{'a',"aA",1.1,1};
+
+    std::cout << first;                 // boost/tuple/tuple_io
+
+    // --------------------------------------
+
+    std::string d = "abc";
+    std::cout << std::endl << boost::make_tuple(false,1,'a',boost::ref(d),1.98765);
+    std::cout << std::endl;
+
+    // --------------------------------------
+    // boost/ref
+    std::vector<int> v{1,2,3};
+    std::for_each(v.begin(),v.end(),
+        std::bind(printNumber,boost::ref(std::cout),std::placeholders::_1));
+
+    // --------------------------------------
+
+    x second{'b',"bB",2.2,2};       // OR - x second = booost::make_tuple('b',"bB",2.2,2)
+    std::cout << std::endl << second.get<2>();
+    std::cout << std::endl << boost::get<3>(second);
+
+    x third = boost::make_tuple('b',"cC",2,2);
+    third.get<1>() = "bB";
+    // boost/tuple/tuple_comparision
+    std::cout << std::endl << std::boolalpha << (second != third);
+
+    // --------------------------------------
+
+    char l = 's';
+    std::string c = "po";
+    double xz = 9.876;
+    int y = 0;
+    x fourth = boost::tie(l,c,xz,y);
+
+    // --------------------------------------
+
+    char* opo = "poiop";
+    std::string opoy = "ptoiop";
+    int *ptr = new int(10);
+
+    typedef boost::tuple<char*, const std::string&, int&> q;
+    q r(opo,boost::cref(opoy),*ptr);
+    std::cout << std::endl << r;
 }
 
 void formatTest(){
