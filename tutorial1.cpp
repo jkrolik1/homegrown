@@ -25,7 +25,6 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/variant.hpp>
-#include <boost/optional.hpp>
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>           // !
 #include <boost/random.hpp>                     // !!
@@ -54,6 +53,12 @@
 #include <boost/ref.hpp>                        // *
 #include <boost/tuple/tuple_comparison.hpp>     // *
 #include <boost/any.hpp>                        // *
+#include <boost/tokenizer.hpp>                  // &
+#include <boost/optional.hpp>                   // &
+#include <boost/variant.hpp>                    // &
+#include <boost/compressed_pair.hpp>            // &
+#include <boost/dynamic_bitset.hpp>             // &
+#include <boost/dynamic_bitset.hpp>             // &
 
 #include "classes.h"
 #define TESTspace2
@@ -148,38 +153,6 @@ boost::logic::tribool inFacts(char b,                       // forward conclusio
     std::vector<char> facts);                               // forward conclusion
 void showFacts(std::vector<char> x);                        // forward conclusion
 void launchForwardConclusion();                             // RUN forward conclusion
-void regexMatchString();                // regex
-void regexMatchStringIterator();        // regex
-void cmatch();                          // regex
-void smatch();                          // regex
-void regexSearch();                     // regex
-void scopedPtr();                       // boost smart pointers
-void scopedArray();                     // boost smart pointers
-void sharedPtr();                       // boost smart pointers
-void ptrVector();                       // ptr container
-void lexicalCastTryCatch();             // lexical cast
-void randomNumbersBoostTime();          // random time
-void randomNumbersBoost                 // random no time
-    (int howMany, int from, int to);
-void minmaxBoost();                     // minmax
-void minmaxBoost2();                    // minmax element
-void foreach();                         // foreach, reverse foreach
-void bimap();                           // bimap
-void heap();                            // heap / priority queue / binomial heap
-void bArray();                          // array
-void bSwap();                           // swap
-int *scopeExit();                       // scope exit
-void stringBoostFunctions();            // string boost - to_upper_lower
-void stringBoostFunctions2();           // string boost - repleace
-void stringBoostFunctions3();           // string boost - trim
-void stringBoostFunctions4();           // string boost - bool functions
-void findingInString();                 // string boost - find
-void mergeVectBoost();                  // string boost - join
-void boostSTRINGSTREAM();               // string boost - stringstream
-void strRegex();                        // string boost - regex
-void formatTest();                      // format
-void tupleRef();                        // tuple, ref ,tuple_io, tuple_comparision
-void anyB();                            // any, typeinfo
 void timer1min();               // learning method
 void soundLearn();              // learning method
 void soundBreak();              // learning method
@@ -217,140 +190,211 @@ void paintBoard(std::map<int,char> board,int player);       // TTT
 boost::logic::tribool throughBoard                          // TTT
     (std::map<int,char> board, int usr);                    // TTT
 std::map<int,char> fillMapEmptyValues();                    // TTT
+// -------------------------------------------------------------------------
+void regexMatchString();                // regex
+void regexMatchStringIterator();        // regex
+void cmatch();                          // regex
+void smatch();                          // regex
+void regexSearch();                     // regex
+void scopedPtr();                       // boost smart pointers
+void scopedArray();                     // boost smart pointers
+void sharedPtr();                       // boost smart pointers
+void ptrVector();                       // ptr container
+void lexicalCastTryCatch();             // lexical cast
+void randomNumbersBoostTime();          // random time
+void randomNumbersBoost                 // random no time
+    (int howMany, int from, int to);
+void minmaxBoost();                     // minmax
+void minmaxBoost2();                    // minmax element
+void foreach();                         // foreach, reverse foreach
+void bimap();                           // bimap
+void heap();                            // heap / priority queue / binomial heap
+void bArray();                          // array
+void bSwap();                           // swap
+int *scopeExit();                       // scope exit
+void stringBoostFunctions();            // string boost - to_upper_lower
+void stringBoostFunctions2();           // string boost - repleace
+void stringBoostFunctions3();           // string boost - trim
+void stringBoostFunctions4();           // string boost - bool functions
+void findingInString();                 // string boost - find
+void mergeVectBoost();                  // string boost - join
+void boostSTRINGSTREAM();               // string boost - stringstream
+void strRegex();                        // string boost - regex
+void formatTest();                      // format
+void tupleRef();                        // tuple, ref ,tuple_io, tuple_comparision
+void anyB();                            // any, typeinfo
+void tokenizerB();                      // tokenizer
+boost::optional<int> ern();             // optional: 1 case     ternary
+void RUNern();                          // optional: 1 case
+boost::optional<int> ern2();            // optional: 2 case     optional constructor
+void RUNern2();                         // optional: 2 case
+boost::optional<int> ern3();            // optional: 3 case     make_optional
+void RUNern3();                         // optional: 3 case
+void variantIntroduction();             // boost variant
+void variantAV();                       // boost variant    apply_visitor
+void boostPairLikeSTDpair();            // compressed pair
+void dynamicBitset();                   // dynamic_bitset
 
 int main(){
-
+    dynamicBitset();
     return 0;
 }
 
-std::map<int,char> fillMapEmptyValues(){
-    std::map<int,char> x;
+void dynamicBitset(){
+    boost::dynamic_bitset<> db{8,65};
+                            //   | - wartosc binarna
+                            // | - ilosc bitow ( _ _ _ )
 
-    for(int i=1; i<10; ++i){
-        x[i] = ' ';
-    }
+    std::cout << db << std::endl;       // 01000001
 
-    return x;
+    db.push_back(true);                 // stores only 1,0,true,false
+    db.push_back(1);
+    db.push_back(1);                    // adding three ones at the front
+
+    std::cout << db << std::endl;       // 11101000001
+
+
+    std::cout.setf(std::ios::boolalpha);    // all the time below!!!
+
+    std::cout << db.size() << std::endl;    // amount of bits
+    std::cout << db.count() << std::endl;   // amount of ones
+
+    std::cout << db.any() << std::endl;     // true
+    std::cout << db.none() << std::endl;    // false
+
+    std::cout << db[0].flip() << std::endl;
+                                // false - value after changing
+    std::cout << db << std::endl;       // 11101000000
+
+    db[1] = 0;
+    std::cout << db << std::endl;       // 11101000000
+    std::cout << ~db[1] << std::endl;   // return negation of value at [x]
+    std::cout << db << std::endl;       // 11101000000
 }
 
-boost::logic::tribool throughBoard(std::map<int,char> board, int usr){
-    for(auto &i : board)
-        if(i.first == usr)
-            if(i.second != ' ')
-                return true;
-    return false;
+void boostPairLikeSTDpair(){
+    std::pair<int,std::set<testStruct>> pair1;
+    boost::compressed_pair<int,std::set<testStruct>> pair2;
+
+    std::cout << sizeof(pair1) << ' ' << sizeof(pair2);
+                // pair2 should be less
 }
 
-void paintBoard(std::map<int,char> board,int player){
-    std::cout << '\t' << "---------";
-    int j=0;
+void variantAV(){
+    boost::variant<double,char,std::string> var, var2;
+    var = 2.56;
+    boost::apply_visitor(out(),var);
+    var = 'a';
+    boost::apply_visitor(out(),var);
+    var = "xyz";
+    boost::apply_visitor(out(),var);
 
-    for(auto &i : board){
-        if(j % 3 == 0){
-            if(j!=0)
-                std::cout << "|";
-            std::cout << std::endl << '\t' << "| ";
-        }
+    var2 = 'p';
+    boost::apply_visitor(out2(),var2);
+}
+template <typename X>
+void out2::operator()(X c) const{std::cout << c << std::endl;}
+void out::operator()(double x) const{std::cout << x << std::endl;}
+void out::operator()(char x) const{std::cout << x << std::endl;}
+void out::operator()(std::string x) const{std::cout << x << std::endl;}
 
-        if(i.second != ' '){
-            std::cout << i.second << " ";
-        }else{
-            std::cout << i.first << " ";
-        }
+void variantIntroduction(){
+    boost::variant<double,bool> likeUnion, likeUnion2;
+    likeUnion = 9.8;
+    likeUnion = true;
 
-        ++j;
-    }
+    // ---------------------
 
-    std::cout << "|" << std::endl <<'\t' << "---------" << std::endl;
+    likeUnion2 = true;
+    std::cout << boost::get<bool>(likeUnion2);
+    likeUnion2 = 122.1;
+    std::cout << boost::get<double>(likeUnion2);
 }
 
-int startGame(int player,std::map<int,char> board){
-    std::string user;
-    int user2=0,user3=0,ret = 0;
-
-    if(player == 0) user = takeCircleField();
-    if(player == 1) user = takeCrossField();
-
-    try{
-        user2 = boost::lexical_cast<int>(user);
-        if((user2<1 || user2>9) || (throughBoard(board,user2)))
-            throw 0;
-        else
-            return user2;
-    }catch(boost::bad_lexical_cast &e){
-        user3 = startGame(player,board);
-    }catch(int x){
-        user3 = startGame(player,board);
-    }
-
-    return user3;
+boost::optional<int> ern3(){
+    int y = std::rand();
+    return boost::make_optional(y%2==0,y);
 }
 
-int whoStartGame(){
+void RUNern3(){
+    std::srand(static_cast<unsigned int>(std::time(0)));
+    boost::optional<int> i = ern3();
+    int p = boost::get_optional_value_or(i,987654321);
+    std::cout << p;
+}
+
+boost::optional<int> ern2(){
+    int i = std::rand();
+    return boost::optional<int>(i%2 == 0, i);       // 1st param - condition
+                                                    // 2st param - return value if 1st is good
+}
+
+void RUNern2(){
+    std::srand(static_cast<unsigned int>(std::time(0)));
+    boost::optional<int> i  = ern2();
+
+    if(i.is_initialized())
+        std::cout << i.get();
+}
+
+void RUNern(){
+    boost::optional<int> i = ern();
+    if(i)
+        std::cout << *i;
+}
+
+boost::optional<int> ern(){
     std::time_t now = std::time(0);
-    boost::random::mt19937 x(static_cast<std::uint32_t>(now));
-    boost::random::uniform_int_distribution<> f(0,1);
-    return f(x);
+    boost::random::mt19937 x(static_cast<uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(1,100);
+    int h = f(x);
+    std::cout << h << std::endl;
+
+    return (h%2==0) ? h : boost::optional<int>();
 }
 
-std::string takeCircleField(){
-    std::string field;
+void tokenizerB(){
+    // separated by spaces, punctuation marks
+    typedef boost::tokenizer<boost::char_separator<char>> tok;
+    std::string s = "Jakub,Krolik";
+    tok t1(s);
+    for(tok::iterator it = t1.begin();          // INACZEJ ITERATOR NIZ ZWYKLE!!!
+        it != t1.end();
+        ++it)
+            std::cout << *it << std::endl;      // Jakub
+                                                // ,
+                                                // Krolik
+    // custom separator
+    boost::char_separator<char> sep(" ");
+    std::string s2 = "qwerty qwerta+";
+    tok t2(s2,sep);                             // s2 MUSI BYÆ ZMIENNA
+    for(const auto &x : t2)
+        std::cout << x << std::endl;            // qwerty
+                                                // qwerta+
 
-    std::cout << "Podaj numer pola, w ktorym chcesz postawic kolko: ";
-    std::cin >> field;
+    // more custom separators
+    boost::char_separator<char> sep2(" ","+");
+    tok t3(s2,sep2);
+    for(const auto &x : t3)
+        std::cout << x << std::endl;            // qwerty
+                                                // qwerta
+                                                // +
+    // commas || CSV (COMMA SEPARATED VALUES) // ESCAPED_LIST_SEPARATOR
+    // delete , and "
+    typedef boost::tokenizer<boost::escaped_list_separator<char>> token;
+    std::string h = "q,p,o";
+    token p(h);
+    for(const auto &l : p)
+        std::cout << l << '\n';
 
-    return field;
-}
-
-std::string takeCrossField(){
-    std::string field;
-
-    std::cout << "Podaj numer pola, w ktorym chcesz postawic krzyzyk: ";
-    std::cin >> field;
-
-    return field;
-}
-
-void TicTacToeRUN(){
-    int player, user;
-    char c;
-    std::map<int,char> board = fillMapEmptyValues();
-    char arr[9];
-    arr[0] = 'p';
-
-    paintBoard(board,player);
-
-    player = whoStartGame();
-    if(player == 0) c = 'O';
-    if(player == 1) c = 'X';
-
-    while(true){
-        user = startGame(player,board);
-        board[user]=c;
-
-        paintBoard(board,player);
-
-        auto l = board.begin();
-        for(int u=1; l!=board.end(); l++,++u)
-            arr[u] = l->second;
-
-        if(arr[1]==arr[2]==arr[3])                  // ????????????????????
-            std::cout << "!!!!!!!!!!!";
-
-        if(player == 1){
-            player = 0;
-            c = 'O';
-            continue;
-        }
-
-        if(player == 0){
-            player = 1;
-            c = 'X';
-            continue;
-        }
-
-    }
-
+    // individual || OFFSET_SEPARATOR
+    typedef boost::tokenizer<boost::offset_separator> tokeniz;
+    std::string m = "__--|-|--__";
+    int offsets[] = {5,1,5};
+    boost::offset_separator sep8(offsets,offsets+3);        // table size
+    tokeniz u(m,sep8);
+    for(const auto &v : u)
+        std::cout << v << std::endl;
 }
 
 void anyB(){
@@ -575,6 +619,395 @@ int *scopeExit(){
 
     // int *j = scopeExit();
     // std::cout << j;
+}
+
+void bSwap(){
+    std::string x("abc123");
+    std::string y("defghi");
+
+    if(std::regex_match(x,std::regex("[^0-9]*[0-9]{3}[^0-9]*")))
+        boost::swap(x,y);
+
+    std::cout << x;
+}
+
+void bArray(){
+    typedef boost::array<std::string,5> tab;
+    tab a;
+
+    *a.begin() = "Poland";
+    a.at(1) = "Germany";
+    *a.rbegin() = "Turkey";
+
+    std::sort(a.begin(),a.end());
+
+    for(const std::string &s : a)
+        std::cout << s << " ";
+}
+
+void heap(){
+    std::time_t time = std::time(0);
+    boost::random::mt19937 rand(static_cast<std::uint32_t>(time));
+    boost::random::uniform_int_distribution<> f(1,10);
+    boost::random::uniform_int_distribution<> g(10,20);
+
+    boost::heap::priority_queue<int> x;
+    boost::heap::binomial_heap<int> y1;
+    boost::heap::binomial_heap<int> y2;
+    boost::heap::fibonacci_heap<int> z;
+
+    x.push(f(rand));
+    x.push(f(rand));
+    x.push(f(rand));
+
+    y1.push(g(rand));
+    y1.push(g(rand));
+    y1.push(g(rand));
+    y2.push(f(rand));
+
+    std::cout << x.top() << std::endl;
+    std::cout << y1.top() << std::endl << std::endl;
+
+    y1.merge(y2);
+
+    for(auto it = y1.ordered_begin(); it != y1.ordered_end(); ++it)
+        std::cout << *it << " ";
+
+    std::cout << std::endl << std::endl << y2.empty();
+
+    z.push(g(rand));
+    z.push(g(rand));
+    auto handle = z.push(12);
+    z.update(handle,11);
+    std::cout << std::endl << std::endl << z.top() << std::endl << std::endl;
+
+    for(auto it2 = z.ordered_begin(); it2 != z.ordered_end(); ++it2)
+        std::cout << *it2 << " ";
+
+}
+
+void bimap(){
+    typedef boost::bimap<int,std::string> firstMap;
+    firstMap cars;
+
+    cars.insert(firstMap::value_type(1,"BMW"));
+    cars.insert(firstMap::value_type(2,"Audi"));
+    cars.insert(firstMap::value_type(3,"Suzuki"));
+
+    // check if is value in bimap
+    std::cout << cars.left.count(1) << std::endl;
+    std::cout << cars.right.count("x") << std::endl;
+
+    for(auto it = cars.begin(); it != cars.end(); ++it)
+        std::cout << it->left << " " << it->right << std::endl;
+}
+
+void foreach(){
+    std::vector<int> v;
+    v.push_back(1);
+    v.push_back(2);
+    v.push_back(3);
+
+    BOOST_FOREACH(auto x, v){
+        std::cout << x << " ";
+    }
+
+    std::cout << std::endl;
+
+    BOOST_REVERSE_FOREACH(auto y, v){
+        std::cout << y << " ";
+    }
+}
+
+void minmaxBoost2(){
+    typedef boost::unordered_set<int> p;
+    p p1;
+    std::time_t now = std::time(0);
+    boost::random::mt19937 x(static_cast<uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(1,100);
+
+    for(int i=0; i<20; ++i)
+        p1.insert(f(x));
+
+    std::pair<boost::unordered_set<int>::iterator,
+        boost::unordered_set<int>::iterator> mm =
+        boost::minmax_element(p1.begin(),p1.end());
+
+    BOOST_FOREACH(p::value_type x, p1)
+        std::cout << x << " ";
+
+    std::cout << "\nMin: " << *mm.first << "\n";
+    std::cout << "Max: " << *mm.second;
+}
+
+void minmaxBoost(){
+    std::time_t now = std::time(0);
+    boost::random::mt19937 g(static_cast<std::uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(1,100);
+    boost::scoped_ptr<int> x(new int(f(g)));
+    boost::scoped_ptr<int> y(new int(f(g)));
+
+    boost::tuple<const int&, const int&> t =
+        boost::minmax(*x.get(),*y.get());
+
+    std::cout << t.get<0>() << "\n" << t.get<1>();
+}
+
+void randomNumbersBoostTime(){
+    std::time_t now = std::time(0);
+    boost::random::mt19937 x
+        (static_cast<std::uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(1,100);
+    std::cout << f(x);
+}
+
+void lexicalCastTryCatch(){
+    std::string a = "abc";
+    int x;
+
+    try{
+        boost::lexical_cast<int>(a);
+    }
+    catch(const boost::bad_lexical_cast &ex){
+        //std::cerr << ex.what();
+        std::cout << "x";
+    }
+}
+
+void ptrVector(){
+    boost::ptr_vector<int> v;
+    v.push_back(new int(1));
+    v.push_back(new int(2));
+    v.push_back(new int(3));
+    v.push_back(new int(4));
+
+    std::cout << v[2];
+    // std::cout << v.back();
+}
+
+void sharedPtr(){
+    boost::scoped_ptr<int> a1(new int(2));
+    // boost::scoped_ptr<int> a2(a1);       ERROR
+
+    boost::shared_ptr<int> p1(new int(5));
+    boost::shared_ptr<int> p2(p1);
+
+    p1.reset(new int(3));
+    p1.reset();
+    std::cout << static_cast<bool>(p2);
+}
+
+void scopedArray(){
+    boost::scoped_array<char> p(new char[26]);
+    char i='a';
+    int j=0;
+
+    for(i='a',j=0; i<='z'; ++i,++j){
+        p[j] = i;
+        std::cout << p[j];
+    }
+
+}
+
+void scopedPtr(){
+    boost::scoped_ptr<int> p(new int(5));
+    std::cout << *p << "\n";
+
+    p.reset(new int(2));
+    std::cout << *p << " " << p.get();
+
+    p.reset();
+    std::cout << std::endl << static_cast<bool>(p);
+    std::cout << std::endl <<
+        std::boolalpha << static_cast<bool>(p);
+}
+
+void regexSearch(){
+    std::string s ("this subject has a submarine as a subsequence");
+    std::smatch m;
+    std::regex e("\\b(sub)([^ ]*)");
+
+    while (std::regex_search(s,m,e)){
+        for (auto x : m)
+            std::cout << x << " ";
+    std::cout << std::endl;
+    s = m.suffix().str();
+  }
+}
+
+void cmatch(){
+    const char* cstr = "6";
+    std::cmatch cm;
+    std::regex ex("[0-9]{1}");
+    std::regex_match(cstr,cm,ex);
+    std::cout << cm.size() << " matches";
+}
+
+void smatch(){
+    std::string s = "p0@";
+    std::string s2 = "2121@";
+
+    std::regex eq("(([a-zA-z]{2,}.)|([a-zA-z]+[0-9]*.))@");
+    std::smatch p,p2,p3;
+
+    std::regex_match(s,p,eq);
+    std::regex_match(s2,p2,eq);
+    std::regex_match(s,p3,eq,
+                     std::regex_constants::match_default);
+
+
+    std::cout << p.size() << " matches\n";
+    std::cout << p2.size() << " matches";
+    std::cout << "\n\nthe matches where: ";
+    for(unsigned i=0; i<p3.size(); ++i)
+        std::cout << "[" << p3[i] << "] ";
+    std::cout << std::endl;
+}
+
+void regexMatchStringIterator(){
+    std::string s = "09";
+    std::regex x("[0-9]{1}");
+    if(std::regex_match(s.begin(),s.end(),x))
+        std::cout << "x";
+}
+
+void regexMatchString(){
+    std::string s = "1";
+    std::regex x("[0-9]{1}");
+    if(std::regex_match(s,x))
+        std::cout << "x";
+}
+
+// -----------------------------------------------------------------`
+
+std::map<int,char> fillMapEmptyValues(){
+    std::map<int,char> x;
+
+    for(int i=1; i<10; ++i){
+        x[i] = ' ';
+    }
+
+    return x;
+}
+
+boost::logic::tribool throughBoard(std::map<int,char> board, int usr){
+    for(auto &i : board)
+        if(i.first == usr)
+            if(i.second != ' ')
+                return true;
+    return false;
+}
+
+void paintBoard(std::map<int,char> board,int player){
+    std::cout << '\t' << "---------";
+    int j=0;
+
+    for(auto &i : board){
+        if(j % 3 == 0){
+            if(j!=0)
+                std::cout << "|";
+            std::cout << std::endl << '\t' << "| ";
+        }
+
+        if(i.second != ' '){
+            std::cout << i.second << " ";
+        }else{
+            std::cout << i.first << " ";
+        }
+
+        ++j;
+    }
+
+    std::cout << "|" << std::endl <<'\t' << "---------" << std::endl;
+}
+
+int startGame(int player,std::map<int,char> board){
+    std::string user;
+    int user2=0,user3=0,ret = 0;
+
+    if(player == 0) user = takeCircleField();
+    if(player == 1) user = takeCrossField();
+
+    try{
+        user2 = boost::lexical_cast<int>(user);
+        if((user2<1 || user2>9) || (throughBoard(board,user2)))
+            throw 0;
+        else
+            return user2;
+    }catch(boost::bad_lexical_cast &e){
+        user3 = startGame(player,board);
+    }catch(int x){
+        user3 = startGame(player,board);
+    }
+
+    return user3;
+}
+
+int whoStartGame(){
+    std::time_t now = std::time(0);
+    boost::random::mt19937 x(static_cast<std::uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(0,1);
+    return f(x);
+}
+
+std::string takeCircleField(){
+    std::string field;
+
+    std::cout << "Podaj numer pola, w ktorym chcesz postawic kolko: ";
+    std::cin >> field;
+
+    return field;
+}
+
+std::string takeCrossField(){
+    std::string field;
+
+    std::cout << "Podaj numer pola, w ktorym chcesz postawic krzyzyk: ";
+    std::cin >> field;
+
+    return field;
+}
+
+void TicTacToeRUN(){
+    int player, user;
+    char c;
+    std::map<int,char> board = fillMapEmptyValues();
+    char arr[9];
+    arr[0] = 'p';
+
+    paintBoard(board,player);
+
+    player = whoStartGame();
+    if(player == 0) c = 'O';
+    if(player == 1) c = 'X';
+
+    while(true){
+        user = startGame(player,board);
+        board[user]=c;
+
+        paintBoard(board,player);
+
+        auto l = board.begin();
+        for(int u=1; l!=board.end(); l++,++u)
+            arr[u] = l->second;
+
+        if(arr[1]==arr[2]==arr[3])                  // ????????????????????
+            std::cout << "!!!!!!!!!!!";
+
+        if(player == 1){
+            player = 0;
+            c = 'O';
+            continue;
+        }
+
+        if(player == 0){
+            player = 1;
+            c = 'X';
+            continue;
+        }
+
+    }
+
 }
 
 std::vector<std::string> ob(std::string line){
@@ -992,263 +1425,6 @@ void timer1min(){
 
 		std::cout << time_left << " ";
 	}
-}
-
-void bSwap(){
-    std::string x("abc123");
-    std::string y("defghi");
-
-    if(std::regex_match(x,std::regex("[^0-9]*[0-9]{3}[^0-9]*")))
-        boost::swap(x,y);
-
-    std::cout << x;
-}
-
-void bArray(){
-    typedef boost::array<std::string,5> tab;
-    tab a;
-
-    *a.begin() = "Poland";
-    a.at(1) = "Germany";
-    *a.rbegin() = "Turkey";
-
-    std::sort(a.begin(),a.end());
-
-    for(const std::string &s : a)
-        std::cout << s << " ";
-}
-
-void heap(){
-    std::time_t time = std::time(0);
-    boost::random::mt19937 rand(static_cast<std::uint32_t>(time));
-    boost::random::uniform_int_distribution<> f(1,10);
-    boost::random::uniform_int_distribution<> g(10,20);
-
-    boost::heap::priority_queue<int> x;
-    boost::heap::binomial_heap<int> y1;
-    boost::heap::binomial_heap<int> y2;
-    boost::heap::fibonacci_heap<int> z;
-
-    x.push(f(rand));
-    x.push(f(rand));
-    x.push(f(rand));
-
-    y1.push(g(rand));
-    y1.push(g(rand));
-    y1.push(g(rand));
-    y2.push(f(rand));
-
-    std::cout << x.top() << std::endl;
-    std::cout << y1.top() << std::endl << std::endl;
-
-    y1.merge(y2);
-
-    for(auto it = y1.ordered_begin(); it != y1.ordered_end(); ++it)
-        std::cout << *it << " ";
-
-    std::cout << std::endl << std::endl << y2.empty();
-
-    z.push(g(rand));
-    z.push(g(rand));
-    auto handle = z.push(12);
-    z.update(handle,11);
-    std::cout << std::endl << std::endl << z.top() << std::endl << std::endl;
-
-    for(auto it2 = z.ordered_begin(); it2 != z.ordered_end(); ++it2)
-        std::cout << *it2 << " ";
-
-}
-
-void bimap(){
-    typedef boost::bimap<int,std::string> firstMap;
-    firstMap cars;
-
-    cars.insert(firstMap::value_type(1,"BMW"));
-    cars.insert(firstMap::value_type(2,"Audi"));
-    cars.insert(firstMap::value_type(3,"Suzuki"));
-
-    // check if is value in bimap
-    std::cout << cars.left.count(1) << std::endl;
-    std::cout << cars.right.count("x") << std::endl;
-
-    for(auto it = cars.begin(); it != cars.end(); ++it)
-        std::cout << it->left << " " << it->right << std::endl;
-}
-
-void foreach(){
-    std::vector<int> v;
-    v.push_back(1);
-    v.push_back(2);
-    v.push_back(3);
-
-    BOOST_FOREACH(auto x, v){
-        std::cout << x << " ";
-    }
-
-    std::cout << std::endl;
-
-    BOOST_REVERSE_FOREACH(auto y, v){
-        std::cout << y << " ";
-    }
-}
-
-void minmaxBoost2(){
-    typedef boost::unordered_set<int> p;
-    p p1;
-    std::time_t now = std::time(0);
-    boost::random::mt19937 x(static_cast<uint32_t>(now));
-    boost::random::uniform_int_distribution<> f(1,100);
-
-    for(int i=0; i<20; ++i)
-        p1.insert(f(x));
-
-    std::pair<boost::unordered_set<int>::iterator,
-        boost::unordered_set<int>::iterator> mm =
-        boost::minmax_element(p1.begin(),p1.end());
-
-    BOOST_FOREACH(p::value_type x, p1)
-        std::cout << x << " ";
-
-    std::cout << "\nMin: " << *mm.first << "\n";
-    std::cout << "Max: " << *mm.second;
-}
-
-void minmaxBoost(){
-    std::time_t now = std::time(0);
-    boost::random::mt19937 g(static_cast<std::uint32_t>(now));
-    boost::random::uniform_int_distribution<> f(1,100);
-    boost::scoped_ptr<int> x(new int(f(g)));
-    boost::scoped_ptr<int> y(new int(f(g)));
-
-    boost::tuple<const int&, const int&> t =
-        boost::minmax(*x.get(),*y.get());
-
-    std::cout << t.get<0>() << "\n" << t.get<1>();
-}
-
-void randomNumbersBoostTime(){
-    std::time_t now = std::time(0);
-    boost::random::mt19937 x
-        (static_cast<std::uint32_t>(now));
-    boost::random::uniform_int_distribution<> f(1,100);
-    std::cout << f(x);
-}
-
-void lexicalCastTryCatch(){
-    std::string a = "abc";
-    int x;
-
-    try{
-        boost::lexical_cast<int>(a);
-    }
-    catch(const boost::bad_lexical_cast &ex){
-        //std::cerr << ex.what();
-        std::cout << "x";
-    }
-}
-
-void ptrVector(){
-    boost::ptr_vector<int> v;
-    v.push_back(new int(1));
-    v.push_back(new int(2));
-    v.push_back(new int(3));
-    v.push_back(new int(4));
-
-    std::cout << v[2];
-    // std::cout << v.back();
-}
-
-void sharedPtr(){
-    boost::scoped_ptr<int> a1(new int(2));
-    // boost::scoped_ptr<int> a2(a1);       ERROR
-
-    boost::shared_ptr<int> p1(new int(5));
-    boost::shared_ptr<int> p2(p1);
-
-    p1.reset(new int(3));
-    p1.reset();
-    std::cout << static_cast<bool>(p2);
-}
-
-void scopedArray(){
-    boost::scoped_array<char> p(new char[26]);
-    char i='a';
-    int j=0;
-
-    for(i='a',j=0; i<='z'; ++i,++j){
-        p[j] = i;
-        std::cout << p[j];
-    }
-
-}
-
-void scopedPtr(){
-    boost::scoped_ptr<int> p(new int(5));
-    std::cout << *p << "\n";
-
-    p.reset(new int(2));
-    std::cout << *p << " " << p.get();
-
-    p.reset();
-    std::cout << std::endl << static_cast<bool>(p);
-    std::cout << std::endl <<
-        std::boolalpha << static_cast<bool>(p);
-}
-
-void regexSearch(){
-    std::string s ("this subject has a submarine as a subsequence");
-    std::smatch m;
-    std::regex e("\\b(sub)([^ ]*)");
-
-    while (std::regex_search(s,m,e)){
-        for (auto x : m)
-            std::cout << x << " ";
-    std::cout << std::endl;
-    s = m.suffix().str();
-  }
-}
-
-void cmatch(){
-    const char* cstr = "6";
-    std::cmatch cm;
-    std::regex ex("[0-9]{1}");
-    std::regex_match(cstr,cm,ex);
-    std::cout << cm.size() << " matches";
-}
-
-void smatch(){
-    std::string s = "p0@";
-    std::string s2 = "2121@";
-
-    std::regex eq("(([a-zA-z]{2,}.)|([a-zA-z]+[0-9]*.))@");
-    std::smatch p,p2,p3;
-
-    std::regex_match(s,p,eq);
-    std::regex_match(s2,p2,eq);
-    std::regex_match(s,p3,eq,
-                     std::regex_constants::match_default);
-
-
-    std::cout << p.size() << " matches\n";
-    std::cout << p2.size() << " matches";
-    std::cout << "\n\nthe matches where: ";
-    for(unsigned i=0; i<p3.size(); ++i)
-        std::cout << "[" << p3[i] << "] ";
-    std::cout << std::endl;
-}
-
-void regexMatchStringIterator(){
-    std::string s = "09";
-    std::regex x("[0-9]{1}");
-    if(std::regex_match(s.begin(),s.end(),x))
-        std::cout << "x";
-}
-
-void regexMatchString(){
-    std::string s = "1";
-    std::regex x("[0-9]{1}");
-    if(std::regex_match(s,x))
-        std::cout << "x";
 }
 
 void launchForwardConclusion(){

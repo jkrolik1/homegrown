@@ -3,6 +3,19 @@
 #include <string>
 #include <boost/variant.hpp>
 
+struct testStruct{};
+
+struct out2 : public boost::static_visitor<>{
+    template <typename X>
+    void operator()(X) const;
+};
+
+struct out : public boost::static_visitor<>{
+    void operator()(double) const;
+    void operator()(char) const;
+    void operator()(std::string) const;
+};
+
 struct A{std::string name; int value;};
 
 struct DoubleX : public boost::static_visitor<>{
