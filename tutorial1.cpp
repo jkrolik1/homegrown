@@ -190,7 +190,10 @@ void paintBoard(std::map<int,char> board,int player);       // TTT
 boost::logic::tribool throughBoard                          // TTT
     (std::map<int,char> board, int usr);                    // TTT
 std::map<int,char> fillMapEmptyValues();                    // TTT
-// -------------------------------------------------------------------------
+void constructorsTest();
+void valTypTest();
+void staticAssertTest();
+// -------------------------------------------------------------------------BOOST FUNCTIONS
 void regexMatchString();                // regex
 void regexMatchStringIterator();        // regex
 void cmatch();                          // regex
@@ -236,7 +239,7 @@ void boostPairLikeSTDpair();            // compressed pair
 void dynamicBitset();                   // dynamic_bitset
 
 int main(){
-    dynamicBitset();
+
     return 0;
 }
 
@@ -879,6 +882,34 @@ void regexMatchString(){
 }
 
 // -----------------------------------------------------------------`
+
+void staticAssertTest(){
+    static_assert(Class1::g > 20, "Class1::g is too small");
+}
+
+void valTypTest(){
+    std::vector<char> p;
+
+    for(unsigned int i = 100; i<110; ++i)
+        p.push_back(static_cast<char>(i));
+
+    BOOST_FOREACH(decltype(p)::value_type &d, p){
+        std::cout << '_' << d << '\n';
+    }
+}
+
+void constructorsTest(){
+    std::shared_ptr<daughter> d1 = std::make_shared<daughter>();
+}
+
+grandmother::grandmother(){std::cout << "Grandmother born" << std::endl;};
+grandmother::~grandmother(){std::cout << "Grandmother died" << std::endl;};
+grandfather::grandfather(){std::cout << "Grandfather born" << std::endl;};
+grandfather::~grandfather(){std::cout << "Grandfather died" << std::endl;};
+mother::mother(){std::cout << "Mother born" << std::endl;};
+mother::~mother(){std::cout << "Mother died" << std::endl;};
+daughter::daughter(){std::cout << "Daughter born" << std::endl;};
+daughter::~daughter(){std::cout << "Daughter died" << std::endl;};
 
 std::map<int,char> fillMapEmptyValues(){
     std::map<int,char> x;

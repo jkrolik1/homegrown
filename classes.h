@@ -3,6 +3,35 @@
 #include <string>
 #include <boost/variant.hpp>
 
+class Class1{
+    public:
+        static const int g = 30;
+};
+
+class grandmother{
+    public:
+        grandmother();
+        ~grandmother();
+};
+
+class grandfather{
+    public:
+        grandfather();
+        ~grandfather();
+};
+
+class mother : public grandmother, public grandfather{
+    public:
+        mother();
+        ~mother();
+};
+
+class daughter : public mother{
+    public:
+        daughter();
+        ~daughter();
+};
+
 struct testStruct{};
 
 struct out2 : public boost::static_visitor<>{
