@@ -3,6 +3,11 @@
 #include <string>
 #include <boost/variant.hpp>
 
+struct plane{
+    std::string name;
+    int number;
+};
+
 class Class1{
     public:
         static const int g = 30;

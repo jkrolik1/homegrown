@@ -58,7 +58,20 @@
 #include <boost/variant.hpp>                    // &
 #include <boost/compressed_pair.hpp>            // &
 #include <boost/dynamic_bitset.hpp>             // &
-#include <boost/dynamic_bitset.hpp>             // &
+#include <boost/multi_index_container.hpp>      // )
+#include <boost/multi_index/hashed_index.hpp>   // )
+#include <boost/multi_index/member.hpp>         // )
+#include <boost/unordered_map.hpp>              // )
+#include <boost/circular_buffer.hpp>            // )
+#include <boost/assign.hpp>                     // )
+#include <boost/current_function.hpp>           // )
+#include <boost/utility/binary.hpp>             // )
+#include <boost/next_prior.hpp>                 // )
+#include <boost/uuid/uuid.hpp>                  // )
+#include <boost/uuid/uuid_generators.hpp>       // )
+#include <boost/uuid/uuid_io.hpp>               // )
+#include <boost/accumulators/accumulators.hpp>  // )
+#include <boost/accumulators/statistics.hpp>    // )
 
 #include "classes.h"
 #define TESTspace2
@@ -237,10 +250,193 @@ void variantIntroduction();             // boost variant
 void variantAV();                       // boost variant    apply_visitor
 void boostPairLikeSTDpair();            // compressed pair
 void dynamicBitset();                   // dynamic_bitset
+void multiIndex();
+void uordMap();
+void circularBuffer();
+void assignB();
+void currentFinction();
+void utilityBinary();
+void it();
+void uuid();
+void acu();
 
 int main(){
-
+    acu();
     return 0;
+}
+
+void acu(){
+    boost::accumulators::accumulator_set
+        <int,boost::accumulators::features
+            <
+             boost::accumulators::tag::count,
+             boost::accumulators::tag::mean,
+             boost::accumulators::tag::variance
+            >
+        > acc;
+
+    acc(4);
+    acc(-6);
+    acc(9);
+
+    WRT(boost::accumulators::count(acc));       // 3
+    WRT(boost::accumulators::mean(acc));        // srednia
+    WRT(boost::accumulators::variance(acc));    // rozbieznosc
+
+    // ----------------
+
+    boost::accumulators::accumulator_set
+        <
+         double,
+         boost::accumulators::features
+            <
+             boost::accumulators::tag::mean,
+             boost::accumulators::tag::variance
+            >,
+         int
+        > acc2;
+
+        acc2(8, boost::accumulators::weight = 1);
+        acc2(80, boost::accumulators::weight = 6);
+        acc2(18, boost::accumulators::weight = 18);
+
+        WRT(boost::accumulators::mean(acc2));
+        WRT(boost::accumulators::variance(acc2));
+}
+
+void uuid(){
+    boost::uuids::random_generator gen;
+    boost::uuids::uuid id = gen();
+    WRT(id);
+    WRT(id.size());     // 16 bytes
+    WRT(id.is_nil());   // The nil UUID is 00000000-0000-0000-0000-000000000000
+    WRT(id.variant());
+    WRT(id.version());
+    WRT("");
+
+    // ----------------
+
+    boost::uuids::uuid xyz;
+
+    boost::uuids::nil_generator nil_gen;
+    xyz = nil_gen();
+    WRT(xyz);
+    WRT(xyz.is_nil());
+}
+
+void it(){
+    std::vector<char> x;
+    boost::assign::push_back(x)('a')('z')('b')('y');
+
+    auto it = std::find(x.begin(),x.end(),'b');
+    auto prior = boost::prior(it,2);        // a
+    WRT(*prior);
+    auto next = boost::next(it);            // y
+    WRT(*next);
+}
+
+void utilityBinary(){
+    int i = BOOST_BINARY(1011);
+    std::cout << i;             // 11
+}
+
+void currentFinction(){
+    const char *name = BOOST_CURRENT_FUNCTION;
+    std::cout << name;              //  void currentFinction
+}
+
+void assignB(){
+    std::vector<int> v;
+    boost::assign::push_back(v)(1)(2)(3);
+
+    std::list<int> l;
+    boost::assign::push_front(l)(4)(5)(6)(7);
+}
+
+void circularBuffer(){
+    #define overW
+
+    typedef boost::circular_buffer<int> cirBuf;
+    cirBuf cB(3);
+
+    WRT(cB.capacity());     // 3
+    WRT(cB.size());         // 0
+
+    cB.push_back(0);
+    cB.push_back(1);
+    cB.push_back(2);
+
+
+    WRT(cB.capacity());     // 3
+    WRT(cB.size());         // 3
+
+    #ifndef overW
+        cB.push_back(7);
+        cB.push_back(5);
+        cB.push_back(4);
+    #endif
+
+    std::cout << "\n";
+
+    for(auto x : cB)
+        WRT(x);             // 7 5 4
+
+
+    std::cout << std::boolalpha << cB.is_linearized();      // false for ovewriten
+}
+
+void uordMap(){
+    typedef boost::unordered_map<int,char> um;
+    um first;
+
+    first.insert(std::make_pair(1,'a'));
+    first.emplace(2,'b');
+    first.emplace(3,'e');
+    first.insert(std::make_pair(10,'a'));
+
+    BOOST_FOREACH(decltype(first)::value_type &x, first){
+        std::cout << x.first;
+    }
+
+    // 10321
+}
+
+void multiIndex(){
+    typedef boost::multi_index::multi_index_container
+            <plane, boost::multi_index::indexed_by
+                <boost::multi_index::hashed_non_unique
+                    <boost::multi_index::member
+                        <plane, std::string, &plane::name>
+                    >,
+                 boost::multi_index::hashed_non_unique
+                    <boost::multi_index::member
+                        <plane, int, &plane::number>
+                    >
+                >
+            >   plane_multi;
+
+
+    // vector + set
+
+
+    plane_multi planes;
+
+    planes.insert({"x",1});
+    planes.insert({"y",2});
+    planes.insert({"z",3});
+
+
+    // 1
+
+    std::cout << planes.count("a") << std::endl;        // 0
+
+    const plane_multi::nth_index<1>::type &number_index = planes.get<1>();
+    std::cout << number_index.count(3);                 // 1
+
+    // 2
+
+    auto &number_index_2 = planes.get<0>();             // .first
+    std::cout << std::endl << number_index_2.count("x");// 1
 }
 
 void dynamicBitset(){
@@ -882,6 +1078,10 @@ void regexMatchString(){
 }
 
 // -----------------------------------------------------------------`
+// -----------------------------------------------------------------
+// -----------------------------------------------------------------
+// -----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 void staticAssertTest(){
     static_assert(Class1::g > 20, "Class1::g is too small");
