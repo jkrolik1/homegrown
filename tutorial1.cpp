@@ -214,6 +214,7 @@ std::map<int,char> fillMapEmptyValues();                    // TTT
 void constructorsTest();
 void valTypTest();
 void staticAssertTest();
+void randomTokenizer();
 // -------------------------------------------------------------------------BOOST FUNCTIONS
 void regexMatchString();                // regex
 void regexMatchStringIterator();        // regex
@@ -274,7 +275,7 @@ void numCast();
 void algs();
 
 int main(){
-    algs();
+    randomTokenizer();
     return 0;
 }
 
@@ -1220,6 +1221,27 @@ void regexMatchString(){
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
+
+void randomTokenizer(){
+    std::time_t now = static_cast<unsigned>(std::time(NULL));
+    boost::random::mt19937 x(static_cast<uint32_t>(now));
+    std::string g = "W podobnym tonie wypowiedzial sie kolarz Movistaru";
+
+    boost::random::uniform_int_distribution<> f(0,(g.size()-1));
+
+    typedef boost::tokenizer<boost::char_separator<char>> tok;
+
+    const char *y = g.at(f(x))+"";
+
+    boost::char_separator<char> sep(y);
+
+    tok t1(g,sep);
+
+    for(const auto &b : t1) WRT(b);
+
+    WRT("----------");
+    WRT(*y);
+}
 
 void staticAssertTest(){
     static_assert(Class1::g > 20, "Class1::g is too small");
