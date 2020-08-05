@@ -2,6 +2,25 @@
 #include <iostream>
 #include <string>
 #include <boost/variant.hpp>
+#include <boost/intrusive/list.hpp>
+#include <utility>
+#include <boost/operators.hpp>
+
+struct bank : public boost::less_than_comparable<bank>{
+    std::string name;
+    int cash;
+
+    bank(std::string nameP = " ",int cashP = 0) :
+        name(std::move(nameP)),cash(cashP){};
+
+    bool operator<(const bank &b) const {return cash < b.cash;}
+};
+
+struct house : public boost::intrusive::list_base_hook<>{
+    std::string street;
+    int number;
+    house(std::string x, int y) : street(std::move(x)),number(y) {}
+};
 
 struct plane{
     std::string name;

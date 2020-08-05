@@ -24,8 +24,6 @@
 #include <typeinfo>
 
 #include <boost/lexical_cast.hpp>
-#include <boost/variant.hpp>
-#include <boost/algorithm/cxx11/iota.hpp>
 #include <boost/algorithm/string.hpp>           // !
 #include <boost/random.hpp>                     // !!
 #include <boost/logic/tribool.hpp>              // !!!
@@ -72,6 +70,16 @@
 #include <boost/uuid/uuid_io.hpp>               // )
 #include <boost/accumulators/accumulators.hpp>  // )
 #include <boost/accumulators/statistics.hpp>    // )
+#include <boost/intrusive/list.hpp>             // <
+#include <boost/multi_array.hpp>                // <
+#include <boost/operators.hpp>                  // <
+#include <boost/numeric/conversion/cast.hpp>    // <
+#include <boost/algorithm/cxx11/one_of.hpp>     // <
+#include <boost/algorithm/cxx11/iota.hpp>       // <
+#include <boost/algorithm/cxx11/is_sorted.hpp>  // <
+#include <boost/algorithm/cxx11/copy_if.hpp>    // <
+#include <boost/range/algorithm.hpp>            // <
+#include <boost/range/numeric.hpp>              // <
 
 #include "classes.h"
 #define TESTspace2
@@ -259,10 +267,140 @@ void utilityBinary();
 void it();
 void uuid();
 void acu();
+void intr();
+void multiArr();
+void op();
+void numCast();
+void algs();
 
 int main(){
-    acu();
+    algs();
     return 0;
+}
+
+void algs(){
+    std::vector<int> vect{1,2,3,4,5,6,7,8,9};
+
+
+    std::cout << boost::algorithm::one_of
+        (std::begin(vect),std::end(vect),[](int x){
+            return x == 50;
+        }) << '\n';                                 // dokladnie jedna 50
+
+
+    std::cout << boost::algorithm::one_of_equal
+        (std::begin(vect),std::end(vect),5) << '\n';    // value
+
+
+    std::vector<int> vect2;
+    boost::algorithm::iota_n
+        (std::inserter(vect2,vect2.begin()),10,5);
+    WRT(boost::algorithm::is_increasing(vect2));
+    WRT(boost::algorithm::is_decreasing(vect2));
+    for(const int &y : vect2)
+        std::cout << y << ' ';
+
+
+    WRT('\n' << boost::count(vect2,0));
+    WRT(boost::accumulate(vect2,0));
+    boost::random_shuffle(vect2);
+}
+
+void numCast(){
+    try{
+        int i = 0x150;      // 1*16^2 + 5*16*1
+        int i2 = -0x250;
+
+        short s = boost::numeric_cast<short>(i);
+        short s2 = boost::numeric_cast<short>(i2);
+
+        WRT(s);
+        WRT(s2);
+    }
+    catch(boost::numeric::bad_numeric_cast &e){
+        std::cerr << e.what() << '1';
+    }
+    catch(boost::numeric::negative_overflow &f){
+        std::cerr << f.what() << '2';
+    }
+}
+
+void op(){
+    std::unique_ptr<bank> b1 = std::make_unique<bank>();
+    std::unique_ptr<bank> b2 = std::make_unique<bank>("bbb");
+
+    std::cout << std::boolalpha << (b1 > b2) << '\n';   // zadeklarowany tylko < !!!!!
+
+    // https://www.boost.org/doc/libs/1_73_0/libs/utility/operators.htm
+}
+
+void multiArr(){
+    boost::multi_array<char,1> a(boost::extents[6]);
+    std::string boostStr = "Boost";
+    int i = 0;
+
+    BOOST_FOREACH(decltype(boostStr)::value_type &x, boostStr){
+        a[i] = x;
+        ++i;
+    }
+    a[i] = '\0';
+
+    WRT(a.origin());
+
+
+    // ---------------------------------------------
+
+
+    boost::multi_array<char,2> b{boost::extents[2][6]};
+
+    typedef boost::multi_array<char,2>::array_view<1>::type array_view;
+    typedef boost::multi_array_types::index_range range;
+
+    array_view view = b[boost::indices[0][range{0,5}]];
+
+    std::memcpy(view.origin(),"Boost",6);
+
+    boost::multi_array<char,2>::reference subarray = b[1];
+    std::memcpy(subarray.origin(),"C++",4);
+
+    WRT("");
+    WRT(view.origin());
+    WRT(subarray.origin());
+
+
+    // ---------------------------------------------
+
+
+    char c[8] = {'1','2','3','\0',
+                '4','5','6','\0'};
+
+    boost::multi_array_ref<char,2> t{c, boost::extents[2][4]};
+
+    boost::multi_array<char, 2>::reference sub1 = t[0];
+    WRT(sub1.origin());
+
+    boost::multi_array<char, 2>::reference sub2 = t[1];
+    WRT(sub2.origin());
+}
+
+void intr(){
+    typedef boost::intrusive::list<house> house_list;
+    house_list houses;
+
+    house h1("Warszawska",10);
+    std::unique_ptr<house> h2 = std::make_unique<house>("Sopocka",13);
+    house *h3 = new house("Katowicka",80);
+
+    houses.push_back(h1);
+    houses.push_back(*h2);
+    houses.push_back(*h3);
+
+    houses.pop_back_and_dispose([](house *h){delete h; h=nullptr;}); // ???
+
+    h1.street = "Gdanska";
+
+    for(const house &x : houses)
+        std::cout << x.street << ' ' << x.number << '\n';
 }
 
 void acu(){
