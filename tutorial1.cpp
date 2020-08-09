@@ -215,6 +215,7 @@ void constructorsTest();
 void valTypTest();
 void staticAssertTest();
 void randomTokenizer();
+void problemCollatza();
 // -------------------------------------------------------------------------BOOST FUNCTIONS
 void regexMatchString();                // regex
 void regexMatchStringIterator();        // regex
@@ -274,8 +275,14 @@ void op();
 void numCast();
 void algs();
 
+// -----------------------------------mainx
+// -----------------------------------
+// -----------------------------------
+// -----------------------------------
+// -----------------------------------
+
 int main(){
-    randomTokenizer();
+
     return 0;
 }
 
@@ -1222,6 +1229,39 @@ void regexMatchString(){
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
 
+
+void problemCollatza(){
+    int a,j,g;
+    std::cin >> a;
+    int arr[a], x[10000];
+
+    for(int i=0; i<a; ++i)
+        std::cin >> arr[i];
+
+    for(j=0,g=0; j<a; ++j){
+        g=0;
+        x[g] = arr[j];
+
+        if(x[g] == 1){
+            std::cout << g << '\n';
+            continue;
+        }
+
+        do{
+            if(x[g] % 2 != 0){
+                x[g+1] = 3*x[g]+1;
+            }else{
+                x[g+1] = x[g]/2;
+            }
+
+            g++;
+        }while(x[g] != 1);
+
+        std::cout << g << '\n';
+    }
+
+}
+
 void randomTokenizer(){
     std::time_t now = static_cast<unsigned>(std::time(NULL));
     boost::random::mt19937 x(static_cast<uint32_t>(now));
@@ -1772,7 +1812,7 @@ void learningMethod(){
 
         soundBreak();
 
-        for(int i=0; i<3; ++i)
+        for(int i=0; i<5; ++i)
             timer1min();
 
         soundLearn();
