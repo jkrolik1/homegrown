@@ -216,6 +216,9 @@ void valTypTest();
 void staticAssertTest();
 void randomTokenizer();
 void problemCollatza();
+int nwd(int a, int b);
+void sumaSuma();
+void stos();
 // -------------------------------------------------------------------------BOOST FUNCTIONS
 void regexMatchString();                // regex
 void regexMatchStringIterator();        // regex
@@ -1229,6 +1232,70 @@ void regexMatchString(){
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
 
+void stos(){
+    std::string str="";
+    int stos[10];
+    int place = 9,num=0;
+
+    while(std::cin >> str){
+        if(str == "+"){
+            str = "";
+            std::cin >> num;
+            stos[place] = num;
+            num = 0;
+
+            if(place >= 0){
+                std::cout << ":)" << '\n';
+                place -= 1;
+            }
+            else
+                std::cout << ":(" << '\n';
+
+        }
+        else if(str == "-"){
+            std::cout << stos[place] << '\n';
+            place += 1;
+        }
+        else{
+            // ...
+        }
+
+    }
+
+    for(int i=0; i<9; ++i){
+        std::cout << stos[i] << ' ';
+    }
+}
+
+void sumaSuma(){
+    int liczba=0, suma=0;
+    while(std::cin >> liczba){
+        suma += liczba;
+        std::cout << suma << '\n';
+    }
+}
+
+int nwd(int a, int b){
+    int x,first,second;
+    std::cin >> x;
+    typedef boost::unordered_map<int,int> v;
+    v o;
+
+    for(int i=0; i<x; ++i){
+        std::cin >> first >> second;
+        o.insert(std::make_pair(first,second));
+        first = second = 0;
+    }
+
+    BOOST_FOREACH(v::value_type &y, o){
+        first = y.first;
+        second = y.second;
+
+
+    }
+
+    return 0;
+}
 
 void problemCollatza(){
     int a,j,g;
