@@ -219,6 +219,8 @@ void problemCollatza();
 int nwd(int a, int b);
 void sumaSuma();
 void stos();
+void ex1();
+void jpesel();
 // -------------------------------------------------------------------------BOOST FUNCTIONS
 void regexMatchString();                // regex
 void regexMatchStringIterator();        // regex
@@ -285,7 +287,7 @@ void algs();
 // -----------------------------------
 
 int main(){
-
+    jpesel();
     return 0;
 }
 
@@ -1231,6 +1233,67 @@ void regexMatchString(){
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
+
+void jpesel(){
+    std::vector<char> l;
+    std::string f;
+
+    int wybor,wybor2,suma,m,s;
+    std::cin >> wybor;
+
+    wybor2 = wybor;
+
+    int pesel[wybor];
+
+    for(int i=0; i<wybor; ++i)  std::cin >> pesel[i];
+
+    for(int j=0; j<wybor2; ++j){
+        f = std::to_string(pesel[j]);
+        for(int r=0; r<f.size(); ++r){
+            if(j == 10 || j == 6 || j == 2 || j == 0)
+                s = (int)(f.at(r))*1;
+            if(j == 9 || j == 5 || j == 1)
+                s = (int)(f.at(r))*3;
+            if(j == 2 || j == 4)
+                s = (int)(f.at(r))*7;
+            if(j == 7 || j == 3)
+                s = (int)(f.at(r))*9;
+
+            suma = suma + s;
+        }
+        if(suma > 0){
+            f = std::to_string(suma);
+            std::cout << f << "\n\n";
+            if(f.at(f.length()-1) == '0')
+                l.push_back('D');
+            else
+                l.push_back('N');
+        }
+        suma = 0;
+    }
+
+    for(const auto &h : l)
+        std::cout << h << '\n';
+
+}
+
+void ex1(){
+    std::string randomStr;
+    std::deque<char> deque1;
+
+    std::time_t now = static_cast<unsigned>(std::time(NULL));
+    boost::random::mt19937 x(static_cast<uint32_t>(now));
+    boost::random::uniform_int_distribution<> f(
+        static_cast<int>('a'),static_cast<int>('z'));
+
+    std::generate_n(std::inserter(deque1,deque1.begin()),20,
+        [&](){return static_cast<char>(f(x));});
+
+
+    BOOST_REVERSE_FOREACH(decltype(deque1)::value_type &c, deque1){
+        std::cout << c << ' ';
+    }
+}
 
 void stos(){
     std::string str="";
