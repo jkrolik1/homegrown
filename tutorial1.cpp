@@ -221,6 +221,8 @@ void sumaSuma();
 void stos();
 void ex1();
 void jpesel();
+void shiftLeft();
+void zliczanieLiter();
 // -------------------------------------------------------------------------BOOST FUNCTIONS
 void regexMatchString();                // regex
 void regexMatchStringIterator();        // regex
@@ -287,7 +289,7 @@ void algs();
 // -----------------------------------
 
 int main(){
-    jpesel();
+    zliczanieLiter();
     return 0;
 }
 
@@ -1234,47 +1236,103 @@ void regexMatchString(){
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
 
-void jpesel(){
-    std::vector<char> l;
-    std::string f;
+void zliczanieLiter(){
+    std::vector<std::string> strs;
+    std::string str;
+    int ile;
+    std::map<char,int> literki;
+    std::map<char,int> literki2;
 
-    int wybor,wybor2,suma,m,s;
+    std::cin >> ile;
+
+    for(int i=0; i<ile; ++i){
+        getline(std::cin,str);
+        for(int u=0; u<str.size(); ++u)
+            if(str.at(u) >= 'a' && str.at(u) <= 'z'){
+                if(literki[str.at(u)] == 1)
+                    literki[str.at(u)]++;
+                else literki[str.at(u)]++;
+            }
+            else if(str.at(u) >= 'A' && str.at(u) <= 'Z'){
+                if(literki2[str.at(u)] == 1)
+                    literki2[str.at(u)]++;
+                else literki2[str.at(u)]++;
+            }
+    }
+
+    for(const auto &f : literki){
+        std::cout << f.first << ' ';
+        std::cout << f.second << '\n';
+    }
+
+    for(const auto &h : literki2){
+        std::cout << h.first << ' ';
+        std::cout << h.second << '\n';
+    }
+
+
+}
+
+void shiftLeft(){
+    int ilosc, przesun, liczba;
+    std::cin >> ilosc >> przesun;
+
+    std::vector<int> x,y;
+
+    for(int i=0; i<ilosc; ++i){
+        std::cin >> liczba;
+        x.push_back(liczba);
+        liczba = 0;
+    }
+
+    for(int j=przesun; j<x.size(); ++j){
+        y.push_back(x.at(j));
+    }
+
+    for(int k=0; k<przesun; ++k){
+        y.push_back(x.at(k));
+    }
+
+    for(const auto &h : y)
+        std::cout << h << ' ';
+
+}
+
+void jpesel(){
+    std::vector<std::string> pesle_str;
+    std::vector<char> wynik;
+    int wybor=0,suma=0;
+    std::string pesel="";
+
     std::cin >> wybor;
 
-    wybor2 = wybor;
+    for(int i=0; i<wybor; ++i){
+        std::cin >> pesel;
+        pesle_str.push_back(pesel);
+        pesel = "";
+    }
 
-    int pesel[wybor];
-
-    for(int i=0; i<wybor; ++i)  std::cin >> pesel[i];
-
-    for(int j=0; j<wybor2; ++j){
-        f = std::to_string(pesel[j]);
-        for(int r=0; r<f.size(); ++r){
-            if(j == 10 || j == 6 || j == 2 || j == 0)
-                s = (int)(f.at(r))*1;
-            if(j == 9 || j == 5 || j == 1)
-                s = (int)(f.at(r))*3;
-            if(j == 2 || j == 4)
-                s = (int)(f.at(r))*7;
-            if(j == 7 || j == 3)
-                s = (int)(f.at(r))*9;
-
-            suma = suma + s;
+    for(const auto &z : pesle_str){
+        for(int j=0; j<z.size(); ++j){
+            if(j == 0 || j == 4 || j == 8 || j == 10)
+                suma += static_cast<int>(z.at(j))*1;
+            if(j == 1 || j == 5 || j == 9)
+                suma += static_cast<int>(z.at(j))*3;
+            if(j == 2 || j == 6)
+                suma += static_cast<int>(z.at(j))*7;
+            if(j == 3 || j == 7)
+                suma += static_cast<int>(z.at(j))*9;
         }
-        if(suma > 0){
-            f = std::to_string(suma);
-            std::cout << f << "\n\n";
-            if(f.at(f.length()-1) == '0')
-                l.push_back('D');
+        if(suma > 0)
+            if(suma % 10 == 0)
+                wynik.push_back('D');
             else
-                l.push_back('N');
-        }
+                wynik.push_back('N');
         suma = 0;
     }
 
-    for(const auto &h : l)
-        std::cout << h << '\n';
-
+    for(const char &r : wynik)
+        std::cout << r << '\n';
 }
 
 void ex1(){
