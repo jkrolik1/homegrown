@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cstdlib>
 #include <iostream>      // std::cout
 #include <string>
 #include <vector>
@@ -223,6 +224,7 @@ void ex1();
 void jpesel();
 void shiftLeft();
 void zliczanieLiter();
+void gg2();
 // -------------------------------------------------------------------------BOOST FUNCTIONS
 void regexMatchString();                // regex
 void regexMatchStringIterator();        // regex
@@ -289,7 +291,7 @@ void algs();
 // -----------------------------------
 
 int main(){
-    zliczanieLiter();
+    gg2();
     return 0;
 }
 
@@ -1235,6 +1237,29 @@ void regexMatchString(){
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
+
+void gg2(){
+    std::string input,output;
+    std::vector<char> first,second;
+
+    while(std::cin >> input){
+        for(int i=0; i<input.size(); ++i){
+            if(i % 2 == 0) first.push_back(input.at(i));
+            if(i % 2 != 0) second.push_back(input.at(i));
+        }
+
+        for(int j=0; j<second.size(); ++j){
+            if(second[j]=='G') output += first[j]+32-1;
+            if(second[j]=='H') output += first[j]+32+15;
+        }
+
+        std::cout << output << '\n';
+        first.clear();
+        second.clear();
+        output = input = "";
+    }
+
+}
 
 void zliczanieLiter(){
     std::vector<std::string> strs;
