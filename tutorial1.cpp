@@ -225,6 +225,7 @@ void jpesel();
 void shiftLeft();
 void zliczanieLiter();
 void gg2();
+void PP0502B();
 // -------------------------------------------------------------------------BOOST FUNCTIONS
 void regexMatchString();                // regex
 void regexMatchStringIterator();        // regex
@@ -291,7 +292,7 @@ void algs();
 // -----------------------------------
 
 int main(){
-    gg2();
+    PP0502B();
     return 0;
 }
 
@@ -1238,9 +1239,41 @@ void regexMatchString(){
 // -----------------------------------------------------------------
 // -----------------------------------------------------------------
 
+void PP0502B(){
+    std::vector<int> tablice,tablice2,x;
+    std::vector<int>::iterator it;
+    int testy,num,num2;
+
+    std::cin >> testy;
+
+    for(int i=0; i<testy; ++i){
+        std::cin >> num;
+        for(int u=0; u<num; ++u){
+            std::cin >> num2;
+            tablice.push_back(num2);
+            num2 = 0;
+        }
+
+        for(int t=tablice.size()-1; t>=0; --t)
+            tablice2.push_back(tablice.at(t));
+
+        for(const auto &r : tablice2)
+            std::cout << r << ' ';
+
+        std::cout << '\n';
+
+        tablice2.clear();
+        tablice.clear();
+        num = 0;
+    }
+}
+
 void gg2(){
     std::string input,output;
     std::vector<char> first,second;
+    int one,two;
+    int o,l,h;
+    char t;
 
     while(std::cin >> input){
         for(int i=0; i<input.size(); ++i){
@@ -1249,13 +1282,24 @@ void gg2(){
         }
 
         for(int j=0; j<second.size(); ++j){
-            if(second[j]=='G') output += first[j]+32-1;
-            if(second[j]=='H') output += first[j]+32+15;
+            for(h='A',l=0; h<='P'; ++h,++l)
+                if(h == first.at(j))
+                    one = l;
+
+            for(h='A',o=0; h<='P'; ++h,o+=16)
+                if(h == second.at(j))
+                    two = o;
+
+            t = static_cast<char>(one + two);
+
+            output += t;
         }
 
-        std::cout << output << '\n';
         first.clear();
         second.clear();
+
+        std::cout << output << '\n';
+
         output = input = "";
     }
 
