@@ -1,0 +1,12 @@
+General
+https://www.wikihow.com/Create-and-Edit-Text-File-in-Linux-by-Using-Terminal
+
+Windows
+https://stackoverflow.com/questions/13646621/how-to-get-mac-address-in-windows-with-c?answertab=oldest#tab-top
+https://stackoverflow.com/questions/221894/c-get-mac-address-of-network-adapters-on-vista?rq=1
+
+Linux
+http://www.microhowto.info/howto/get_the_mac_address_of_an_ethernet_interface_in_c_using_siocgifhwaddr.html
+https://www.includehelp.com/cpp-programs/get-mac-address-of-linux-based-network-device.aspx
+https://stackoverflow.com/questions/1779715/how-to-get-mac-address-of-your-machine-using-a-c-program
+
