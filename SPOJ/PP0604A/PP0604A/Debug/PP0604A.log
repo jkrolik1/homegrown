@@ -1,0 +1,6 @@
+﻿  PP0604A.cpp
+D:\Dokumenty\GitHub\homegrown\SPOJ\PP0604A\PP0604A\PP0604A.cpp(25,23): warning C4018: '<': signed/unsigned mismatch
+D:\Dokumenty\GitHub\homegrown\SPOJ\PP0604A\PP0604A\PP0604A.cpp(28,27): warning C4018: '<': signed/unsigned mismatch
+D:\Dokumenty\GitHub\homegrown\SPOJ\PP0604A\PP0604A\PP0604A.cpp(34,27): warning C4018: '<': signed/unsigned mismatch
+D:\Dokumenty\GitHub\homegrown\SPOJ\PP0604A\PP0604A\PP0604A.cpp(43,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  PP0604A.vcxproj -> D:\Dokumenty\GitHub\homegrown\SPOJ\PP0604A\Debug\PP0604A.exe
