@@ -15,3 +15,4 @@ tutorial1.cpp.save-failed
 /.vs/
 /Project1/Project1/Project1.vcxproj
 /Project1/Project1/Project1.vcxproj.filters
+*.opendb
