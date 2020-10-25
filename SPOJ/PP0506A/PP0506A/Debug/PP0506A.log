@@ -1,0 +1,5 @@
+﻿  PP0506A.cpp
+D:\Dokumenty\GitHub\homegrown\SPOJ\PP0506A\PP0506A\PP0506A.cpp(32,21): warning C4018: '<': signed/unsigned mismatch
+D:\Dokumenty\GitHub\homegrown\SPOJ\PP0506A\PP0506A\PP0506A.cpp(33,12): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\Dokumenty\GitHub\homegrown\SPOJ\PP0506A\PP0506A\PP0506A.cpp(39,22): warning C4018: '<': signed/unsigned mismatch
+  PP0506A.vcxproj -> D:\Dokumenty\GitHub\homegrown\SPOJ\PP0506A\Debug\PP0506A.exe

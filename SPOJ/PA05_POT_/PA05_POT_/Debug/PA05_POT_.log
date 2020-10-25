@@ -1,0 +1,4 @@
+﻿  PA05_POT_.cpp
+D:\Dokumenty\GitHub\homegrown\SPOJ\PA05_POT_\PA05_POT_\PA05_POT_.cpp(26,23): warning C4018: '<': signed/unsigned mismatch
+D:\Dokumenty\GitHub\homegrown\SPOJ\PA05_POT_\PA05_POT_\PA05_POT_.cpp(28,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  PA05_POT_.vcxproj -> D:\Dokumenty\GitHub\homegrown\SPOJ\PA05_POT_\Debug\PA05_POT_.exe
