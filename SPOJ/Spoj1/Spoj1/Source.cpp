@@ -1,16 +1,61 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
+#include <math.h>
 
 void PRZEDSZK();
 std::tuple<bool, int> PRZEDSZK_ifMatch(std::vector<int>, std::vector<int>);
 void PRZEDSZK_2();
+void ETI06F1();
+double roundX(double);
+void EUCGAME();
 
 int main()
 {
-
+	
 }
 
+void EUCGAME()
+{
+	int tests;
+	std::cin >> tests;
+
+	int a, b;
+
+	while (tests)
+	{
+		std::cin >> a; 
+		std::cin >> b;
+
+		while (1)
+		{
+			if (a < b)
+				b -= a;
+			else if (a > b)
+				a -= b;
+			else
+			{
+				std::cout << a + b << '\n';
+				tests--;
+				break;
+			}
+		}
+	}
+}
+double roundX(double x)
+{
+	return round(x * 100) / 100;
+}
+void ETI06F1()
+{
+	double r, d;
+
+	std::cin >> r;
+	std::cin >> d;
+
+	std::cout.setf(std::ios::fixed);
+	std::cout << roundX((r * r - (d * d / 4))* atan(1) * 4);
+}
 void PRZEDSZK_2()
 {
 	int tests = 0;
