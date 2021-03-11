@@ -1,3 +1,3 @@
 ﻿  Source.cpp
-D:\Dokumenty\GitHub\homegrown\SPOJ\Spoj1\Spoj1\Source.cpp(156,21): warning C4018: '<': signed/unsigned mismatch
+D:\Dokumenty\GitHub\homegrown\SPOJ\Spoj1\Spoj1\Source.cpp(238,21): warning C4018: '<': signed/unsigned mismatch
   Spoj1.vcxproj -> D:\Dokumenty\GitHub\homegrown\SPOJ\Spoj1\Debug\Spoj1.exe

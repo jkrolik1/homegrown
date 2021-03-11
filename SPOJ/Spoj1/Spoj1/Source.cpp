@@ -3,18 +3,97 @@
 #include <tuple>
 #include <math.h>
 
+void load();
 void PRZEDSZK();
 std::tuple<bool, int> PRZEDSZK_ifMatch(std::vector<int>, std::vector<int>);
 void PRZEDSZK_2();
 void ETI06F1();
 double roundX(double);
-void EUCGAME();
+void EUCGAME(); 
+void SYSmain(int a);						// SYS - Systemy pozycyjne
+std::string countFun(int a, int base);		// SYS - Systemy pozycyjne
+void PP0601A2();
 
 int main()
 {
 	
 }
 
+void load()
+{
+	int tests = 0, a = 0;
+	std::cin >> tests;
+
+	while (tests)
+	{
+		std::cin >> a;
+		SYSmain(a);
+
+		tests--;
+	}
+}
+
+void PP0601A2()
+{
+	int number = 0, counter = 0, prevNumber = 0;
+	bool x = false;
+
+	while (counter != 3)
+	{
+		if (prevNumber != 0 && prevNumber != 42)
+			x = true;
+
+		std::cin >> number;
+		std::cout << number << '\n';
+
+		if (number == 42 && x)
+			counter++;
+
+		x = false;
+		prevNumber = number;
+	}
+}
+std::string countFun(int a,int base)
+{
+	unsigned int restNum = 0, shift = 0;
+	std::vector<int> score;
+	char aL = 'A';
+
+	while (true)
+	{
+		score.emplace_back(a % base);
+		a = a / base;
+
+		if (a == 0)
+			break;
+		else if (a <= (base - 1))
+		{
+			score.emplace_back(a);
+			break;
+		}
+	}
+
+	for (int i = score.size()-1; i >= 0; --i)
+	{
+		if (score[i] < 10)
+			std::cout << score[i];
+		else
+		{
+			shift = score[i] - 10;
+			for (unsigned int j = 0; j < shift; ++j)
+				aL++;
+			std::cout << aL;
+			aL = 'A';
+		}
+	}
+
+	return "";
+}
+void SYSmain(int a)
+{
+	std::cout << countFun(a,16) << ' ';
+	std::cout << countFun(a, 11) << '\n';
+}
 void EUCGAME()
 {
 	int tests;
